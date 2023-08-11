@@ -1,0 +1,31 @@
+{
+  "name": "pnpm-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "nx": "16.5.3",
+    "nx-cloud": "latest"
+  },
+  "lint-staged": {
+    "packages/**/src/**/*.{js,jsx,ts,tsx}": "eslint --max-warnings=0",
+    "apps/**/src/**/*.{js,jsx,ts,tsx}": "eslint --max-warnings=0"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.197",
+    "inquirer": "^9.2.9",
+    "lodash": "^4.17.21",
+    "sass": "^1.65.1",
+    "sass-loader": "^13.3.2"
+  }
+}
