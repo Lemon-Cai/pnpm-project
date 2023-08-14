@@ -33,6 +33,7 @@ code {
 #root-layout {
   width: 100%;
   height: 100%;
+  display: flex;
 }
 #root-content {
   overflow: hidden;
@@ -42,4 +43,5 @@ code {
   width: 100%;
   height: 100%;
   overflow: auto;
+  position: relative;
 }

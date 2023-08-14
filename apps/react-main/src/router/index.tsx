@@ -1,10 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { useRoutes, RouteObject } from 'react-router-dom'
 
-import type { MenuProps } from 'antd'
 import { HomeOutlined } from '@ant-design/icons'
 
-type MenuItem = Required<MenuProps>['items'][number]
+import { MyMenuItem } from '../types/menu'
 
 // cesium 入门
 const Induction = lazy(() => import('../pages/Cesium/Induction'))
@@ -14,13 +13,9 @@ const Advance = lazy(() => import('../pages/Cesium/Advance'))
 // const ThreeJs = lazy(() => import('../pages/ThreeJs'))
 
 const FirstCase = lazy(() => import('../pages/ThreeJs/FirstCase'))
+const SecondCase = lazy(() => import('../pages/ThreeJs/SecondCase'))
 const ThreeEarth = lazy(() => import('../pages/ThreeJs/Earth'))
 
-export type MyMenuItem = MenuItem & {
-  element?: React.ReactNode | null
-  children?: MyMenuItem[] | null
-  path?: string | null
-}
 
 function LazyLoad(element: React.ReactNode) {
   return <Suspense fallback={null}>{element}</Suspense>
@@ -58,6 +53,13 @@ export const menuItems: MyMenuItem[] = [
         element: LazyLoad(<FirstCase />),
       },
       {
+        key: '/threeJs/secondCase',
+        path: 'secondCase',
+        label: '第二个案例',
+        // type: "group",
+        element: LazyLoad(<SecondCase />),
+      },
+      {
         key: '/threeJs/earth',
         path: 'earth',
         label: '地球',
@@ -68,12 +70,16 @@ export const menuItems: MyMenuItem[] = [
   },
 ]
 
-function generateRoute(menuList: MyMenuItem[]): RouteObject[] {
+function generateRoute(menuList: MyMenuItem[], parentPath?: string): RouteObject[] {
   let items = []
   for (const menu of menuList) {
     if (menu.key) {
+      // const currentPath = `${
+      //   parentPath?.endsWith('/') ? parentPath.slice(0, -1) : parentPath
+      // }${(menu.key as string)?.startsWith('/') ? menu.key : '/' + menu.key}`
       items.push({
         path: menu.path,
+        // path: currentPath,
         element: menu.element,
         children: Array.isArray(menu.children)
           ? generateRoute(menu.children)
@@ -84,7 +90,7 @@ function generateRoute(menuList: MyMenuItem[]): RouteObject[] {
   return items as RouteObject[]
 }
 
-const routeList = generateRoute(menuItems)
+const routeList = generateRoute(menuItems, '')
 
 // type MyType = {
 //   name: string,

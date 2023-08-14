@@ -1,19 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ConfigProvider } from 'antd';
+import zh_CN from 'antd/locale/zh_CN'
+
 import App from './App'
 // import Home from './pages/Home'
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
+import './index.scss';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  // <React.StrictMode>
-    
-  // </React.StrictMode>
-  <App />
+  <ConfigProvider locale={zh_CN}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ConfigProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

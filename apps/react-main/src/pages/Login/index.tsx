@@ -10,7 +10,7 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import LoginBg from '../../assets/images/login_bg.jpg'
 // import sky from '../../assets/images/sky.png'
 // import EarthBg from '../../assets/images/earth_bg.png'
-import './index.css'
+import './index.scss'
 
 const Login: React.FC = () => {
   const threeContainerRef = useRef<HTMLDivElement>(null)

@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { Layout } from 'antd'
 
-import './index.css'
+// import './index.css'
 
 // 创建第一个threejs 案例
 const Earth = () => {

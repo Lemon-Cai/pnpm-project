@@ -1,8 +1,10 @@
 import React, { useEffect, useState, Suspense } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import styled from 'styled-components'
-import AppRoutes, { menuItems } from '../../router'
+
+import AppRoutes, { menuItems } from '@/router'
+import { findParentKeyPath } from '@/utils/common'
 
 const StyledLogo = styled.div`
   padding: 12px 12px 12px 24px;
@@ -20,10 +22,23 @@ const DEFAULT_KEY = 'home'
 
 const Home: React.FC = () => {
   const history = useNavigate()
-  const [currentMenuKey, setCurrentMenuKey] = useState(DEFAULT_KEY)
+  const location = useLocation()
+  const [currentMenuKey, setCurrentMenuKey] = useState(
+    location.pathname !== '/'
+      ? location.pathname + location.search
+      : DEFAULT_KEY
+  )
+  // 默认展开当前选中的菜单
+  const [defaultOpenKeys] = useState(() => {
+    return findParentKeyPath(menuItems, currentMenuKey)
+  })
   // 校验
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    // console.log('location', location);
+    // if (location.pathname !== '/') {
+    // }
+  }, [])
 
   const handleMenuClick = ({ key }: { key: string }) => {
     setCurrentMenuKey(key)
@@ -36,7 +51,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Layout id='root-layout'>
+    <Layout hasSider id='root-layout'>
       {/* 菜单 */}
       <Layout.Sider width={240} theme='light'>
         <LogoLink onClick={handleGoHome} />
@@ -44,15 +59,14 @@ const Home: React.FC = () => {
           mode='inline'
           items={menuItems}
           onClick={handleMenuClick}
+          defaultOpenKeys={defaultOpenKeys}
           selectedKeys={[currentMenuKey]}
           // theme={theme === 'default' ? 'light' : 'dark'}
         ></Menu>
       </Layout.Sider>
       <Layout id='root-content'>
         {/* header */}
-        <Layout.Header>
-
-        </Layout.Header>
+        <Layout.Header></Layout.Header>
         {/* 面包屑 */}
 
         {/* 内容 */}
