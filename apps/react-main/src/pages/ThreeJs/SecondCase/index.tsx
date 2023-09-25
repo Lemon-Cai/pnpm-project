@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { GUI } from 'dat.gui'
@@ -12,6 +13,9 @@ import './index.scss'
  * @description 通过gui创建一个盒子模型
  */
 const SecondCase = () => {
+  const { geometryType } = useParams()
+
+
   const containerRef = useRef<HTMLDivElement>(null)
   // const [containerRef, setContainerRef] = useState(null)
   const [state] = useState({
@@ -49,7 +53,9 @@ const SecondCase = () => {
       // these do not update nicely together if shared
     }
 
-    const guis = {
+    const guis: {
+      [key: string]: any
+    } = {
       BoxGeometry: function (mesh: any) {
         const data = {
           width: 15,
@@ -94,6 +100,41 @@ const SecondCase = () => {
 
         generateGeometry()
       },
+      CapsuleGeometry: function (mesh: any) {
+        const data = {
+          radius: 5,
+          length: 5,
+          capSegments: 10,
+          radialSegments: 20,
+        }
+
+        function generateGeometry() {
+          updateGroupGeometry(
+            mesh,
+            new THREE.CapsuleGeometry(
+              data.radius,
+              data.length,
+              data.capSegments,
+              data.radialSegments
+            )
+          )
+        }
+
+        const folder = gui.addFolder('THREE.CapsuleGeometry')
+
+        folder.add(data, 'radius', 1, 30).onChange(generateGeometry)
+        folder.add(data, 'length', 1, 30).onChange(generateGeometry)
+        folder
+          .add(data, 'capSegments', 1, 32)
+          .step(1)
+          .onChange(generateGeometry)
+        folder
+          .add(data, 'radialSegments', 1, 64)
+          .step(1)
+          .onChange(generateGeometry)
+
+        generateGeometry()
+      },
     }
 
     const gui = new GUI({
@@ -105,9 +146,9 @@ const SecondCase = () => {
     gui.domElement.style.top = '0'
 
     function chooseFromHash(mesh: any) {
-      const selectedGeometry = 'BoxGeometry'
+      const selectedGeometry: string = (geometryType || 'BoxGeometry')
 
-      if (guis[selectedGeometry] !== undefined) {
+      if (guis[selectedGeometry]) {
         guis[selectedGeometry](mesh)
       }
     }

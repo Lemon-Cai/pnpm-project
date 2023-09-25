@@ -1,5 +1,9 @@
 import React, { useEffect, useState, Suspense } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import {
+  Link,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import styled from 'styled-components'
 
@@ -20,20 +24,20 @@ const LogoLink: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 
 const DEFAULT_KEY = 'home'
 
-const Home: React.FC = () => {
+const Home: React.FC = (props) => {
   const history = useNavigate()
   const location = useLocation()
+
+  // 动态路由参数匹配问题， path="route/:type?" 怎么截取type之前的route进行匹配 
   const [currentMenuKey, setCurrentMenuKey] = useState(
-    location.pathname !== '/'
-      ? location.pathname + location.search
-      : DEFAULT_KEY
+    location.pathname !== '/' ? location.pathname.replace(location.search, '') : DEFAULT_KEY
   )
   // 默认展开当前选中的菜单
   const [defaultOpenKeys] = useState(() => {
     return findParentKeyPath(menuItems, currentMenuKey)
   })
-  // 校验
 
+  // 校验
   useEffect(() => {
     // console.log('location', location);
     // if (location.pathname !== '/') {

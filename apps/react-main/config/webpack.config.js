@@ -28,6 +28,10 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 const externalAlias = require('./alias'); // 拓展自定义的别名
 
+// 新增加插件，配置cesium
+const HtmlTagsPlugin = require("html-webpack-tags-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -294,6 +298,9 @@ module.exports = function (webpackEnv) {
         new CssMinimizerPlugin(),
       ],
     },
+    externals: {
+      cesium: "Cesium"
+    },
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
@@ -323,6 +330,12 @@ module.exports = function (webpackEnv) {
         ...(modules.webpackAliases || {}),
         ...externalAlias
       },
+      // fallback: {
+      //   "url": false, // require.resolve('url/'),
+      //   "http": false, // require.resolve("stream-http"),
+      //   "https": false, // require.resolve("https-browserify"),
+      //   "zlib": false, // require.resolve("browserify-zlib")
+      // },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
         // This often causes confusion because we only process files within src/ with babel.
@@ -749,6 +762,23 @@ module.exports = function (webpackEnv) {
               }),
             },
           },
+        }),
+
+        // 把 node_modules cesium 打包配置到 cesium文件下
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: "node_modules/cesium/Build/Cesium",
+              to: "cesium",
+            },
+          ],
+        }),
+        new HtmlTagsPlugin({
+          append: false,
+          tags: ["cesium/Widgets/widgets.css", "cesium/Cesium.js"],
+        }),
+        new webpack.DefinePlugin({
+          CESIUM_BASE_URL: JSON.stringify("/cesium"),
         }),
     ].filter(Boolean),
     // Turn off performance processing because we utilize

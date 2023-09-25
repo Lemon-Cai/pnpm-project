@@ -7,8 +7,8 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 
 // import _random from 'lodash/random'
 // import useMount from '../../hooks/useMount'
-import LoginBg from '../../assets/images/login_bg.jpg'
-// import sky from '../../assets/images/sky.png'
+// import LoginBg from '../../assets/images/login_bg.jpg'
+import Sky from '../../assets/images/sky.png'
 // import EarthBg from '../../assets/images/earth_bg.png'
 import './index.scss'
 
@@ -164,8 +164,8 @@ const Login: React.FC = () => {
   ) => {
     // https://threejs.org/docs/#api/zh/loaders/TextureLoader
     const texture = new THREE.TextureLoader().load(
-      LoginBg,
-      // sky,
+      // LoginBg,
+      Sky,
       (texture) => {
         
       },

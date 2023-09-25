@@ -15,7 +15,15 @@ const Advance = lazy(() => import('../pages/Cesium/Advance'))
 const FirstCase = lazy(() => import('../pages/ThreeJs/FirstCase'))
 const SecondCase = lazy(() => import('../pages/ThreeJs/SecondCase'))
 const ThreeEarth = lazy(() => import('../pages/ThreeJs/Earth'))
+// 低代码平台
+const LowCode = lazy(() => import('../pages/LowCode'))
 
+// 富文本编辑器
+const Draft = lazy(() => import('../pages/Richtext/Draft'))
+const Quill = lazy(() => import('../pages/Richtext/Quill'))
+const Slate = lazy(() => import('../pages/Richtext/Slate'))
+const TinyMCE = lazy(() => import('../pages/Richtext/TinyMCE'))
+const WangEditor = lazy(() => import('../pages/Richtext/WangEditor'))
 
 function LazyLoad(element: React.ReactNode) {
   return <Suspense fallback={null}>{element}</Suspense>
@@ -54,7 +62,7 @@ export const menuItems: MyMenuItem[] = [
       },
       {
         key: '/threeJs/secondCase',
-        path: 'secondCase',
+        path: 'secondCase/:geometryType?', // 难点？？？
         label: '第二个案例',
         // type: "group",
         element: LazyLoad(<SecondCase />),
@@ -68,6 +76,54 @@ export const menuItems: MyMenuItem[] = [
       },
     ],
   },
+  {
+    key: '/lowCode',
+    path: 'lowCode',
+    label: '低代码',
+    element: <LowCode />
+  },
+  {
+    key: '/richtext',
+    path: 'richtext',
+    label: '富文本编辑器',
+    children: [
+      {
+        key: '/richtext/draft',
+        path: '/richtext/draft',
+        label: 'Draft',
+        // type: "group",
+        element: LazyLoad(<Draft />),
+      },
+      {
+        key: '/richtext/quill',
+        path: '/richtext/quill',
+        label: 'Quill',
+        // type: "group",
+        element: LazyLoad(<Quill />),
+      },
+      {
+        key: '/richtext/slate',
+        path: '/richtext/slate',
+        label: 'Slate',
+        // type: "group",
+        element: LazyLoad(<Slate />),
+      },
+      {
+        key: '/richtext/tinyMCE',
+        path: '/richtext/tinyMCE',
+        label: 'TinyMCE',
+        // type: "group",
+        element: LazyLoad(<TinyMCE />),
+      },
+      {
+        key: '/richtext/wangEditor',
+        path: '/richtext/wangEditor',
+        label: 'WangEditor',
+        // type: "group",
+        element: LazyLoad(<WangEditor />),
+      }
+    ]
+  }
 ]
 
 function generateRoute(menuList: MyMenuItem[], parentPath?: string): RouteObject[] {
@@ -90,7 +146,7 @@ function generateRoute(menuList: MyMenuItem[], parentPath?: string): RouteObject
   return items as RouteObject[]
 }
 
-const routeList = generateRoute(menuItems, '')
+export const routeList = generateRoute(menuItems, '')
 
 // type MyType = {
 //   name: string,

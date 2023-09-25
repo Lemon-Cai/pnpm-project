@@ -44,3 +44,5 @@ pnpm build
 ```sh
 pnpm lint
 ```
+
+这个项目引入的是element-plus 组件库
