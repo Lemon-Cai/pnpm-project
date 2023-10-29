@@ -1,13 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { useLocation, useNavigationType, matchRoutes, createRoutesFromChildren } from 'react-router-dom'
 import { ConfigProvider } from 'antd';
 import zh_CN from 'antd/locale/zh_CN'
 
+import * as Sentry from '@sentry/react'
+
 import App from './App'
+import ErrorPage from './pages/ErrorPage';
 // import Home from './pages/Home'
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
+
+
+Sentry.init({
+  dsn: "https://ffbf06b3d609984c50227efaff1c59f4@o4506006906798080.ingest.sentry.io/4506007612882944",
+  integrations: [
+    new Sentry.BrowserTracing({
+      // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+      // tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+        React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes
+      ),
+    }),
+    new Sentry.Replay(),
+  ],
+  // Performance Monitoring
+  tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
+
+  // Session Replay
+  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+})
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +44,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <ConfigProvider locale={zh_CN}>
     <React.StrictMode>
-      <App />
+      <Sentry.ErrorBoundary fallback={<ErrorPage />}>
+        <App />
+      </Sentry.ErrorBoundary>
     </React.StrictMode>
   </ConfigProvider>
 );

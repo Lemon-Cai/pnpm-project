@@ -1,0 +1,14 @@
+**/*.md
+**/*.svg
+**/*.html
+**/*.ejs
+**/*.png
+**/*.eot
+**/*.woff
+**/*.ttf
+**/*.gif
+**/*.jpg
+**/*.jpeg
+/dist
+*.yaml
+package.json

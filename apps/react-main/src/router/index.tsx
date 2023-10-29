@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { useRoutes, RouteObject } from 'react-router-dom'
 
 import { HomeOutlined } from '@ant-design/icons'
+import * as Sentry from '@sentry/react'
 
 import { MyMenuItem } from '../types/menu'
 
@@ -210,8 +211,11 @@ export const routeList = generateRoute(menuItems, '')
 
 // export const menuItems = generateMenus(routesArr)
 
+
+const sentryUseRouter = Sentry.wrapUseRoutes(useRoutes)
+
 const AppRoutes = () => {
-  return useRoutes(routeList)
+  return sentryUseRouter(routeList)
   // return (
   //   <Routes>
   //     {routesArr.map(({ path, element, children, ...other }) => (

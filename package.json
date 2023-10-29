@@ -13,6 +13,8 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
+    "@sentry/react": "^7.73.0",
+    "@sentry/vue": "^7.73.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "nx": "16.5.3",
@@ -24,9 +26,13 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.197",
+    "@types/nprogress": "^0.2.1",
+    "axios": "^1.5.1",
     "classnames": "^2.3.2",
     "inquirer": "^9.2.9",
+    "localforage": "^1.10.0",
     "lodash": "^4.17.21",
+    "nprogress": "^0.2.0",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2"
   }

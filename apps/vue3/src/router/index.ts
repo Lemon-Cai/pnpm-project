@@ -16,7 +16,24 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/Container/index')
-    }
+    },
+    {
+      path: '/map/openlayers',
+      name: 'openlayers',
+      component: () => import('../views/Map/Openlayers/index')
+    },
+    // {
+    //   path: '/map',
+    //   component: () => import('../views/Map/index'),
+
+    //   children: [
+    //     {
+    //       path: '/openlayers',
+    //       name: 'openlayers',
+    //       component: () => import('../views/Map/Openlayers/index')
+    //     }
+    //   ]
+    // }
   ]
 })
 
