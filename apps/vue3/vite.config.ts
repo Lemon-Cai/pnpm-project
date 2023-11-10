@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2023-11-03 09:47:33
+ * @Description: 
+ */
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -10,6 +15,19 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    // proxy: {
+    //   '/api': {
+    //     // target: PROXY_URL, // 本地
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, "/api"),
+    //     ws: true,
+    //     // pathRewrite: {
+    //     //   '^/api': '/'
+    //     // }
+    //   },
+    // }
+  },
   plugins: [
     vue(),
     vueJsx(),

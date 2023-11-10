@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2023-11-03 09:47:33
+ * @Description: 
+ */
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home/index.vue'
 
@@ -21,6 +26,16 @@ const router = createRouter({
       path: '/map/openlayers',
       name: 'openlayers',
       component: () => import('../views/Map/Openlayers/index')
+    },
+    {
+      path: '/map/olAnimate',
+      name: 'OlAnimate',
+      component: () => import('../views/Map/OlAnimate')
+    },
+    {
+      path: '/map/olBlinking',
+      name: 'OlBlinking',
+      component: () => import('../views/Map/OlBlinking')
     },
     // {
     //   path: '/map',

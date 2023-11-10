@@ -20,7 +20,7 @@ import { fromLonLat } from 'ol/proj'
 
 export default defineComponent({
   name: 'Openlayers',
-  setup(props: any) {
+  setup(props: Readonly<any>) {
     const init = () => {
 
       const map = initMap()
@@ -139,7 +139,7 @@ export default defineComponent({
       console.log('-================>>>', lines_arr, routes);
       const routeFeature = new Feature({
         type: 'route',
-        geometry: new LineString(lines_arr)
+        geometry: new LineString(lines_arr) // 格式是 二维数组
       });
 
       const vectorLayer = new VectorLayer({
@@ -212,7 +212,7 @@ export default defineComponent({
       return  new Map({
         target: document.getElementById('map'),
         view: new View({
-          // center: fromLonLat([118.06, 31.67]),
+          // center: fromLonLat([118.06, 31.67], 'EPSG:3857'),
           center: [118.06, 31.67],
           projection: 'EPSG:4326',
           zoom: 8,
@@ -222,6 +222,7 @@ export default defineComponent({
         layers: [
           new TileLayer({
             source: new XYZ({
+              // projection: 'EPSG:4326',
               // attributions: attributions,
               url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
 
