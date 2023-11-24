@@ -37,6 +37,11 @@ const router = createRouter({
       name: 'OlBlinking',
       component: () => import('../views/Map/OlBlinking')
     },
+    {
+      path: '/map/olFlyTo',
+      name: 'OlBlinking',
+      component: () => import('../views/Map/OlFlyTo')
+    },
     // {
     //   path: '/map',
     //   component: () => import('../views/Map/index'),
@@ -48,7 +53,18 @@ const router = createRouter({
     //       component: () => import('../views/Map/Openlayers/index')
     //     }
     //   ]
-    // }
+    // },
+
+    {
+      path: '/fileUpload',
+      name: 'FileUpload',
+      component: () => import('../views/FileUpload')
+    },
+    {
+      path: '/fileUpload2',
+      name: 'FileUpload2',
+      component: () => import('../views/FileUpload2')
+    },
   ]
 })
 

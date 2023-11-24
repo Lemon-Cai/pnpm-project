@@ -7,16 +7,19 @@ import View from 'ol/View.js'
 
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 
-import { Vector as VectorSource } from "ol/source";
-import { LineString, /* Point */ } from 'ol/geom'
+import { /* OSM, */ Vector as VectorSource } from "ol/source";
+import { LineString, Point} from 'ol/geom'
 
 // import Polyline from 'ol/format/Polyline.js'
 import XYZ from 'ol/source/XYZ.js'
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style.js'
 
+import UavImg from '@/assets/map/uav_img.png'
 
 // import data from './data.json'
 import { fromLonLat } from 'ol/proj'
+import Page from '../components/Page'
+import { getVectorContext } from 'ol/render'
 
 export default defineComponent({
   name: 'Openlayers',
@@ -110,13 +113,19 @@ export default defineComponent({
         icon: new Style({
           image: new Icon({
             anchor: [0.5, 1],
-            src: 'data/icon.png'
+            src: UavImg
+          })
+        }),
+        uav: new Style({
+          image: new Icon({
+            anchor: [0.5, 1],
+            src: UavImg
           })
         }),
         geoMarker: new Style({
           image: new CircleStyle({
             radius: 7,
-            fill: new Fill({ color: 'black' }),
+            fill: new Fill({ color: 'red' }),
             stroke: new Stroke({
               color: 'white',
               width: 2
@@ -137,23 +146,72 @@ export default defineComponent({
       // 如果是： EPSG:4326， 直接传经纬度即可
       // 如果是： EPSG:3857 (默认投影) 需要转 fromLonLat([lon, lat])
       console.log('-================>>>', lines_arr, routes);
+
+      const line = new LineString(lines_arr).transform('EPSG:4326', 'EPSG:3857')
       const routeFeature = new Feature({
         type: 'route',
-        geometry: new LineString(lines_arr) // 格式是 二维数组
+        geometry: line // 格式是 二维数组
       });
+
+      const startMarker = new Feature({
+        type: 'geoMarker',
+        // @ts-ignore
+        geometry: new Point(line.getFirstCoordinate())
+      })
+      const endMarker = new Feature({
+        type: 'geoMarker',
+        // @ts-ignore
+        geometry: new Point(line.getLastCoordinate())
+      })
+      const position = startMarker.getGeometry().clone()
+      const uavMarker = new Feature({
+        type: 'uav',
+        geometry: position
+      })
 
       const vectorLayer = new VectorLayer({
         source: new VectorSource({
           wrapX: false,
-          features: [routeFeature] // , geoMarker, startMarker, endMarker
+          // @ts-ignore
+          features: [routeFeature, uavMarker, startMarker, endMarker]
         }),
         style: function (feature) {
+          // if (animating && feature.get('type') === 'uav') {
+          //   return null;
+          // }
           // @ts-ignore
           return styles[feature.get('type')]
         }
       })
 
       map.addLayer(vectorLayer)
+
+      // let animating = true
+      let distance = 0
+      let lastTime: any
+
+      function moveFeature (event: any) {
+        // @ts-ignore
+        const speed = Number(3)
+        const time = event.frameState.time
+        const elapsedTime = time - lastTime
+        distance = (distance + (speed * elapsedTime) / 1e6) % 2
+        lastTime = time
+
+        // @ts-ignore
+        const currentCoordinate = line.getCoordinateAt(distance > 1 ? 2 - distance : distance)
+        position.setCoordinates(currentCoordinate)
+        const vectorContext = getVectorContext(event)
+        vectorContext.setStyle(styles.uav)
+        vectorContext.drawGeometry(position)
+        // tell OpenLayers to continue the postrender animation
+        map.render()
+      }
+
+      vectorLayer.on('postrender', moveFeature)
+      // uavMarker.setGeometry(null)
+
+      map.render();
 
       // const speedInput = document.getElementById('speed')
       // const startButton = document.getElementById('start-animation')
@@ -211,17 +269,19 @@ export default defineComponent({
       // const center = [118.06, 31.67] // [-5639523.95, -3501274.52]
       return  new Map({
         target: document.getElementById('map'),
+        pixelRatio:window.devicePixelRatio,
         view: new View({
-          // center: fromLonLat([118.06, 31.67], 'EPSG:3857'),
-          center: [118.06, 31.67],
-          projection: 'EPSG:4326',
+          center: fromLonLat([118.06, 31.67], 'EPSG:3857'),
+          // center: [118.06, 31.67],
+          // projection: 'EPSG:4326',
           zoom: 8,
-          minZoom: 2,
+          minZoom: 1,
           maxZoom: 19
         }),
         layers: [
           new TileLayer({
             source: new XYZ({
+              wrapX:  false,
               // projection: 'EPSG:4326',
               // attributions: attributions,
               url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
@@ -240,11 +300,9 @@ export default defineComponent({
     })
 
     return () => (
-      <div class="page" style="width: 100%; height: 100%;">
-        {/* defineComponent */}
-
+      <Page>
         <div id="map" style="width: 100%; height: 100%;"></div>
-      </div>
+      </Page>
     )
   }
 })

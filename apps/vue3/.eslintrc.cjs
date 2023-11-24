@@ -16,6 +16,7 @@ module.exports = {
     "vue/valid-template-root": "off",
     "vue/multi-word-component-names": "off",
     "vue/no-multiple-template-root": "off",
-    "vue/valid-define-emits": "warn"
+    "vue/valid-define-emits": "warn",
+    "prefer-const": "off"
   }
 }

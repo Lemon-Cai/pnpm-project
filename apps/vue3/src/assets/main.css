@@ -1,3 +1,14 @@
+
+@import './base.css';
+
+@import 'element-plus/dist/index.css'; 
+/* 
+@import url('element-plus/dist/index.css'); 
+控制台提示如下信息
+[vite:css] @import must precede all other statements (besides @charset or empty @layer)
+*/
+/* @use '~element-plus/dist/index.css' as mat; */
+
 html, body {
   height: 100%;
   width: 100%;
@@ -18,13 +29,3 @@ ol, li, ul {
   font-weight: normal;
 }
 
-
-@use './base.css';
-
-/* @import url('element-plus/dist/index.css');  */
-/* 
-@import url('element-plus/dist/index.css'); 
-控制台提示如下信息
-[vite:css] @import must precede all other statements (besides @charset or empty @layer)
-*/
-@use 'element-plus/dist/index.css' as mat;

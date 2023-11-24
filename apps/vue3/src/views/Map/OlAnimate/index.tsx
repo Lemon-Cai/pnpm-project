@@ -55,25 +55,25 @@ export default defineComponent({
 
     const flightsSource = new VectorSource({
       loader: function () {
-        const url = '/api/getFlightsData'
-        fetch(url)
-          .then(function (response) {
-            console.log(response);
-            return response.json()
-          })
-          .then(function (json) {
-            const flightsData = json.flights
+        const url = '/mock/getFlightsData'
+        proxy.$axios(url, {
+          method: 'get'
+        }).then((response: any) => {
+          console.log('axios', response);
+          const { data, status } = response.data
+          if (status === 200) {
+            const flightsData = data.flights
             for (let i = 0; i < flightsData.length; i++) {
               const flight = flightsData[i]
               const from = flight[0]
               const to = flight[1]
-
+  
               // create an arc circle between the two locations
               const arcGenerator = new Arc.GreatCircle(
                 { x: from[1], y: from[0] },
                 { x: to[1], y: to[0] }
               )
-
+  
               const arcLine = arcGenerator.Arc(100, { offset: 10 })
               // paths which cross the -180°/+180° meridian are split
               // into two sections which will be animated sequentially
@@ -81,7 +81,7 @@ export default defineComponent({
               arcLine.geometries.forEach(function (geometry) {
                 const line = new LineString(geometry.coords)
                 line.transform('EPSG:4326', 'EPSG:3857')
-
+  
                 features.push(
                   new Feature({
                     geometry: line,
@@ -94,7 +94,19 @@ export default defineComponent({
               addLater(features, i * 50)
             }
             tileLayer.on('postrender', animateFlights)
-          })
+          }
+        })
+        // fetch 获取数据 是一个 Stream， 没时间详细研究
+        // fetch(url, {
+        //   method: 'GET'
+        // })
+        //   .then(function (response) {
+        //     console.log(response);
+        //     return response.json()
+        //   })
+        //   .then(function (json) {
+            
+        //   })
       }
     })
 

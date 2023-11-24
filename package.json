@@ -26,14 +26,12 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.197",
-    "@types/mockjs": "^1.0.10",
     "@types/nprogress": "^0.2.1",
     "axios": "^1.5.1",
     "classnames": "^2.3.2",
     "inquirer": "^9.2.9",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2"

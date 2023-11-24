@@ -12,21 +12,25 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { viteMockServe } from "vite-plugin-mock"
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    // proxy: {
-    //   '/api': {
-    //     // target: PROXY_URL, // 本地
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, "/api"),
-    //     ws: true,
-    //     // pathRewrite: {
-    //     //   '^/api': '/'
-    //     // }
-    //   },
-    // }
+    proxy: {
+      // '/api': {
+      //   // target: PROXY_URL, // 本地
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, "/api"),
+      //   ws: true,
+      // },
+      // '/mock': {
+      //   // target: PROXY_URL, // 本地
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, "/mock"),
+      //   ws: true,
+      // },
+    }
   },
   plugins: [
     vue(),
@@ -37,6 +41,11 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    viteMockServe({
+      // supportTs: true
+      // mockPath: "./src/mock",
+      enable: true
+    })
   ],
   resolve: {
     alias: {
