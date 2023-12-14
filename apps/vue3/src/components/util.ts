@@ -1,10 +1,21 @@
-import type { App, Plugin } from "vue";
+import type { App } from "vue";
 
-export const withInstall = <T>(comp: T) => {
-  const c = comp as any;
+import type { WithInstallFunction } from './type'
+
+export const withInstall = <T, E extends Record<string, any>>(main: T, extra?: E) => {
+  const c = main as WithInstallFunction<T>;
+  
   c.install = function (app: App) {
-    app.component(c.displayName || c.name, comp);
+    for (const comp of [main, ...Object.values(extra ?? {})]) {
+      app.component(comp.displayName || comp.name, comp)
+    }
   };
 
-  return comp as T & Plugin;
+  if (extra) {
+    for (const [key, comp] of Object.entries(extra)) {
+      ;(main as any)[key] = comp
+    }
+  }
+
+  return main;
 };

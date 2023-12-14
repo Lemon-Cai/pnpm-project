@@ -1,6 +1,8 @@
 
 @import './base.css';
 
+@import './common.scss';
+
 @import 'element-plus/dist/index.css'; 
 /* 
 @import url('element-plus/dist/index.css'); 

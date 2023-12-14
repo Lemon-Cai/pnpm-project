@@ -5,7 +5,38 @@
  */
 // import MD5 from 'spark-md5'
 import axios from 'axios'
+// import { ElNotification } from 'element-plus'
+// import { computed, createVNode, h, ref } from 'vue'
+// import CustomProcess from './Progress.vue'
 
+// const count = ref(0)
+// const computeValue = computed(() => {
+//   return count
+// })
+
+// const notice = () => {
+//   let timer = setInterval(() => {
+//     count.value++
+//     // computeValue.value
+//   }, 1000)
+
+
+//   ElNotification({
+//     title: '上传进度',
+//     duration: 0,
+//     message: count.value
+//     // message: h(CustomProcess, {
+//     //   percentage: count, // 传递给子组件progress的prop
+//     //   // // 事件要以onXxx的形式书写
+//     //   onFinish: (status) => {
+//     //     if (status == 'ok') {
+//     //       clearInterval(timer)
+//     //       // window.notice?.close?.() // 关闭ElNotification
+//     //     }
+//     //   }
+//     // })
+//   })
+// }
 
 let messagePort = null
 // 接受主线程消息
@@ -24,8 +55,11 @@ onmessage = function (evt) {
     //   }
     // }
   }
+
+  // notice()
 }
 
+// eslint-disable-next-line
 const _getMd5 = (file, chunkSize) => {
   return new Promise((resolve) => {
     // 发送数据给计算md5线程
@@ -58,9 +92,9 @@ const _process = async (evt, fileMD5) => {
       const count = Math.ceil(file.size / chunkSize) // 超过预设大小进行分片
       chunks.push(_createFileChunk(file.raw, chunkSize, count))
       let md5 = fileMD5?.[index]?.hash
-      if (!md5) {
-        md5 = await _getMd5(file.raw, chunkSize)
-      }
+      // if (!md5) {
+      //   md5 = await _getMd5(file.raw, chunkSize)
+      // }
       params.push({
         chunks: count, // 这里告诉后台，会有几个分片信息
         // elevation: file.elevation,
@@ -99,12 +133,14 @@ const _process = async (evt, fileMD5) => {
           const { urlDtoList = [] } = item
           console.log(item);
           promises.push(...urlDtoList.map(item => {
+            const form = new FormData()
+            form.append('chunk', chunks[index*groupSize + idx][item.partNumber])
             return axios({
               url: '/mock/allcore/uploadChunk',
               // url: item.partyUploadUrl,
-              method: 'PUT',
-              data: chunks[index*groupSize + idx][item.partNumber],
-              headers: { 'Content-Type': 'application/octet-stream' },
+              method: 'POST',
+              data: form,
+              // headers: { 'Content-Type': 'application/octet-stream' },
               onUploadProgress: (progressEvent) => {
                 console.log('progressEvent', progressEvent);
               }

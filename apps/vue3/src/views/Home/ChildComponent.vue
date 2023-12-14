@@ -1,3 +1,8 @@
+<!--
+ * @Author: CP
+ * @Date: 2023-11-03 09:47:33
+ * @Description: 
+-->
 <template>
   <div>
     ChildComponent，
@@ -7,13 +12,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, onMounted, inject } from 'vue';
+import { /* ref, reactive, toRefs, */ onMounted, inject } from 'vue';
+
+const props = defineProps({
+  beforeChange: null
+})
+
 /**
 * 数据部分
 */
 const data = inject('data')
 console.log('========================', data);
 onMounted(() => {
+  const result = props.beforeChange?.('sssss')
+  console.log('result: ', result);
 })
 defineExpose({
 })

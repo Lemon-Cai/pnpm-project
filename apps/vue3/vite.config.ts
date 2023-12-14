@@ -30,7 +30,10 @@ export default defineConfig({
       //   rewrite: (path) => path.replace(/^\/api/, "/mock"),
       //   ws: true,
       // },
-    }
+    },
+    // hmr: {
+    //   port: 5173,
+    // },
   },
   plugins: [
     vue(),

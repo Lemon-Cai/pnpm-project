@@ -137,6 +137,27 @@ export const handlers = [
       }
     )
   }),
+  http.post('/mock/allcore/uploadChunk', async ({ request }) => {
+    const formData = await request.formData()
+    
+    console.log('formData=', formData.get('chunk'));
+
+    return HttpResponse.json(
+      {
+        msg: '',
+        data: {},
+        success: true
+      },
+      {
+        // 响应头设置
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json;uft-8'
+        },
+        status: 200
+      }
+    )
+  }),
   http.put('/mock/allcore/uploadChunk', async ({ request }) => {
     const arrayBuffer = await request.arrayBuffer()
     

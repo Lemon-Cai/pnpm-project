@@ -11,11 +11,20 @@ import {
   renderSlot,
   cloneVNode,
   getCurrentInstance,
+  // h,
   type SetupContext
 } from 'vue'
-import { ElUpload, type UploadFile, type UploadFiles } from 'element-plus'
+import {
+  ElUpload,
+  // ElNotification,
+  // ElProgress,
+  type UploadFile,
+  type UploadFiles
+} from 'element-plus'
 import * as EXIFR from 'exifr'
 import type { AxiosResponse } from 'axios'
+
+// import CustomProcess from './Progress.vue'
 
 import WorkerScript from './worker.js?worker'
 import MD5WorkerScript from './generateMD5Worker.js?worker'
@@ -67,6 +76,8 @@ export default defineComponent({
 
     const elUploadRef = ref(null)
     const fileList = ref([])
+
+    // const countSuccess = ref(0) // 测试
 
     const handleUploadFolder = () => {
       // 清空历史选择文件
@@ -187,10 +198,7 @@ export default defineComponent({
       // 创建消息通道
       const channel = new MessageChannel()
 
-      window.$md5Worker.postMessage(
-        null,
-        [channel.port1]
-      )
+      window.$md5Worker.postMessage(null, [channel.port1])
 
       window.$uploadWorker.onmessage = function ({ data }) {
         console.log('222222', data)
@@ -210,27 +218,28 @@ export default defineComponent({
       )
     }
 
-
     const handleTestUpload = () => {
       const input: HTMLInputElement = document.querySelector('.selectFile')
       if (input.files) {
         const files: FileList = input.files
         const formData = new FormData()
-        Array.from(files).forEach(file => {
+        Array.from(files).forEach((file) => {
           formData.append('fileName', file.name)
           formData.append('fileSize', String(file.size))
           formData.append('file', file)
-        });
-        proxy.$axios({
-          url: '/mock/allcore/testProgress',
-          method: 'post',
-          data: formData,
-          onUploadProgress: function (progressEvent: any) {
-            console.log('progressEvent', progressEvent);
-          }
-        }).then((res: AxiosResponse) => {
-          console.log(res);
         })
+        proxy
+          .$axios({
+            url: '/mock/allcore/testProgress',
+            method: 'post',
+            data: formData,
+            onUploadProgress: function (progressEvent: any) {
+              console.log('progressEvent', progressEvent)
+            }
+          })
+          .then((res: AxiosResponse) => {
+            console.log(res)
+          })
       }
     }
 
@@ -250,11 +259,33 @@ export default defineComponent({
       window.$md5Worker = new MD5WorkerScript()
       // 创建文件逻辑处理线程
       window.$uploadWorker = new WorkerScript()
+
+      // const timer = setInterval(() => {
+      //   countSuccess.value++
+      //   if (countSuccess.value > 100) {
+      //     countSuccess.value = 0
+      //   }
+      // }, 100)
+
+      // let notice = ElNotification({
+      //   title: '上传进度',
+      //   duration: 0,
+      //   // message: '看看这个会不会销毁',
+      //   message: h(CustomProcess, {
+      //     percentage: countSuccess, // 传递给子组件progress的prop
+      //     // // 事件要以onXxx的形式书写
+      //     onFinish: (status: string) => {
+      //       if (status == 'ok') {
+      //         clearInterval(timer)
+      //         // notice.close() // 关闭ElNotification
+      //       }
+      //     }
+      //   })
+      // })
     })
 
     return () => (
       <div>
-        
         <input type="file" class="selectFile" />
         <el-button onClick={handleTestUpload}>测试上传文件时进度</el-button>
 
@@ -285,6 +316,11 @@ export default defineComponent({
           {/*  */}
           {slots.default ? renderSlot(slots, 'default') : undefined}
         </ElUpload>
+
+
+        {/* 测试 不同 域名下 嵌入 iframe cookie获取问题， 只有当 两个域名相同（端口可不同）下才能访问cookie，其他情况都是跨域不能访问的到cookie的 */}
+        {/* <iframe src="//localhost:8009/#/page/visualMonitoring/regulatoryOverview/index?key=3307cf2140de4c2bb3130b7e3eafcb31" frameborder="0" width="100%" height="100%" /> */}
+
       </div>
     )
   }
