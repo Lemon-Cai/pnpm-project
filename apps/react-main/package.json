@@ -154,5 +154,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

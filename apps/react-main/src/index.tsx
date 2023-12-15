@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2023-11-03 09:47:33
+ * @Description: 
+ */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useLocation, useNavigationType, matchRoutes, createRoutesFromChildren } from 'react-router-dom'
@@ -6,13 +11,30 @@ import zh_CN from 'antd/locale/zh_CN'
 
 import * as Sentry from '@sentry/react'
 
+import { Ion } from 'cesium'
+
 import App from './App'
 import ErrorPage from './pages/ErrorPage';
 // import Home from './pages/Home'
 import reportWebVitals from './reportWebVitals';
+import workers from './mock';
+
+import { initStoreConfig } from '@/utils/store'
 
 import './index.scss';
 
+
+
+// 初始化localforage配置
+initStoreConfig()
+
+// 开发环境启动 mock
+if (process.env.NODE_ENV === 'development') {
+  workers.start();
+}
+
+// 设置 cesium 的 token
+Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZjJhNTE5MS0zYWE1LTQ3ZmYtOGJlMi1kZGYxNjgxYzkzNDgiLCJpZCI6MTUxNCwiaWF0IjoxNTI4ODAyNDgzfQ.zztxOqEyecGP01FA0yY2dRu8IMXGhjh0KQ5AcqblT68'
 
 Sentry.init({
   dsn: "https://ffbf06b3d609984c50227efaff1c59f4@o4506006906798080.ingest.sentry.io/4506007612882944",

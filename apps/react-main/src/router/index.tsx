@@ -6,6 +6,9 @@ import * as Sentry from '@sentry/react'
 
 import { MyMenuItem } from '../types/menu'
 
+// dashboard
+const Dashboard = lazy(() => import('../pages/Dashboard'))
+
 // cesium 入门
 const Induction = lazy(() => import('../pages/Cesium/Induction'))
 // cesium 进阶
@@ -26,12 +29,24 @@ const Slate = lazy(() => import('../pages/Richtext/Slate'))
 const TinyMCE = lazy(() => import('../pages/Richtext/TinyMCE'))
 const WangEditor = lazy(() => import('../pages/Richtext/WangEditor'))
 
+const ErrorPage = lazy(() => import('../pages/ErrorPage'))
+
+
 function LazyLoad(element: React.ReactNode) {
   return <Suspense fallback={null}>{element}</Suspense>
 }
 
 // 菜单列表
 export const menuItems: MyMenuItem[] = [
+  {
+    // index: true,
+    label: 'Dashboard',
+    key: '/dashboard', // 正常情况 相当于route中path， 路由的 path 唯一，特殊情况： 子路由配置时 key 得是全路径
+    path: '/dashboard',
+    icon: <HomeOutlined />,
+    children: null,
+    element: LazyLoad(<Dashboard />),
+  },
   {
     label: '三维地图入门',
     key: '/cesium/induction', // 正常情况 相当于route中path， 路由的 path 唯一，特殊情况： 子路由配置时 key 得是全路径
@@ -124,6 +139,12 @@ export const menuItems: MyMenuItem[] = [
         element: LazyLoad(<WangEditor />),
       }
     ]
+  },
+  {
+    label: '404',
+    key: '404',
+    path: '*',
+    errorElement: <ErrorPage />
   }
 ]
 
@@ -134,20 +155,33 @@ function generateRoute(menuList: MyMenuItem[], parentPath?: string): RouteObject
       // const currentPath = `${
       //   parentPath?.endsWith('/') ? parentPath.slice(0, -1) : parentPath
       // }${(menu.key as string)?.startsWith('/') ? menu.key : '/' + menu.key}`
-      items.push({
-        path: menu.path,
-        // path: currentPath,
-        element: menu.element,
-        children: Array.isArray(menu.children)
-          ? generateRoute(menu.children)
-          : null,
-      })
+      if (menu.errorElement) {
+        items.push({
+          path: menu.path,
+          
+          errorElement: menu.errorElement,
+        })
+      } else {
+        items.push({
+          // index: menu.index ? menu.index : false,
+          index: menu.path === '/dashboard',
+          path: menu.path,
+          // path: currentPath,
+          element: menu.element,
+          children: Array.isArray(menu.children)
+            ? generateRoute(menu.children)
+            : null,
+        })
+      }
+
     }
   }
   return items as RouteObject[]
 }
 
 export const routeList = generateRoute(menuItems, '')
+
+console.log('routeList=', routeList);
 
 // type MyType = {
 //   name: string,

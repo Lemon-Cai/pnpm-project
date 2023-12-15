@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "clean": "pnpm recursive exec -- rm -rf node_modules"
   },
   "keywords": [],
   "author": "",
@@ -25,13 +26,17 @@
     "apps/**/src/**/*.{js,jsx,ts,tsx}": "eslint --max-warnings=0"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.14.197",
     "@types/nprogress": "^0.2.1",
     "axios": "^1.5.1",
     "classnames": "^2.3.2",
     "inquirer": "^9.2.9",
+    "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
+    "msw": "^2.0.8",
+    "nanoid": "^5.0.4",
     "nprogress": "^0.2.0",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2"

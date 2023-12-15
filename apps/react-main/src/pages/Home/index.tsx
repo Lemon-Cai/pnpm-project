@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import AppRoutes, { menuItems } from '@/router'
 import { findParentKeyPath } from '@/utils/common'
 
+import Head from './Head'
+
 const StyledLogo = styled.div`
   padding: 12px 12px 12px 24px;
 `
@@ -70,7 +72,7 @@ const Home: React.FC = (props) => {
       </Layout.Sider>
       <Layout id='root-content'>
         {/* header */}
-        <Layout.Header></Layout.Header>
+        <Head />
         {/* 面包屑 */}
 
         {/* 内容 */}
