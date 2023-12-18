@@ -1,10 +1,15 @@
-import localForage from 'localforage'
 import Cookies, { CookieAttributes } from 'js-cookie'
+import localForage from '@/config/localForage'
 
 import { STORE_PREFIX } from '@/config/constants'
 
+/**
+ * 获取token
+ * @param key 
+ * @returns 
+ */
 export const getToken = (key = 'access_token') => {
-  return localForage.getItem(`${STORE_PREFIX}${key}`)
+  return getCookie(key)
 }
 
 // =======Cookie==========
@@ -45,26 +50,49 @@ export function getAllCookies() {
 
 // ======== Session ==========
 
-export const getSession = () => {}
-export const setSession = () => {}
-export const removeSession = () => {}
-export const removeAllSession = () => {}
+/**
+ * 获取 sessionStorage
+ * @param key 
+ * @returns 
+ */
+export const getSession = (key: string) => {
+  let obj = sessionStorage.getItem(`${STORE_PREFIX}${key}`)
+  try {
+    return JSON.parse(obj as string)?.data
+  } catch (error) {
+    return obj
+  }
+}
+
+/**
+ * 
+ * @param key 
+ * @param data 
+ */
+export const setSession = (key: string, data: any) => {
+  let newData = JSON.stringify({
+    data,
+    time: +new Date()
+  })
+  sessionStorage.setItem(`${STORE_PREFIX}${key}`, newData)
+}
+
+/**
+ * 
+ * @param key 
+ */
+export const removeSession = (key: string) => {
+  key && sessionStorage.removeItem(`${STORE_PREFIX}${key}`)
+}
+
+/**
+ * 
+ */
+export const removeAllSession = () => {
+  sessionStorage.clear()
+}
 
 // =======Store==========
-/**
- * 初始化配置 localforage
- * @param config
- */
-export const initStoreConfig = (config: LocalForageOptions = {}) => {
-  localForage.config({
-    driver: [localForage.INDEXEDDB, localForage.LOCALSTORAGE, localForage.WEBSQL], // WEBSQL 可能存在兼容性问题
-    name: 'CPTech_DB', // 数据库名
-    storeName: 'store', // 存储空间名
-    version: 1, // 数据库版本
-    description: 'application 本地存储',
-    ...config
-  })
-}
 
 /**
  * 根据key获取store中数据
@@ -109,9 +137,13 @@ export const getAllStore = async () => {
  * @param key
  * @param data
  */
-export const setStore = (key: string, data: any) => {}
+export const setStore = (key: string, data: any) => {
+  localForage.setItem(`${STORE_PREFIX}${key}`, data)
+}
 
-export const removeStore = (key: string) => {}
+export const removeStore = (key: string) => {
+  localForage.removeItem(`${STORE_PREFIX}${key}`)
+}
 
 /**
  * 删除所有的缓存

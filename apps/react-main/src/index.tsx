@@ -19,7 +19,7 @@ import ErrorPage from './pages/ErrorPage';
 import reportWebVitals from './reportWebVitals';
 import workers from './mock';
 
-import { initStoreConfig } from '@/utils/store'
+import { initStoreConfig } from '@/config/localForage'
 
 import './index.scss';
 
