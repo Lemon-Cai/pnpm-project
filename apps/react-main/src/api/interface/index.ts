@@ -1,5 +1,6 @@
 export interface BasicResult {
   code: number,
+  success?: boolean
   msg: string | null
 }
 

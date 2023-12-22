@@ -7,6 +7,7 @@ import {
   // HashRouter,
 } from 'react-router-dom'
 import { Spin } from 'antd'
+import { initializeApp } from './store/reducer/login'
 
 
 
@@ -42,6 +43,7 @@ export const routes = createHashRouter([
 ])
 
 export default function App() {
+  initializeApp()
   // way1:
   // return (
   //   <HashRouter>

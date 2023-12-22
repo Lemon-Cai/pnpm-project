@@ -15,7 +15,10 @@ const handlers = [
       {
         msg: '',
         success: true,
+        code: 200,
         data: {
+          // 个人信息
+          accessToken: '',
           username: 'admin',
           pwd: '123456'
         }

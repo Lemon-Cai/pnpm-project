@@ -98,8 +98,23 @@ export const removeAllSession = () => {
  * 根据key获取store中数据
  * @param key
  */
-export const getStore = (key: string) => {
-  return localForage.getItem(`${STORE_PREFIX}${key}`)
+export const getStore = async (key: string) => {
+  let value = await localForage.getItem(`${STORE_PREFIX}${key}`)
+  try {
+    value = JSON.parse(value as string)
+    return await (value  as any)?.data
+  } catch (error) {
+    return await value
+  }
+
+  // new Promise((resolve) => {
+  //   localForage.getItem(`${STORE_PREFIX}${key}`).then(value => {
+  //     value ? resolve(JSON.parse(value as string)?.data) : resolve(value)
+  //   }).catch(() => {
+  //     resolve()
+  //   })
+  // })
+
 }
 
 /**
@@ -110,14 +125,23 @@ export const getAllStore = async () => {
   let keys = await localForage.keys()
   
   const resultObj = Object.fromEntries(
-    keys.map(key => {
-      let value = localForage.getItem(key)
-      
-      return [
-        key.replace(STORE_PREFIX, ''),
-        value
-      ]
-    })
+    await Promise.all(
+      keys.map(async key => {
+        let value = await localForage.getItem(key)
+        try {
+          value = JSON.parse(value as string)
+          return [
+            key.replace(STORE_PREFIX, ''),
+            (value  as any)?.data
+          ]
+        } catch (error) {
+          return [
+            key.replace(STORE_PREFIX, ''),
+            value
+          ]
+        }
+      })
+    )
   )
   // localForage
   //   .keys()
@@ -138,7 +162,10 @@ export const getAllStore = async () => {
  * @param data
  */
 export const setStore = (key: string, data: any) => {
-  localForage.setItem(`${STORE_PREFIX}${key}`, data)
+  localForage.setItem(`${STORE_PREFIX}${key}`, JSON.stringify({
+    data: data,
+    time: +new Date()
+  }))
 }
 
 export const removeStore = (key: string) => {

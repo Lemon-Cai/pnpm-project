@@ -13,16 +13,14 @@ import * as Sentry from '@sentry/react'
 
 import { Ion } from 'cesium'
 
+import { initStoreConfig } from '@/config/localForage'
+
 import App from './App'
 import ErrorPage from './pages/ErrorPage';
-// import Home from './pages/Home'
 import reportWebVitals from './reportWebVitals';
 import workers from './mock';
 
-import { initStoreConfig } from '@/config/localForage'
-
 import './index.scss';
-
 
 
 // 初始化localforage配置
@@ -30,7 +28,9 @@ initStoreConfig()
 
 // 开发环境启动 mock
 if (process.env.NODE_ENV === 'development') {
-  workers.start();
+  workers.start({
+    onUnhandledRequest: 'bypass',
+  });
 }
 
 // 设置 cesium 的 token

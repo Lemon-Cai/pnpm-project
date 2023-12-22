@@ -22,15 +22,15 @@ const BASE_CONFIG = {
   timeout: 60 * 1e3,
   // 跨域时候允许携带凭证
   withCredentials: true,
-  baseUrl: ''
+  baseUrl: '/'
 }
 
 class HttpRequest {
-  BASE_CONFIG = {
+  readonly BASE_CONFIG = {
     timeout: 60 * 1e3,
     // 跨域时候允许携带凭证
     withCredentials: true,
-    baseUrl: ''
+    baseUrl: '/'
   }
 
   axiosInstance: AxiosInstance
@@ -70,7 +70,6 @@ class HttpRequest {
         }
 
         if (data.code !== 200) {
-          
           // 请求失败状态
           return Promise.reject(data)
         }

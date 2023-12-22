@@ -4,10 +4,10 @@
  * @Description: 
  */
 // import { lazy, Suspense } from 'react'
-// import { useRoutes, RouteObject } from 'react-router-dom'
+import { useRoutes, RouteObject } from 'react-router-dom'
 
 // import { HomeOutlined } from '@ant-design/icons'
-// import * as Sentry from '@sentry/react'
+import * as Sentry from '@sentry/react'
 
 // import { MyMenuItem } from '../types/menu'
 
@@ -40,3 +40,14 @@
 // function LazyLoad(element: React.ReactNode) {
 //   return <Suspense fallback={null}>{element}</Suspense>
 // }
+
+
+const routeList: RouteObject[] = []
+
+const sentryUseRouter = Sentry.wrapUseRoutes(useRoutes)
+
+const AppRoutes = () => {
+  return sentryUseRouter(routeList)
+}
+
+export default AppRoutes
