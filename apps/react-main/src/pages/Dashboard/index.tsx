@@ -9,6 +9,10 @@ import {
 } from '@/store/reducer/login'
 import { useEffect } from 'react';
 
+import http from '@/api'
+import { message } from 'antd';
+
+
 
 console.log('Login', useLogin);
 
@@ -26,9 +30,23 @@ const Dashboard = () => {
       password: 'admin'
     })
 
+    _getAllMenu()
     // dispatch('getData')
   // eslint-disable-next-line
   }, [])
+
+  const _getAllMenu = () => {
+    http.post('/mock/getAllMenu').then((response) =>{
+      const { success, data, msg } = response
+      if (success) {
+        console.log('data', data);
+      } else {
+        message.error(msg || '请求失败, 请稍后重试')
+      }
+    }).catch((res) => {
+      console.log('222222222', res);
+    })
+  }
 
   return (
     <div>

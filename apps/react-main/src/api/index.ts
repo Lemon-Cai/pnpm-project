@@ -17,6 +17,7 @@ import { getToken } from '@/utils/store'
 import { AUTHORITY, TOKEN } from '@/config/constants'
 import { checkStatus } from './helper/checkStatus'
 import { ResultData } from './interface'
+import { ResultEnum } from './enums'
 
 const BASE_CONFIG = {
   timeout: 60 * 1e3,
@@ -68,17 +69,21 @@ class HttpRequest {
         if (response.status !== 200) {
           //
         }
-
-        if (data.code !== 200) {
-          // 请求失败状态
-          return Promise.reject(data)
-        }
-
-        // 是否是下载文件
+        
+        // 是否是下载文件, 如果是下载,返回的是文件流
         const isDownload = (config as any).meta?.isDownload
         if (isDownload) {
           return response
         }
+
+        // 防止下载文件得时候返回数据流，没有code，直接报错
+        if (data.code && data.code !== ResultEnum.SUCCESS) {
+          // 请求失败状态
+          // message.error(data.msg);
+          return Promise.reject(data)
+        }
+
+        // 成功返回,特殊逻辑请处理
         return data
       },
       async (error: AxiosError) => {

@@ -11,6 +11,7 @@ import AppRoutes, { menuItems } from '@/router'
 import { findParentKeyPath } from '@/utils/common'
 
 import Head from './Head'
+import Tabs from './Tabs'
 
 const StyledLogo = styled.div`
   padding: 12px 12px 12px 24px;
@@ -73,6 +74,8 @@ const Home: React.FC = (props) => {
       <Layout id='root-content'>
         {/* header */}
         <Head />
+        {/* Tabs */}
+        <Tabs />
         {/* 面包屑 */}
 
         {/* 内容 */}

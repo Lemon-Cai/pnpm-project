@@ -92,3 +92,5 @@ export const findParentKeyPath = (tree: MyMenuItem[], key: string): string[] => 
   path.pop() // 去掉当前节点
   return path
 }
+
+export const generateMenu = () => {}

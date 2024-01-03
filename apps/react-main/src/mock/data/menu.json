@@ -1,12 +1,169 @@
 [
   {
-    "id": "",
-    "name": "",
-    "parentId": "",
+    "id": "mgW4Y-9iexAaV1l6M3aID",
+    "parentId": "-1",
+    "name": "Dashboard",
     "level": "",
+    "filePath": "/pages/Dashboard",
+    "path": "/dashboard",
+    "icon": "icon-dashboard",
+    "type": "page",
+    "children": []
+  },
+  {
+    "id": "9y0_8csHQwGY2yIhnA1bf",
+    "parentId": "-1",
+    "name": "三维地图入门",
+    "level": "",
+    "filePath": "/pages/Cesium/Induction",
+    "path": "/cesium/induction",
+    "icon": "icon-three-dimensional",
+    "type": "page",
+    "children": []
+  },
+  {
+    "id": "zfgsIYRS9D78slna_ertj",
+    "parentId": "-1",
+    "name": "三维地图进阶",
+    "level": "",
+    "filePath": "/pages/Cesium/Advance",
+    "path": "/cesium/advance",
+    "icon": "icon-three-dimensional",
+    "type": "page",
+    "children": []
+  },
+  {
+    "id": "05sqgBpC0Y1seW2VIIBH5",
+    "parentId": "-1",
+    "name": "threeJs",
+    "level": "",
+    "filePath": "",
     "path": "",
-    "icon": "",
-    "type": "",
+    "icon": "icon-threejs-logo",
+    "type": "page",
+    "children": [
+      {
+        "id": "SMF-qczOicihktvP-yYi6",
+        "parentId": "05sqgBpC0Y1seW2VIIBH5",
+        "name": "threeJs",
+        "level": "",
+        "filePath": "/pages/ThreeJs/FirstCase",
+        "path": "/threeJs/firstCase",
+        "icon": "icon-threejs-logo",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "e4KdSlg8hz9Pb_NNIc1cP",
+        "parentId": "05sqgBpC0Y1seW2VIIBH5",
+        "name": "threeJs",
+        "level": "",
+        "filePath": "/pages/ThreeJs/SecondCase",
+        "path": "/threeJs/secondCase/:geometryType?",
+        "icon": "icon-threejs-logo",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "UEUu5_RNJ7Ljpf6_ZoDSb",
+        "parentId": "05sqgBpC0Y1seW2VIIBH5",
+        "name": "threeJs",
+        "level": "",
+        "filePath": "/pages/ThreeJs/Earth",
+        "path": "/threeJs/earth",
+        "icon": "icon-threejs-logo",
+        "type": "page",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "R4BOTo29Du_Kj35MaSUs9",
+    "parentId": "-1",
+    "name": "低代码",
+    "level": "",
+    "filePath": "/pages/LowCode",
+    "path": "/lowCode",
+    "icon": "icon-three-dimensional",
+    "type": "page",
+    "children": []
+  },
+  {
+    "id": "fc_h7SJrH5bjU8Aw51BXO",
+    "parentId": "-1",
+    "name": "富文本编辑器",
+    "level": "",
+    "filePath": "",
+    "path": "",
+    "icon": "icon-rich-text",
+    "type": "page",
+    "children": [
+      {
+        "id": "EeVXyHsrF91_UXLQVmyAS",
+        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "name": "Draft",
+        "level": "",
+        "filePath": "/pages/Richtext/Draft",
+        "path": "/richtext/draft",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "cUfVBmS86i4LEg7h6UyAU",
+        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "name": "Quill",
+        "level": "",
+        "filePath": "/pages/Richtext/Quill",
+        "path": "/richtext/quill",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "x1OJxwGxNWWsCKIPPW2nW",
+        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "name": "Slate",
+        "level": "",
+        "filePath": "/pages/Richtext/Slate",
+        "path": "/richtext/slate",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "WAILdnl_w4Ol9kcZao8i8",
+        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "name": "TinyMCE",
+        "level": "",
+        "filePath": "/pages/Richtext/TinyMCE",
+        "path": "/richtext/tinyMCE",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "g9sfO9Zss9MdENXpnOsoo",
+        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "name": "WangEditor",
+        "level": "",
+        "filePath": "/pages/Richtext/WangEditor",
+        "path": "/richtext/wangEditor",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "",
+    "parentId": "-1",
+    "name": "Fabric.js",
+    "level": "",
+    "filePath": "",
+    "path": "",
+    "icon": "icon-fabric",
+    "type": "page",
     "children": []
   }
 ]
