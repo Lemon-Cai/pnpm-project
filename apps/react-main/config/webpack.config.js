@@ -330,12 +330,16 @@ module.exports = function (webpackEnv) {
         ...(modules.webpackAliases || {}),
         ...externalAlias
       },
-      // fallback: {
+      fallback: {
       //   "url": false, // require.resolve('url/'),
       //   "http": false, // require.resolve("stream-http"),
       //   "https": false, // require.resolve("https-browserify"),
       //   "zlib": false, // require.resolve("browserify-zlib")
-      // },
+      // jsonwebtoken 配置
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": require.resolve("stream-browserify"),
+        "util": require.resolve("util/")
+      },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
         // This often causes confusion because we only process files within src/ with babel.

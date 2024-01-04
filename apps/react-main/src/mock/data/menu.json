@@ -161,9 +161,9 @@
     "name": "Fabric.js",
     "level": "",
     "filePath": "",
-    "path": "",
+    "path": "http://fabricjs.com/",
     "icon": "icon-fabric",
-    "type": "page",
+    "type": "iframe",
     "children": []
   }
 ]

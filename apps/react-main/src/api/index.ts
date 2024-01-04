@@ -66,8 +66,17 @@ class HttpRequest {
         const { data, config } = response
         nProgress.done()
 
-        if (response.status !== 200) {
+        // * 登录失效（code == 599）
+				if (data.code === ResultEnum.OVERDUE) {
+					// store.dispatch(setToken(""));
+					message.error(data.msg);
+					window.location.hash = "/login";
+					return Promise.reject(data);
+				}
+        // 登录token过期,跳转到登录页
+        if (response.status === ResultEnum.EXPIRE) {
           //
+          return Promise.reject(data);
         }
         
         // 是否是下载文件, 如果是下载,返回的是文件流

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { useRoutes, RouteObject } from 'react-router-dom'
+import { useRoutes, RouteObject, Navigate } from 'react-router-dom'
 
 import { HomeOutlined } from '@ant-design/icons'
 import * as Sentry from '@sentry/react'
@@ -30,6 +30,10 @@ const TinyMCE = lazy(() => import('../pages/Richtext/TinyMCE'))
 const WangEditor = lazy(() => import('../pages/Richtext/WangEditor'))
 
 const ErrorPage = lazy(() => import('../pages/ErrorPage'))
+
+const Iframe = lazy(() => import('../pages/Iframe'))
+
+
 
 
 function LazyLoad(element: React.ReactNode) {
@@ -144,7 +148,21 @@ export const menuItems: MyMenuItem[] = [
     label: '404',
     key: '404',
     path: '*',
+    // element: LazyLoad(<Iframe />)
     errorElement: <ErrorPage />
+  },
+  {
+    label: 'Iframe',
+    key: 'Iframe',
+    path: '/iframe',
+    element: LazyLoad(<Iframe />)
+    // errorElement: <ErrorPage />
+  },
+  {
+    label: 'default',
+    key: 'default',
+    path: '/',
+    element: <Navigate to="/dashboard" />
   }
 ]
 

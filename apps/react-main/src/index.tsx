@@ -28,9 +28,10 @@ initStoreConfig()
 
 // 开发环境启动 mock
 if (process.env.NODE_ENV === 'development') {
-  workers.start({
-    onUnhandledRequest: 'bypass',
-  });
+  workers.listen();
+  // workers.start({
+  //   onUnhandledRequest: 'bypass',
+  // });
 }
 
 // 设置 cesium 的 token
