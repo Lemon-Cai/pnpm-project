@@ -4,13 +4,14 @@
  * @Description: 
  */
 
+// import { useEffect } from 'react';
+import { message } from 'antd';
 import {
   useLogin
 } from '@/store/reducer/login'
-import { useEffect } from 'react';
 
 import http from '@/api'
-import { message } from 'antd';
+import useMounted from '@/hooks/useMounted';
 
 
 
@@ -22,7 +23,7 @@ const Dashboard = () => {
 
   // const dispatch = useLogin((state) => state.dispatch)
 
-  useEffect(() => {
+  useMounted(() => {
     console.log('userInfo======', userInfo);
     // getData?.('react')
     requestLogin({
@@ -31,9 +32,11 @@ const Dashboard = () => {
     })
 
     _getAllMenu()
+
+    _testApi()
     // dispatch('getData')
   // eslint-disable-next-line
-  }, [])
+  })
 
   const _getAllMenu = () => {
     http.post('/mock/getAllMenu').then((response) =>{
@@ -45,6 +48,17 @@ const Dashboard = () => {
       }
     }).catch((res) => {
       console.log('222222222', res);
+    })
+  }
+
+  const _testApi = () => {
+    http.post('/api/login', {
+      username: 'admin',
+      password: '123456',
+    }).then((res) => {
+      console.log('login res', res);
+    }).catch((err) => {
+      console.log('err', err);
     })
   }
 

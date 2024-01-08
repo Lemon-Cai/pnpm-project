@@ -5,7 +5,7 @@
  */
 import { http, HttpResponse, delay } from 'msw'
 import { TEST_ACCOUNT } from '@/config/constants'
-import { generateIdsAndParentIds, generateToken, verifyToken } from '../util'
+import { generateIdsAndParentIds, generateToken, /* verifyToken */ } from '../util'
 
 const handlers = [
   http.post('/mock/login', async ({ request, params }) => {
@@ -28,7 +28,7 @@ const handlers = [
           // data: undefined
         },
         {
-          status: 401
+          // status: 401
         }
       )
     }
@@ -55,7 +55,7 @@ const handlers = [
   }),
   http.post(
     '/mock/getAllMenu',
-    verifyToken(async ({ request, params }) => {
+    async ({ request, params }) => {
 
       console.log(params, request)
 
@@ -75,7 +75,7 @@ const handlers = [
           status: 200
         }
       )
-    })
+    }
   )
 ]
 

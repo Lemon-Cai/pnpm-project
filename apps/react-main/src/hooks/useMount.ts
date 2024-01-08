@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2023-11-03 09:47:33
+ * @Description: 
+ */
 import { useEffect, useRef } from "react"
 
 import useEffectOnce from './useEffectOnce'
@@ -7,7 +12,7 @@ const useMount = (fn: () => void) => {
   useEffect(() => {
     firstMount.current = false
     return () => {
-      firstMount.current = true
+      // firstMount.current = true
     }
   }, [])
   

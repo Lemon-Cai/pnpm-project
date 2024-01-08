@@ -4,11 +4,11 @@
  * @Description: 
  */
 
-import { setupServer  } from 'msw/node'
-// import { setupWorker  } from 'msw/browser'
+// import { setupServer  } from 'msw/node'
+import { setupWorker  } from 'msw/browser'
 
 import loginHandlers from './handlers/login'
 
-const workers = setupServer(...loginHandlers)
+const workers = setupWorker(...loginHandlers)
 
 export default workers
