@@ -1,26 +1,25 @@
 /*
  * @Author: CP
  * @Date: 2024-01-08 09:21:31
- * @Description: 
+ * @Description:
  */
-const Koa = require("koa");
+const Koa = require('koa')
 
-// const Router = require("koa-router");
-const body = require("koa-body");
+// const Router = require('koa-router')
+const body = require('koa-body')
 const responseMiddleware = require('./middleware/commonResponse')
 
 // 路由
 const loginRouter = require('./controller/login')
 
-const app = new Koa();
+const app = new Koa()
+// app.use(
+//   body({
+//     multipart: true
+//   })
+// )
 
-app.use(
-  body({
-    multipart: true,
-  })
-);
-
-app.use(responseMiddleware)
+// app.use(responseMiddleware)
 
 // 拦截器
 // app.use(async (ctx) => {
@@ -30,7 +29,7 @@ app.use(responseMiddleware)
 //   const access_token = cookies.get('access_token')
 
 //   const { Cookie, token, Authorization } = ctx.request.headers;
-  
+
 //   // 校验token是否过期
 //   if (!token) {
 
@@ -66,8 +65,34 @@ app.use(responseMiddleware)
 
 // app.use(router.routes())
 
-app.use(loginRouter.routes()).use(loginRouter.allowedMethods());
 
-app.listen(3010, () => {
-  console.log("open server localhost:3010");
-});
+// const router = new Router({
+//   // prefix: '/api' // 所以请求前缀
+// })
+
+// router.get('/test', (ctx, next) => {
+//   ctx.body = '你好， koa'
+//   next()
+// })
+// app.use(router.routes())
+
+// app.use(async ctx => {
+//   ctx.body = 'Hello World';
+// });
+
+app.use(loginRouter.routes()).use(loginRouter.allowedMethods())
+
+
+app.use(
+  body({
+    multipart: true
+  })
+)
+
+app.use(responseMiddleware)
+
+
+app.listen(3010, (ctx) => {
+  console.log('open server localhost:3010')
+  console.log(ctx)
+})

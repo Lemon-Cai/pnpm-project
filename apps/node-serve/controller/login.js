@@ -56,4 +56,14 @@ router.get('/getUserInfo', requestInterceptor, (ctx, next) => {
   return next()
 })
 
+/**
+ * 获取所有菜单
+ */
+router.get('/getAllMenus', requestInterceptor, (ctx, next) => {
+  let menus = require('../data/menus.json')
+  ctx.body = { msg: ctx.body.error, data: menus };
+  // ctx.success(menus, '获取成功')
+  return next()
+})
+
 module.exports = router

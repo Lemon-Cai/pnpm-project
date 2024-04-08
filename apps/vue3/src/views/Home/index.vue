@@ -33,6 +33,13 @@
     </c-content>
     <c-footer class="custom_page_footer">这是footer</c-footer>
   </c-page>
+
+  <Map @click="handleClickMap">
+
+    <template #leftIcon>
+      <el-button>这个按钮</el-button>
+    </template>
+  </Map>
 </template>
 
 <script setup lang="ts">
@@ -40,6 +47,13 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useApp from './useApp'
 import ChildComponent from './ChildComponent.vue'
+
+import Map from '../Map/index.tsx'
+
+
+const handleClickMap = () => {
+  console.log('handleClickMap')
+}
 
 const router = useRouter()
 

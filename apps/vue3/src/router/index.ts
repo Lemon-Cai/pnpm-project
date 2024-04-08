@@ -42,18 +42,18 @@ const router = createRouter({
       name: 'OlBlinking',
       component: () => import('../views/Map/OlFlyTo')
     },
-    // {
-    //   path: '/map',
-    //   component: () => import('../views/Map/index'),
+    {
+      path: '/map',
+      component: () => import('../views/Map/index'),
 
-    //   children: [
-    //     {
-    //       path: '/openlayers',
-    //       name: 'openlayers',
-    //       component: () => import('../views/Map/Openlayers/index')
-    //     }
-    //   ]
-    // },
+      // children: [
+      //   {
+      //     path: '/openlayers',
+      //     name: 'openlayers',
+      //     component: () => import('../views/Map/Openlayers/index')
+      //   }
+      // ]
+    },
 
     {
       path: '/fileUpload',
