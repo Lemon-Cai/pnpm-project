@@ -40,6 +40,12 @@
       <el-button>这个按钮</el-button>
     </template>
   </Map>
+
+
+  <br/>
+
+  <Cascade />
+  
 </template>
 
 <script setup lang="ts">
@@ -47,6 +53,7 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import useApp from './useApp'
 import ChildComponent from './ChildComponent.vue'
+import Cascade from './Cascade.vue'
 
 import Map from '../Map/index.tsx'
 

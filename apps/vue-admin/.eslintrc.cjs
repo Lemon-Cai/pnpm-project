@@ -6,14 +6,22 @@
  */
 module.exports = {
   env: {
-    browser: true,
-    es2021: true
+    // browser: true,
+    // es2021: true
   },
-  extends: [
+  // extends: [
+  //   'eslint:recommended',
+  //   'plugin:@typescript-eslint/recommended',
+  //   'plugin:vue/vue3-essential',
+  //   'prettier'
+  // ],
+  'extends': [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    '@vue/eslint-config-typescript',
     'plugin:vue/vue3-essential',
+    '@vue/eslint-config-prettier/skip-formatting',
     'prettier'
+
   ],
   overrides: [
     {
@@ -24,13 +32,31 @@ module.exports = {
       parserOptions: {
         sourceType: 'script'
       }
+    },
+    {
+      files: ['*.vue'],
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.vue'],
+        ecmaVersion: 'latest',
+        ecmaFeatures: {
+          jsx: true
+        }
+      },
     }
   ],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    parser: '@typescript-eslint/parser',
-    sourceType: 'module'
-  },
-  plugins: ['@typescript-eslint', 'vue', 'prettier'],
-  rules: {}
+  // parserOptions: {
+  //   ecmaVersion: 'latest',
+  //   parser: '@typescript-eslint/parser',
+  //   sourceType: 'module'
+  // },
+  plugins: ['@typescript-eslint', 'prettier'],
+  rules: {
+    "vue/valid-template-root": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-multiple-template-root": "off",
+    "vue/valid-define-emits": "warn",
+    "prefer-const": "off"
+  }
 }

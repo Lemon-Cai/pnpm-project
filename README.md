@@ -23,3 +23,15 @@
   # 在子项目目录下执行
   npx msw init ./public
 ```
+
+
+创建分支
+```shell
+  # 更新分支信息, 删除无用的分支
+  git fetch -p
+
+  # 
+  git checkout -b branch
+  # 
+  git push --set-upstream origin branch
+```
