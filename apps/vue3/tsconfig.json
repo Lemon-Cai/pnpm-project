@@ -88,15 +88,15 @@
     // "allowJs": true,
     // // "importsNotUsedAsValues": "preserve",
     // "stripInternal": true,
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/*": ["./src/*"]
-    // }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
     // Required in Vue projects
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "noEmit": false,
+    "noEmit": true,
     "allowImportingTsExtensions": true
   }
 }

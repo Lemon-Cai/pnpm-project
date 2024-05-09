@@ -1,44 +1,24 @@
 {
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [
+    { "path": "./tsconfig.node.json" }, 
+    { "path": "./tsconfig.app.json" }
+  ],
+  "include": ["src/**/*.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.tsx", "src/**/*.ts"],
+  "exclude": ["node_modules", "__tests/**/*"],
+
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": [],
-    // Recommended
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "composite": true,
-    "baseUrl": ".",
-    "allowJs": true,
-
-    /* Linting */
-    // `"noImplicitThis": true` is part of `strict`
-    // Added again here in case some users decide to disable `strict`.
-    // This enables stricter inference for data properties on `this`.
-    "noImplicitThis": true,
-    "verbatimModuleSyntax": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
     
+    // "jsx": "preserve",
+    // "jsxImportSource": "vue",
+    "isolatedModules": true,
+    "allowJs": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "components/*": ["./src/components/*"]
-    }
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules", "__tests/**/*"],
+    },
+    // "types": ["vite/client", "node"]
+  }
 }

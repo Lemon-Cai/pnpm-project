@@ -4,11 +4,14 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
-    // "isolatedModules": true,
-    // "baseUrl": ".",
+    
+    // "jsx": "preserve",
+    // "jsxImportSource": "vue",
+    "isolatedModules": true,
     "allowJs": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     }
   }
 }
