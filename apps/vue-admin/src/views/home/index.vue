@@ -1,6 +1,7 @@
 <template>
   <div>
     home
+    <router-link to="/searchTree">searchTree</router-link>
   </div>
 </template>
 

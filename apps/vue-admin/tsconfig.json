@@ -10,6 +10,10 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    
     // "jsx": "preserve",
     // "jsxImportSource": "vue",
     "isolatedModules": true,
