@@ -22,6 +22,13 @@ import router from '@/router'
 import '@/style/main.scss'
 import App from '@/App.vue'
 
+//导入mock
+import worker from '@/mock/index'
+
+if (import.meta.env.MODE === "development") {
+  worker.start();
+}
+
 const app = createApp(App)
 
 app.use(Antd).use(store).use(router).mount('#app')

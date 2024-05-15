@@ -25,7 +25,7 @@
 ```
 
 
-创建分支
+### 创建分支
 ```shell
   # 更新分支信息, 删除无用的分支
   git fetch -p
@@ -34,4 +34,24 @@
   git checkout -b branch
   # 
   git push --set-upstream origin branch
+```
+
+
+### 删除分支
+```shell
+# 切换到要删除的分支
+git checkout <deleteBranch>
+# 删除远程分支
+git push <remote> --delete <branch>
+# eg: git push origin --delete dev
+
+# 切换到其他分支
+git checkout <otherBranch>
+
+# 本地分支也删除
+git branch -d <deleteBranch>
+
+# 同步
+git fetch -p
+
 ```
