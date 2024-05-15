@@ -3,7 +3,8 @@
  * @Date: 2023-11-20 13:59:02
  * @Description:
  */
-import { http, HttpResponse, type DefaultBodyType, delay } from 'msw'
+import { http, HttpResponse, delay, RequestHandler } from 'msw'
+import type { DefaultBodyType } from 'msw'
 
 /**
  *  https://mswjs.io/docs/migrations/1.x-to-2.x#ctxset
@@ -25,7 +26,7 @@ http.get('/resource', ({ request, params }) => {
 })
  * 
  */
-export const handlers = [
+export const handlers: RequestHandler[] = [
   // http.get('/resource/asFetch', () => {
   //   return new Response(JSON.stringify({ id: 'abc-123' }), {
   //     headers: {
@@ -61,7 +62,7 @@ export const handlers = [
     await delay(1000) // 模拟网络延迟
 
     const formData = await request.formData()
-    console.log(formData);
+    console.log(formData)
 
     return HttpResponse.json(
       {
@@ -139,8 +140,8 @@ export const handlers = [
   }),
   http.post('/mock/allcore/uploadChunk', async ({ request }) => {
     const formData = await request.formData()
-    
-    console.log('formData=', formData.get('chunk'));
+
+    console.log('formData=', formData.get('chunk'))
 
     return HttpResponse.json(
       {
@@ -160,8 +161,8 @@ export const handlers = [
   }),
   http.put('/mock/allcore/uploadChunk', async ({ request }) => {
     const arrayBuffer = await request.arrayBuffer()
-    
-    console.log(arrayBuffer);
+
+    console.log(arrayBuffer)
 
     return HttpResponse.json(
       {
@@ -180,7 +181,7 @@ export const handlers = [
     )
   }),
   http.post('/mock/allcore/mergeChunk', async ({ request }) => {
-    console.log(request);
+    console.log(request)
     return HttpResponse.json(
       {
         msg: '',
@@ -195,5 +196,5 @@ export const handlers = [
         status: 200
       }
     )
-  }),
+  })
 ]

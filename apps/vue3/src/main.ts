@@ -17,7 +17,7 @@ import { install } from '@/components'
 //导入mock
 import worker from './mock/index'
 
-import './assets/main.css'
+import './assets/main.scss'
 
 if (import.meta.env.MODE === "development") {
   worker.start();

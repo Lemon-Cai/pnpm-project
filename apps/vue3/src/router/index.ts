@@ -44,6 +44,7 @@ const router = createRouter({
     },
     {
       path: '/map',
+      name: 'map页面',
       component: () => import('../views/Map/index'),
 
       // children: [
@@ -64,6 +65,11 @@ const router = createRouter({
       path: '/fileUpload2',
       name: 'FileUpload2',
       component: () => import('../views/FileUpload2')
+    },
+    {
+      path: '/searchTree',
+      name: 'SearchTree',
+      component: () => import('../views/SearchTree')
     },
   ]
 })

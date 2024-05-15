@@ -1,17 +1,21 @@
+/*
+ * @Author: CP
+ * @Date: 2024-01-08 20:35:06
+ * @Description: 
+ */
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
+
 
 module.exports = {
   root: true,
   'extends': [
-    'plugin:vue/vue3-essential',
     'eslint:recommended',
+    'plugin:vue/vue3-essential',
     '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier/skip-formatting'
+    '@vue/eslint-config-prettier/skip-formatting',
+    'prettier'
   ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  },
   rules: {
     "vue/valid-template-root": "off",
     "vue/multi-word-component-names": "off",

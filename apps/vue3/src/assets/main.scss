@@ -31,3 +31,27 @@ ol, li, ul {
   font-weight: normal;
 }
 
+.flex {
+  display: flex;
+  &-1 {
+    flex: 1;
+  }
+  &-middle {
+    align-items: center;
+  }
+  &-end {
+    justify-content: flex-end;
+  }
+  &-center {
+    justify-content: center;
+  }
+  &-around {
+    justify-content: space-around;
+  }
+  &-between {
+    justify-content: space-between;
+  }
+  &-vertical {
+    flex-direction: column;
+  }
+}

@@ -6,7 +6,7 @@
 // import Mock from 'mockjs'  //导入mockjs
 import { setupWorker } from 'msw/browser'
 
-import { uploadHandlers, loginHandlers, mapHandlers } from './handlers'
+import { uploadHandlers, loginHandlers, mapHandlers, treeHandlers } from './handlers'
 
 // import flights from './data/flingts.json'
 
@@ -60,6 +60,6 @@ import { uploadHandlers, loginHandlers, mapHandlers } from './handlers'
 //   }
 // })
 
-const workers = setupWorker(...uploadHandlers, ...loginHandlers, ...mapHandlers)
+const workers = setupWorker(...uploadHandlers, ...loginHandlers, ...mapHandlers, ...treeHandlers)
 
 export default workers

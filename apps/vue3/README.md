@@ -1,25 +1,3 @@
-# vue3
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
@@ -45,4 +23,43 @@ pnpm build
 pnpm lint
 ```
 
-这个项目引入的是element-plus 组件库
+### 这个项目引入的是element-plus 组件库
+
+#### vue3 + tsx 中如何实现 style scope
+常规 vue template 写法，在style 上标识 scope 
+```vue
+  <template>
+    <div class="test"></div>
+  </template>
+  <style scope>
+    .test {
+
+    }
+  </style>
+```
+在 tsx 中没有scope的说法，但是可以用 style module
+```tsx
+
+  import style from './test.module.scss'
+  defineComponents（{
+    setup () {
+      return () => (
+        <div class={style.test}></div>
+      )
+    }
+  }）
+```
+
+![效果](./public/images/vue_tsx_style_module.png)
+
+增加提示:
+
+- 安装 `typescript-plugin-css-modules`: **`npm install typescript-plugin-css-modules --save-dev`** 
+- 在 `tsconfig.json` 中添加配置  `"plugins": [{"name": "typescript-plugin-css-modules"}]`
+- 在 .vscode/setting中添加配置 
+``` json
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
+```

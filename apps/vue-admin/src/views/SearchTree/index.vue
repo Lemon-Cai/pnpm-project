@@ -103,6 +103,43 @@ watch(searchValue, (value) => {
   autoExpandParent.value = true
 })
 
+// function filterNodeMethod (searchValue, node) {
+//   if (!searchValue) return true
+//   return (node.name || '').includes(searchValue)  
+// }
+
+// function filter(value) {
+  
+//     const lazy = this.lazy;
+//     const traverse = function(node) {
+//       const childNodes = node.root ? node.root.childNodes : node.childNodes;
+//       childNodes.forEach((child) => {
+//         child.visible = filterNodeMethod.call(child, value, child.data, child);
+//         traverse(child);
+//       });
+//       if (!node.visible && childNodes.length) {
+//         let allHidden = true;
+//         allHidden = !childNodes.some((child) => child.visible);
+//         if (node.root) {
+//           ;
+//           node.root.visible = allHidden === false;
+//         } else {
+//           ;
+//           node.visible = allHidden === false;
+//         }
+//       }
+//       if (!value)
+//         return;
+//       if (node.visible && !node.isLeaf) {
+//         if (!lazy || node.loaded) {
+//           ;
+//           node.expand();
+//         }
+//       }
+//     };
+//     traverse(this);
+//   }
+
 const flatTree = (treeList = []) => {
   let dataList = []
   const generateList = (data: TreeProps['treeData']) => {

@@ -17,9 +17,9 @@ module.exports = {
   // ],
   'extends': [
     'eslint:recommended',
-    '@vue/eslint-config-typescript',
+    // '@vue/eslint-config-typescript',
     'plugin:vue/vue3-essential',
-    '@vue/eslint-config-prettier/skip-formatting',
+    // '@vue/eslint-config-prettier/skip-formatting',
     'prettier'
 
   ],
