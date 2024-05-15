@@ -46,7 +46,7 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted, toRaw, toRef, nextTick } from 'vue'
 
-import { fetchDeviceTree, fetchDeviceTreeOfChildren } from '@/api/SearchTree'
+import { fetchDeviceTree, fetchDeviceTreeOfChildren, fetchAirportAndRouteList } from '@/api/SearchTree'
 
 /**
  * 数据部分
@@ -310,9 +310,9 @@ const handleLoadData = async (node, resolve) => {
     _getTreeData(node, resolve)
   } else {
     if (node.data.nodeType) {
-      if (['line'].includes(node.data.nodeType.split('_')[0])) {
+      if (['line'].includes(node.data.nodeType.split('_')[1])) {
         _getChildNode(node, resolve)
-      } else if (['branch', 'tower'].includes(node.data.nodeType.split('_')[0])) {
+      } else if (['branch', 'tower'].includes(node.data.nodeType.split('_')[1])) {
         resolve(node?.data?.children || [])
       } else {
         resolve(node?.data?.children || [])

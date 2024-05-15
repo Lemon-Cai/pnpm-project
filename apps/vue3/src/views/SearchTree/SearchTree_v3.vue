@@ -5,8 +5,8 @@
  * @Description:
 -->
 <template>
-  <c-page  class="layout" v-loading="state.loading">
-    <el-aside>
+  <CoreLayout layout="horizontal" background class="layout" v-loading="state.loading">
+    <template #left>
       <div class="left flex flex-vertical">
         <el-input v-model="filterText" placeholder="请输入查询条件"></el-input>
 
@@ -42,9 +42,9 @@
           >
         </div>
       </div>
-    </el-aside>
-    <c-content>
-      <c-page background>
+    </template>
+    <template #right>
+      <CoreLayout background>
         <template #top>
           <CoreForm
             ref="formRef"
@@ -131,15 +131,15 @@
             </div>
           </div>
         </template>
-      </c-page>
-    </c-content>
-  </c-page>
+      </CoreLayout>
+    </template>
+  </CoreLayout>
 </template>
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted, toRaw, toRef, nextTick } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
-import PQueue from 'p-queue'
+import PQueue from 'p-queue/dist'
 import { useDebounceFn } from '@vueuse/core'
 
 import { FormComponentType } from '@/components/core-element/utils'
@@ -189,10 +189,6 @@ const props = defineProps({
   }
 })
 const { $confirm, $message } = useGlobalApi()
-
-// const workNatureList = inject('workNatureList', []) // 作业性质
-
-// const { userInfo } = useAppStore(['userInfo'])
 
 const tableRef = ref()
 const treeRef = ref()
@@ -314,16 +310,16 @@ watch(filterText, debouncedFn)
 // 过滤
 const handleFilterNode = (value, data, node) => {
   if (!value) return true
-  // 自定义自己的逻辑
+
   if (data.deviceType === 'sms') {
     // 变电，只能搜索变电站层级， 其他返回false
-    if (['station'].includes(data.nodeType.split('_')[0])) {
+    if (['station', 'substation'].includes(data.nodeType.split('_')[1])) {
       return (data.name || '').includes(value)
     } else {
       return false
     }
   } else {
-    if (['line'].includes(data.nodeType.split('_')[0])) {
+    if (['line'].includes(data.nodeType.split('_')[1])) {
       // 该节点是线路
       if (!node.loaded) {
         // 如果未加载， 只能筛选 线路
@@ -384,7 +380,7 @@ const _expandNode_v2 = node => {
     if (child.visible && !child.loaded) {
       // 判断当前节点是否展示
       if (child.data && child.data.deviceType !== 'sms' && child.data.nodeType) {
-        if (['line'].includes(child.data.nodeType.split('_')[0])) {
+        if (['line'].includes(child.data.nodeType.split('_')[1])) {
           queue.add(() => _getChildNode_v2(child))
           // _getChildNode_v2(child)
         }
@@ -400,7 +396,7 @@ const handleCheck = node => {
   let currentNode = treeRef.value.getNode(node)
   if (
     node.deviceType !== 'sms' &&
-    ['line'].includes(node.nodeType.split('_')[0]) &&
+    ['line'].includes(node.nodeType.split('_')[1]) &&
     !currentNode.loaded
   ) {
     queue.add(() => _getChildNode_v2(currentNode))
@@ -416,8 +412,7 @@ const handleCheck = node => {
 
 // 点击树节点
 const handleNodeClick = (data, node) => {
-  if (data.deviceType !== 'sms' && ['line'].includes(data.nodeType.split('_')[0]) && !node.loaded) {
-    // 非变电，且 点击的节点是线路，且该节点没有加载过数据
+  if (data.deviceType !== 'sms' && ['line'].includes(data.nodeType.split('_')[1]) && !node.loaded) {
     queue.add(() => _getChildNode_v2(node, false))
   }
   queue.onIdle().then(() => {
@@ -510,9 +505,9 @@ const handleClickOperate = (menu, row) => {
   }
 }
 
-const _getNode = async node => {
+const _getNode = async nodeKey => {
   try {
-    let nodeKey = `${node.parentGuid.split(node.lineGuid)[0]}${node.lineGuid}`
+    // let nodeKey = `${node.parentGuid.split(node.lineGuid)[0]}${node.lineGuid}`
 
     let params = {
       lineGuid: nodeKey,
@@ -541,9 +536,16 @@ const _getNode = async node => {
 }
 
 const _initChildNode = (list = []) => {
+  let map = {}
   list.forEach(node => {
+    let nodeKey = `${node.parentGuid.split(node.lineGuid)[0]}${node.lineGuid}`
+    if (!map[nodeKey]) {
+      map[nodeKey] = nodeKey
+    }
+  })
+  Object.values(map).forEach(key => {
     queue.add(async () => {
-      _getNode(node)
+      await _getNode(key)
     })
   })
   queue.onIdle().then(() => {
@@ -658,22 +660,33 @@ const _loadSmsRouteAndAirport = (tableData = []) => {
         .then(results => {
           let index = 0
           let data = toRaw(tableData).map(item => {
-            let { deviceRouteInfos = [], equipAirportInfos = [] } = results[index]?.data || {}
-            let routeList = deviceRouteInfos || [] // 航迹集合
-            let airportList = equipAirportInfos || [] // 机场集合
+            let { deviceRouteInfos: routeList = [], equipAirportInfos: airportList = [] } =
+              results[index]?.data || {}
+            // let routeList = deviceRouteInfos || [] // 航迹集合
+            // let airportList = equipAirportInfos || [] // 机场集合
             let currentLoad = list.find(sms => sms.guid === item.guid)
             if (currentLoad) {
               index++
-              let routeGuid = !item.routeGuid ? routeList[0]?.routeGuid || '' : item.routeGuid // 默认取第一条
-              let airportGuid = !item.airportGuid
-                ? airportList[0]?.airportGuid || ''
-                : item.airportGuid // 默认取第一条
+              let routeGuid = item.routeGuid
+              let routeDescription = item.routeDescription
+              if (!routeGuid && routeList[0]) {
+                routeGuid = routeList[0]?.routeGuid || '' // 默认取第一条
+                routeDescription = routeList[0]?.routeDescription || '' // 默认取第一条
+              }
+              // let routeGuid = !item.routeGuid ? routeList[0]?.routeGuid || '' : item.routeGuid // 默认取第一条
+              let airportGuid = item.airportGuid
+              let airportName = item.airportName
+              if (!airportGuid && airportList[0]) {
+                airportGuid = airportList[0]?.airportGuid // 默认取第一条
+                airportName = airportList[0]?.airportName // 默认取第一条
+              }
               return {
                 ...item,
                 routeGuid: routeGuid, // 航线guid
-                routeDescription: !routeGuid ? '最新航迹' : '',
+                routeDescription: !routeGuid ? '最新航迹' : routeDescription || '',
                 routeList: routeList,
                 airportGuid: airportGuid, // 航线guid
+                airportName,
                 airportList: airportList,
                 hasLoadAirportAndRoute: true
               }

@@ -17,3 +17,8 @@ export const fetchDeviceTreeOfChildren = () => {
   })
 }
 
+export const fetchAirportAndRouteList = () => {
+  return axios.get('/mock/getTreeOfChildren', {
+    
+  })
+}

@@ -13,8 +13,8 @@ import style from './searchTree.module.scss'
 
 // 拆分的组件
 import SearchTree_v2Vue from './Tree_v2.vue'
-// import SearchTree_v3Vue from "./SearchTree_v3.vue"
-// import SearchTree_v4Vue from "./SearchTree_v4.vue"
+import SearchTree_v3Vue from "./Tree_v3.vue"
+import SearchTree_v4Vue from "./Tree_v4.vue"
 
 export default defineComponent({
   setup() {
@@ -30,10 +30,17 @@ export default defineComponent({
         <c-content>
           <div class={`flex ${style.flex}`}>
             <div class="flex-1">
+              {/* 懒加载，未加载的数据无法搜索 */}
               <SearchTree_v2Vue />
             </div>
-            <div class="flex-1">{/* <SearchTree_v3Vue /> */}</div>
-            <div class="flex-1">{/* <SearchTree_v4Vue /> */}</div>
+            <div class="flex-1">
+              {/* 非懒加载。数据很多是，效率低 */}
+              <SearchTree_v3Vue />
+            </div>
+            <div class="flex-1">
+              {/* 加了虚拟滚动，性能飞起，近乎完美 */}
+              <SearchTree_v4Vue />
+            </div>
           </div>
         </c-content>
       </c-page>

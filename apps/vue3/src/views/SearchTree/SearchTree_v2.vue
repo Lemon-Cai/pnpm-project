@@ -744,22 +744,33 @@ const _loadSmsRouteAndAirport = (tableData = []) => {
         .then(results => {
           let index = 0
           let data = toRaw(tableData).map(item => {
-            let { deviceRouteInfos = [], equipAirportInfos = [] } = results[index]?.data || {}
-            let routeList = deviceRouteInfos || [] // 航迹集合
-            let airportList = equipAirportInfos || [] // 机场集合
+            let { deviceRouteInfos: routeList = [], equipAirportInfos: airportList = [] } =
+              results[index]?.data || {}
+            // let routeList = deviceRouteInfos || [] // 航迹集合
+            // let airportList = equipAirportInfos || [] // 机场集合
             let currentLoad = list.find(sms => sms.guid === item.guid)
             if (currentLoad) {
               index++
-              let routeGuid = !item.routeGuid ? routeList[0]?.routeGuid || '' : item.routeGuid // 默认取第一条
-              let airportGuid = !item.airportGuid
-                ? airportList[0]?.airportGuid || ''
-                : item.airportGuid // 默认取第一条
+              let routeGuid = item.routeGuid
+              let routeDescription = item.routeDescription
+              if (!routeGuid && routeList[0]) {
+                routeGuid = routeList[0]?.routeGuid || '' // 默认取第一条
+                routeDescription = routeList[0]?.routeDescription || '' // 默认取第一条
+              }
+              // let routeGuid = !item.routeGuid ? routeList[0]?.routeGuid || '' : item.routeGuid // 默认取第一条
+              let airportGuid = item.airportGuid
+              let airportName = item.airportName
+              if (!airportGuid && airportList[0]) {
+                airportGuid = airportList[0]?.airportGuid // 默认取第一条
+                airportName = airportList[0]?.airportName // 默认取第一条
+              }
               return {
                 ...item,
                 routeGuid: routeGuid, // 航线guid
-                routeDescription: !routeGuid ? '最新航迹' : '',
+                routeDescription: !routeGuid ? '最新航迹' : routeDescription || '',
                 routeList: routeList,
                 airportGuid: airportGuid, // 航线guid
+                airportName,
                 airportList: airportList,
                 hasLoadAirportAndRoute: true
               }

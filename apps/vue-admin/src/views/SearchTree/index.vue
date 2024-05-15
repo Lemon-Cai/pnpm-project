@@ -105,11 +105,11 @@ watch(searchValue, (value) => {
 
 // function filterNodeMethod (searchValue, node) {
 //   if (!searchValue) return true
-//   return (node.name || '').includes(searchValue)  
+//   return (node.name || '').includes(searchValue)
 // }
 
 // function filter(value) {
-  
+
 //     const lazy = this.lazy;
 //     const traverse = function(node) {
 //       const childNodes = node.root ? node.root.childNodes : node.childNodes;
