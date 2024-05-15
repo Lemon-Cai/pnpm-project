@@ -5,8 +5,8 @@
  * @Description:
 -->
 <template>
-  <c-page layout="horizontal" background class="layout" v-loading="state.loading">
-    <el-aside>
+  <CoreLayout layout="horizontal" background class="layout" v-loading="state.loading">
+    <template #left>
       <div class="left flex flex-vertical">
         <el-input v-model="filterText" placeholder="请输入查询条件"></el-input>
 
@@ -28,7 +28,6 @@
             :default-expanded-keys="state.defaultExpandedKeys"
             :default-checked-keys="state.defaultCheckedKeys"
             @node-click="handleClickNode"
-            @node-expand="handleNodeExpand"
             @check-change="handleCheck"
           >
             <template #default="{ data }">
@@ -46,8 +45,8 @@
           >
         </div>
       </div>
-    </el-aside>
-    <c-content>
+    </template>
+    <template #right>
       <CoreLayout background>
         <template #top>
           <CoreForm
@@ -135,14 +134,14 @@
           </div>
         </template>
       </CoreLayout>
-    </c-content>
-  </c-page>
+    </template>
+  </CoreLayout>
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onMounted, toRaw, toRef, nextTick } from 'vue'
+import { ref, reactive, computed, watch, onMounted, toRaw, toRef, unref, nextTick } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
-import PQueue from 'p-queue'
+import PQueue from 'p-queue/dist'
 import { useDebounceFn } from '@vueuse/core'
 
 import { FormComponentType } from '@/components/core-element/utils'
@@ -153,6 +152,9 @@ import {
   fetchDeviceTreeOfChildren,
   fetchAirportAndRouteList
 } from '@/api/workManagement/orderManage/orderList'
+import { findTreeNode } from '@/tools'
+
+// const PQueue = require('p-queue/dist')
 
 const queue = new PQueue({ concurrency: 50 }) // 创建一个队列
 /**
@@ -161,10 +163,10 @@ const queue = new PQueue({ concurrency: 50 }) // 创建一个队列
 
 const props = defineProps({
   // 作业对象， 变电 sms 单独处理， 变电数据量 < 1000
-  // professionalCategory: {
-  //   type: String,
-  //   default: ''
-  // },
+  professionalCategory: {
+    type: String,
+    default: ''
+  },
   isAutonomous: {
     type: Boolean
   },
@@ -206,11 +208,12 @@ const state = reactive({
   onMounted: false,
   workNature: props.workNature || '',
   treeData: [],
-  smsRouteList: [], // 变电航线集合
 
   visualHeight: 200, // 虚拟滚动高度, 默认 200
   defaultExpandedKeys: [], // 默认展开节点
   defaultCheckedKeys: [], // 默认选择的tree node
+
+  cacheCheckedNode: [],
 
   // cacheTableData: [], // 筛选时缓存
   tableData: props.selectedData || [],
@@ -326,7 +329,7 @@ const handleFilterNode = (value, data) => {
   }
 }
 
-const _getChildNode = async node => {
+const _getChildNode = async (node, flag = true) => {
   if (!node.loaded) {
     // 未加载 且 判断 是否存在子集
     try {
@@ -347,58 +350,46 @@ const _getChildNode = async node => {
 
         node.children = results
         node.loaded = true // 变更当前节点加载状态
+        flag && state.cacheCheckedNode.push(node) // 是否需要勾选子集
+        nextTick(() => {
+          // 获取该节点
+          let updatedNode = treeRef.value.getNode(node)
+          // 展开
+          treeRef.value.expandNode(updatedNode)
+        })
       }
     } catch (e) {
-      state.canAdd = true
+      // state.canAdd = true
     }
   }
 }
 
-const handleCheck = (node, checked) => {
-  let expandKeys = [node.guid]
-  let checkedKeys = treeRef.value.getCheckedKeys() || []
-
-  function _getChildNodeGuid(list = []) {
-    for (const item of list) {
-      expandKeys.push(item.guid)
-      if (item.deviceType !== 'sms') {
-        // 非变电
-        if (['line'].includes(item.nodeType.split('_')[0])) {
-          // 到线路层级。
-          // 判断
-          if (!item.loaded) {
-            // 未加载数据
-            if (!state.loading) state.loading = true
-            queue.add(() => _getChildNode(item))
-          }
+function _getChildNodeGuid(list = []) {
+  for (const item of list) {
+    if (item.deviceType !== 'sms') {
+      // 非变电
+      if (['line'].includes(item.nodeType.split('_')[1])) {
+        // 到线路层级。
+        // 判断
+        if (!item.loaded) {
+          // 未加载数据
+          if (!state.loading) state.loading = true
+          queue.add(() => _getChildNode(item))
         }
       }
-      item.children?.length > 0 && _getChildNodeGuid(item.children)
     }
+    item.children?.length > 0 && _getChildNodeGuid(item.children)
   }
+}
 
-  // 如果加载数据了，刷新节点勾选状态
-  function _getCheckNodeKeys(list = []) {
-    for (const item of list) {
-      checkedKeys.push(item.guid)
-      item.children?.length > 0 && _getCheckNodeKeys(item.children)
-    }
-  }
+const handleCheck = (node, checked) => {
   if (checked) {
-    let currentNode = treeRef.value.getNode(node)
-
-    let parentNode = currentNode.parent
-    while (parentNode) {
-      parentNode.data?.guid && expandKeys.unshift(parentNode.data?.guid)
-      parentNode = parentNode.parent
-    }
-
     if (node.children?.length > 0) {
       _getChildNodeGuid(node.children)
     } else {
       if (node.deviceType !== 'sms') {
         // 非变电
-        if (['line'].includes(node.nodeType.split('_')[0])) {
+        if (['line'].includes(node.nodeType.split('_')[1])) {
           // 到线路层级。
           // 判断
           if (!node.loaded) {
@@ -411,28 +402,34 @@ const handleCheck = (node, checked) => {
     }
 
     // 数据请求完成后
-    queue.onIdle().then(() => {
-      state.canAdd = true
-      state.loading = false
-      _getCheckNodeKeys(node.children)
+    state.loading &&
+      queue.onIdle().then(() => {
+        state.canAdd = true
+        state.loading = false
 
-      // 刷新数据
-      treeRef.value.setData(treeData.value)
-      // 刷新勾选
-      // 数据加载完后，展开节点
-      nextTick(() => {
-        treeRef.value.setExpandedKeys(expandKeys)
-        treeRef.value.setCheckedKeys(checkedKeys)
+        // 刷新数据
+        treeRef.value.setData(unref(treeData.value))
+        // 刷新勾选
+        // 数据加载完后，展开节点
+        nextTick(() => {
+          if (state.cacheCheckedNode.length > 0) {
+            state.cacheCheckedNode.forEach(node => {
+              // 勾选
+              treeRef.value.setChecked(node.guid, true, true)
+            })
+            // 清空
+            state.cacheCheckedNode = []
+          }
+        })
       })
-    })
   } else {
-    treeRef.value.setCheckedKeys(checkedKeys)
+    // treeRef.value.setCheckedKeys(checkedKeys)
   }
 }
 
 // 点击节点
-const handleClickNode = (data, node) => {
-  console.log(data, node)
+const handleClickNode = data => {
+  let flag = false
   if (data.deviceType !== 'sms') {
     // 非变电
     if (['line'].includes(data.nodeType.split('_')[1])) {
@@ -441,16 +438,18 @@ const handleClickNode = (data, node) => {
       if (!data.loaded) {
         // 未加载数据
         if (!state.loading) state.loading = true
-        queue.add(() => _getChildNode(data))
+        flag = true
+        queue.add(() => _getChildNode(data, false))
       }
     }
   }
-  queue.onIdle().then(() => {
-    state.canAdd = true
-    state.loading = false
-    // 刷新数据
-    treeRef.value.setData(treeData.value)
-  })
+  if (flag)
+    queue.onIdle().then(() => {
+      state.canAdd = true
+      state.loading = false
+      // 刷新数据
+      treeRef.value.setData(unref(treeData.value))
+    })
 }
 
 // // 节点展开事件
@@ -624,6 +623,77 @@ const _loadSmsRouteAndAirport = (tableData = []) => {
   })
 }
 
+const _getNode = async node => {
+  try {
+    let nodeKey = `${node.parentGuid.split(node.lineGuid)[0]}${node.lineGuid}`
+
+    let params = {
+      lineGuid: nodeKey,
+      isAutonomous: props.isAutonomous || '1',
+      isAirport: '0'
+    }
+    if (props.inspectionType === '1') {
+      // 固定机场
+      params = { ...params, isAirport: '1', airportGuid: props.airportGuid } // , airspaceGuid: ''
+    }
+    let res = await fetchDeviceTreeOfChildren(params)
+    if (res.success) {
+      let results = res.data || []
+      let currentNode = findTreeNode({ children: treeData.value }, nodeKey, 'guid')
+      if (currentNode) {
+        currentNode.children = results
+        currentNode.loaded = true // 变更当前节点加载状态
+        state.cacheCheckedNode.push(currentNode)
+        nextTick(() => {
+          // 刷新勾选状态
+          // 获取最新的节点状态
+          let updatedNode = treeRef.value.getNode(currentNode)
+          treeRef.value.expandNode(updatedNode)
+          // updatedNode.loaded = true // 变更当前节点加载状态
+          // updatedNode.setChecked(true, true)
+        })
+      }
+    }
+  } catch (e) {
+    //
+  }
+}
+
+const _initChildNode = (list = []) => {
+  list.forEach(node => {
+    queue.add(async () => {
+      await _getNode(node)
+    })
+  })
+  queue.onIdle().then(() => {
+    state.loading = false
+    state.canAdd = true
+    // 刷新数据
+    treeRef.value.setData(unref(treeData.value))
+
+    nextTick(() => {
+      if (state.cacheCheckedNode.length > 0) {
+        state.cacheCheckedNode.forEach(node => {
+          // 勾选
+          treeRef.value.setChecked(node.guid, true, true)
+        })
+        // 清空
+        state.cacheCheckedNode = []
+      }
+    })
+    _updateCheck()
+  })
+}
+
+const _updateCheck = () => {
+  nextTick(() => {
+    // tree 数据回显
+    props.selectedData.length > 0 &&
+      treeRef.value &&
+      treeRef.value.setCheckedKeys(props.selectedData.map(item => item.guid))
+  })
+}
+
 const _initTreeData = async () => {
   try {
     let params = {
@@ -660,13 +730,21 @@ const _initTreeData = async () => {
       Object.assign(state, {
         // treeData: data,
         defaultExpandedKeys: defaultExpandedArr,
-        defaultCheckedKeys: props.selectedData.map(item => item.guid)
+        onMounted: true
+        // defaultCheckedKeys: props.selectedData.map(item => item.guid)
       })
+      // 1、过滤非变电的作业对象
+      let notSmsWorkObj = props.selectedData.filter(item => item.deviceType !== 'sms')
+
+      if (notSmsWorkObj.length > 0) {
+        _initChildNode(notSmsWorkObj)
+        return
+      }
+      _updateCheck()
     }
     Object.assign(state, {
       loading: false,
-      canAdd: true,
-      onMounted: true
+      canAdd: true
     })
   } catch (e) {
     Object.assign(state, {
