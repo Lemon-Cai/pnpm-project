@@ -254,7 +254,7 @@ const formList = reactive([
 const tableColumns = reactive(
   [
     {
-      prop: 'voltageLevel',
+      prop: 'voltageLevelZh',
       label: '电压等级'
     },
     props.inspectionType === '1' && {
@@ -525,7 +525,7 @@ const _getNode = async nodeKey => {
       nextTick(() => {
         // 刷新勾选状态
         // 获取最新的节点状态
-        let updatedNode = treeRef.value.getNode(node)
+        let updatedNode = treeRef.value.getNode(nodeKey)
         updatedNode.loaded = true // 变更当前节点加载状态
         updatedNode.setChecked(true, true)
       })

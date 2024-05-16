@@ -282,7 +282,7 @@ const formList = reactive([
 const tableColumns = reactive(
   [
     {
-      prop: 'voltageLevel',
+      prop: 'voltageLevelZh',
       label: '电压等级'
     },
     props.inspectionType === '1' && {
