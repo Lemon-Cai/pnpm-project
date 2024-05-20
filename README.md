@@ -177,3 +177,85 @@ git revert 提交的Hash值     # 撤销某次commit
 git commit --amend
 ```
 此时会进入默认vim编辑器，修改注释完毕后保存就好了。
+
+### git cherry-pick教程 (慎用)
+
+就是将指定的提交（commit）应用于其他分支。
+```shell
+  git cherry-pick <commitHash>
+```
+
+上面命令就会将指定的提交commitHash，应用于当前分支。这会在当前分支产生一个新的提交，当然它们的哈希值会不一样。比如：
+```shell
+ a - b - c - d   Master
+      \
+        e - f - g Feature
+```
+现在将提交f应用到master分支
+```shell
+# 切换到 master 分支
+$ git checkout master
+
+# Cherry pick 操作
+$ git cherry-pick f
+```
+上面的操作完成以后，代码库就变成了下面的样子。
+```shell
+ a - b - c - d - f   Master
+      \
+        e - f - g Feature
+```
+git cherry-pick命令的参数，不一定是提交的哈希值，分支名也是可以的，表示转移该分支的最新提交。
+
+```shell
+git cherry-pick feature
+```
+
+##### 如何开发中需要回退某个人的代码
+
+当前分支develop
+1、从develop 创建revert-dev 分支
+```shell
+git checkout -b revert-dev
+```
+2、找到这个人的提交日志
+```shell
+ git log --author=CP
+
+##
+#  output
+##
+# $ git log --author=CP
+# commit b617413b1dcbf067fe113843ad83e98601a36457 (HEAD -> cherry-pick-dev-2, origin/cherry-pick-dev-2, origin/cherry-pick-dev, cherry-pick-dev)
+# Author: CP <1599242486@qq.com>
+# Date:   Mon May 20 15:27:33 2024 +0800
+
+#     feat: 优化无用变量
+
+# commit 7ce1b316b30cb284c74478e8c9ee8c69714e836c
+# Author: CP <1599242486@qq.com>
+# Date:   Mon May 20 15:25:02 2024 +0800
+
+#     feat: test1
+
+# commit e87b41da8383e971fab1e15ed406267654c0b208
+# Author: CP <1599242486@qq.com>
+# :...skipping...
+```
+3、执行回退操作
+
+```shell
+  git revert b617413b1dcbf067fe113843ad83e98601a36457 7ce1b316b30cb284c74478e8c9ee8c69714e836c
+```
+![操作结果日志](/static/images/image.png)
+
+4、把revert-dev分支的代码合并到develop中去
+```shell
+  git checkout develop
+```
+![此时develop的代码是这样的](/static/images/image-develop.png)
+
+```shell
+  git merge revert-dev
+  git push
+```
