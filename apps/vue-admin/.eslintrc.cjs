@@ -51,7 +51,7 @@ module.exports = {
   //   parser: '@typescript-eslint/parser',
   //   sourceType: 'module'
   // },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'vue', 'prettier'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -79,5 +79,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
+    "@typescript-eslint/ban-ts-comment": 0
   }
 }

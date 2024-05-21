@@ -1,3 +1,4 @@
+### 新建的项目如何提交到指定的代码仓库
 ```shell
   echo "# pnpm-project" >> README.md
   git init
@@ -7,7 +8,7 @@
   git remote add origin https://github.com/Lemon-Cai/pnpm-project.git
   git push -u origin master
 ```
-
+#### pnpm管理node版本
 ```shell
   # 
   pnpm config list -g
@@ -17,6 +18,7 @@
 
 ```
 
+### 如何安装msw创建mock数据
 ```shell
   # 安装 msw， 
   pnpm i msw -w
@@ -214,6 +216,7 @@ git cherry-pick feature
 ##### 如何开发中需要回退某个人的代码
 
 当前分支develop
+
 1、从develop 创建revert-dev 分支
 ```shell
 git checkout -b revert-dev

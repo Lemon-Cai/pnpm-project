@@ -10,12 +10,20 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    
-    // "jsx": "preserve",
-    // "jsxImportSource": "vue",
+    // "outDir": "./dist",
+    // "target": "esnext",
+    // "module": "esnext",
+    // "moduleResolution": "node",
+    // "resolveJsonModule": true,
+
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    // "jsxFactory": "h",
+    // "jsxFragmentFactory": "Fragment",
+    // "esModuleInterop": true,
+    // "skipLibCheck": true,
+    // "strict": true,
+
     "isolatedModules": true,
     "allowJs": true,
     "baseUrl": ".",

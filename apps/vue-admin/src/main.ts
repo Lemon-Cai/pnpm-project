@@ -19,6 +19,9 @@ import 'ant-design-vue/dist/reset.css'
 import store from '@/store'
 import router from '@/router'
 
+// 项目组件
+import components from '@/components'
+
 import '@/style/main.scss'
 import App from '@/App.vue'
 
@@ -31,4 +34,4 @@ if (import.meta.env.MODE === "development") {
 
 const app = createApp(App)
 
-app.use(Antd).use(store).use(router).mount('#app')
+app.use(Antd).use(store).use(router).use(components).mount('#app')
