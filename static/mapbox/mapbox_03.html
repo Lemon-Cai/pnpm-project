@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mapbox GL JS with GLB Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    // 设置Mapbox访问令牌
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2FpcCIsImEiOiJjazJ2NWs4MjAwMWduM2xwOGM3MjBsbGw0In0.ddkf0hABZBhgBxbLg0-gpw';
+
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [118.65, 32.44],
+      zoom: 12
+    });
+
+    // 示例轨迹（经纬度数组）
+    let trajectory = [
+      [118.65, 32.44],
+      // [118.66, 32.45],
+      // [118.67, 32.46]
+    ];
+
+    // 创建轨迹的GeoJSON数据源
+    const trajectoryGeoJSON = {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': trajectory
+          }
+        }
+      ]
+    };
+
+
+    // 当前轨迹索引
+    let trajectoryIndex = 0;
+    // 更新轨迹数据源
+    function updateTrajectory(newPoint) {
+      trajectory.push(newPoint);
+      trajectoryGeoJSON.features[0].geometry.coordinates = trajectory;
+      map.getSource('route').setData(trajectoryGeoJSON);
+    }
+    // 计算模型位置函数
+    function getModelPosition(progress, segment) {
+      // if (trajectory.length < 2) return trajectory[0];
+      // const start = trajectory[segment];
+      // const end = trajectory[segment + 1];
+      // const segmentProgress = progress % 1;
+      // const lng = start[0] + (end[0] - start[0]) * segmentProgress;
+      // const lat = start[1] + (end[1] - start[1]) * segmentProgress;
+      // return [lng, lat];
+      if (segment < 0) {
+        return trajectory[0]
+      }
+      if (segment > trajectory.length - 1){
+        return trajectory[trajectory.length - 1]
+      } else {
+        return trajectory[segment]
+      }
+    }
+
+
+    map.on('load', () => {
+
+      map.addSource('route', {
+        'type': 'geojson',
+        'data': trajectoryGeoJSON
+      })
+
+      map.addLayer({
+        'id': 'trajectory-layer',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        'paint': {
+          'line-color': '#888',
+          'line-width': 4
+        }
+
+      })
+
+
+      const modelRotate = [Math.PI / 2, 0, 0];
+      let mixer, clock, model;
+      let segment = 0; // 当前轨迹段索引
+      let lastUpdate = Date.now();
+      let progress = 0; // 初始化进度
+
+      map.addLayer({
+        'id': 'custom-model-layer',
+        'type': 'custom',
+        'renderingMode': '3d',
+        'onAdd': function (map, mbxContext) {
+          const scene = new THREE.Scene();
+          const camera = new THREE.Camera();
+          const renderer = new THREE.WebGLRenderer({
+            canvas: map.getCanvas(),
+            context: mbxContext
+          });
+
+          renderer.autoClear = false;
+
+          const light = new THREE.AmbientLight(0xffffff);
+          scene.add(light);
+
+          const loader = new GLTFLoader();
+          loader.load('./glb/griddingUav.glb', (gltf) => {
+            model = gltf.scene;
+
+            // 设置模型大小
+            const scale = 10;
+            model.scale.set(scale, scale, scale);
+
+            scene.add(model);
+
+            // 创建动画混合器并添加动画
+            mixer = new THREE.AnimationMixer(model);
+            gltf.animations.forEach((clip) => {
+              mixer.clipAction(clip).play();
+            });
+
+            this.mixer = mixer;
+            this.clock = new THREE.Clock();
+          });
+
+          this.map = map;
+          this.scene = scene;
+          this.camera = camera;
+          this.renderer = renderer;
+          this.modelRotate = modelRotate;
+        },
+        'render': function (gl, matrix) {
+          const rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), this.modelRotate[0]);
+          const rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), this.modelRotate[1]);
+          const rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), this.modelRotate[2]);
+
+          const m = new THREE.Matrix4().fromArray(matrix);
+          const scale = mapboxgl.MercatorCoordinate.fromLngLat([0, 0]).meterInMercatorCoordinateUnits();
+
+          const now = Date.now();
+          const elapsed = (now - lastUpdate) / 1000; // 10秒完成一个段
+          progress += elapsed; // 增加进度
+
+          // 动态更新模型位置
+          const [lng, lat] = getModelPosition(progress, segment);
+          const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat([lng, lat]);
+
+          const modelTransform = {
+            translateX: modelAsMercatorCoordinate.x,
+            translateY: modelAsMercatorCoordinate.y,
+            translateZ: modelAsMercatorCoordinate.z,
+            scale: scale
+          };
+
+          const l = new THREE.Matrix4().makeTranslation(
+            modelTransform.translateX,
+            modelTransform.translateY,
+            modelTransform.translateZ
+          ).scale(new THREE.Vector3(modelTransform.scale, -modelTransform.scale, modelTransform.scale))
+            .multiply(rotationX)
+            .multiply(rotationY)
+            .multiply(rotationZ);
+
+          this.camera.projectionMatrix = m.multiply(l);
+
+          // 更新动画
+          if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+          }
+
+          this.renderer.resetState();
+          this.renderer.render(this.scene, this.camera);
+          this.map.triggerRepaint();
+
+          // 更新到下一个段
+          if (progress >= 1) {
+            progress = 0; // 重置进度
+            lastUpdate = now;
+            segment++;
+            // if (segment < trajectory.length - 2) {
+            //   segment++;
+            // }
+          } else {
+            lastUpdate = now;
+          }
+        }
+      });
+
+      let count = 0
+      // 动态更新轨迹示例
+      let timer = setInterval(() => {
+        const lastPoint = trajectory[trajectory.length - 1];
+        const newPoint = [lastPoint[0] + Math.ceil(Math.random() * 100) / 10000, lastPoint[1] + Math.ceil(Math.random() * 100) / 10000];
+        updateTrajectory(newPoint);
+        lastUpdate = Date.now(); // 重置更新时间
+        count++
+        if (count > 50) {
+          clearInterval(timer)
+        }
+      }, 2000); // 每5秒更新一次轨迹
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+// @if $layout == 'classic' {
+//   @import './classic';
+// } @else if $layout == 'columns' {
+//   @import './columns';
+// } @else {
+//   // Handle other cases or provide a default import
+// }
+
+
+// @import './classic' if $layout == 'classic' ;
+
+// $layout-file: '';
+// @if $layout == 'classic' {
+//   $layout-file: 'classic';
+// } @else if $layout == 'columns' {
+//   $layout-file: 'columns';
+// }
+
+// @import "./#{$layout}.scss";
+
+
+// @use './classic' with (
+//   $layout: $layout
+// );
+
+// @use './columns' with (
+//   $layout: $layout
+// );

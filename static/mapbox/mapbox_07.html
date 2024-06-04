@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Mapbox Draw Circle Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turf.js/6.5.0/turf.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  mapboxgl.accessToken = 'your_access_token';
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [119, 32],
+    zoom: 12
+  });
+
+  map.on('load', function () {
+    const center = [119, 32];
+    const radius = 100; // 半径，单位为米
+
+    // 使用 Turf.js 创建圆的 GeoJSON 数据
+    const circle = turf.circle(center, radius, {
+      steps: 64, // 圆的细分程度
+      units: 'meters'
+    });
+
+    // 添加数据源
+    map.addSource('circle-source', {
+      type: 'geojson',
+      data: circle
+    });
+
+    // 添加图层以显示圆
+    map.addLayer({
+      id: 'circle-layer',
+      type: 'fill',
+      source: 'circle-source',
+      paint: {
+        'fill-color': '#FF0000',
+        'fill-opacity': 0.5
+      }
+    });
+
+    // 可选：添加边界线
+    map.addLayer({
+      id: 'circle-outline-layer',
+      type: 'line',
+      source: 'circle-source',
+      paint: {
+        'line-color': '#FF0000',
+        'line-width': 2
+      }
+    });
+
+
+    // 定义多边形的 GeoJSON 数据
+    const polygon = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Polygon',
+        'coordinates': [
+          [
+            [119.0, 32.0],
+            [119.1, 32.0],
+            [119.1, 32.1],
+            [119.0, 32.1],
+            [119.0, 32.0]
+          ]
+        ]
+      }
+    };
+
+    // 添加多边形图层
+    map.addLayer({
+      id: 'polygon-layer',
+      type: 'fill',
+      source: {
+        type: 'geojson',
+        data: polygon
+      },
+      paint: {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    });
+
+
+    // 计算圆的边界框
+    const bbox = turf.bbox(polygon);
+
+    // 使用 fitBounds 方法调整地图视图
+    map.fitBounds(bbox, {
+      padding: 20
+    });
+  });
+</script>
+</body>
+</html>

@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "clean": "pnpm recursive exec -- rm -rf node_modules"
+    "clean": "pnpm recursive exec -- rm -rf node_modules",
+    "build:test": "node scripts/build.js"
   },
   "keywords": [],
   "author": "",

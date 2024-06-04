@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mapbox GL JS with GLB Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+  }
+</script>
+</head>
+
+<body>
+  <div id="map"></div>
+
+
+
+  <script type="module">
+    import * as THREE from 'three'
+
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    // 设置Mapbox访问令牌
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2FpcCIsImEiOiJjazJ2NWs4MjAwMWduM2xwOGM3MjBsbGw0In0.ddkf0hABZBhgBxbLg0-gpw';
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [118.65, 32.44],
+      zoom: 12
+    });
+
+    map.on('load', () => {
+      const modelOrigin = [118.65, 32.44];
+      const modelAltitude = 0;
+      const modelRotate = [Math.PI / 2, 0, 0];
+      
+      const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(modelOrigin, modelAltitude);
+
+      const modelTransform = {
+        translateX: modelAsMercatorCoordinate.x,
+        translateY: modelAsMercatorCoordinate.y,
+        translateZ: modelAsMercatorCoordinate.z,
+        rotateX: modelRotate[0],
+        rotateY: modelRotate[1],
+        rotateZ: modelRotate[2],
+        scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
+      };
+
+      map.addLayer({
+        'id': 'custom-model-layer',
+        'type': 'custom',
+        'renderingMode': '3d',
+        'onAdd': function (map, mbxContext) {
+          const scene = new THREE.Scene();
+          const camera = new THREE.Camera();
+          const renderer = new THREE.WebGLRenderer({
+            canvas: map.getCanvas(),
+            context: mbxContext
+          });
+
+          renderer.autoClear = false;
+
+          const light = new THREE.AmbientLight(0xffffff);
+          scene.add(light);
+
+          const loader = new GLTFLoader();
+          let mixer;
+
+          loader.load('./glb/griddingUav.glb', (gltf) => {
+            const model = gltf.scene;
+
+            // 修改模型颜色
+            model.traverse((node) => {
+              if (node.isMesh) {
+                node.material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+              }
+            });
+
+            // 设置模型大小
+            const scale = 10; // 缩放因子
+            model.scale.set(scale, scale, scale);
+
+            
+            scene.add(model);
+
+            // 创建动画混合器并添加动画
+            mixer = new THREE.AnimationMixer(model);
+            gltf.animations.forEach((clip) => {
+              mixer.clipAction(clip).play();
+            });
+
+            this.mixer = mixer;
+            this.clock = new THREE.Clock();
+          });
+
+          this.map = map;
+          this.scene = scene;
+          this.camera = camera;
+          this.renderer = renderer;
+          this.modelTransform = modelTransform;
+        },
+        'render': function (gl, matrix) {
+          const rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), this.modelTransform.rotateX);
+          const rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), this.modelTransform.rotateY);
+          const rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), this.modelTransform.rotateZ);
+
+          const m = new THREE.Matrix4().fromArray(matrix);
+          const l = new THREE.Matrix4().makeTranslation(
+            this.modelTransform.translateX,
+            this.modelTransform.translateY,
+            this.modelTransform.translateZ
+          ).scale(new THREE.Vector3(this.modelTransform.scale, -this.modelTransform.scale, this.modelTransform.scale))
+            .multiply(rotationX)
+            .multiply(rotationY)
+            .multiply(rotationZ);
+
+          this.camera.projectionMatrix = m.multiply(l);
+
+          // 更新动画
+          if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+          }
+
+          this.renderer.resetState();
+          this.renderer.render(this.scene, this.camera);
+          this.map.triggerRepaint();
+        }
+      });
+    });
+    // 当地图加载完成后添加GLB模型
+    // map.on('load', () => {
+    //   // 添加3D模型的源
+    //   map.addSource('custom-model', {
+    //     'type': 'geojson',
+    //     'data': {
+    //       'type': 'FeatureCollection',
+    //       'features': [
+    //         {
+    //           'type': 'Feature',
+    //           'geometry': {
+    //             'type': 'Point',
+    //             'coordinates': [118.65, 32.44] // 模型的位置 [经度, 纬度]
+    //           },
+    //           'properties': {
+    //             'model': './glb/griddingUav.glb' // GLB模型的URL
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   });
+
+    //   // 添加3D模型的层
+    //   map.addLayer({
+    //     'id': 'custom-model-layer',
+    //     'type': 'custom',
+    //     'renderingMode': '3d',
+    //     'onAdd': function (map, mbxContext) {
+    //       // const THREE = window.THREE;
+    //       const modelOrigin = [0, 0];
+    //       const modelAltitude = 0;
+    //       const modelRotate = [Math.PI / 2, 0, 0];
+
+    //       const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(modelOrigin, modelAltitude);
+
+    //       const modelTransform = {
+    //         translateX: modelAsMercatorCoordinate.x,
+    //         translateY: modelAsMercatorCoordinate.y,
+    //         translateZ: modelAsMercatorCoordinate.z,
+    //         rotateX: modelRotate[0],
+    //         rotateY: modelRotate[1],
+    //         rotateZ: modelRotate[2],
+    //         scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
+    //       };
+
+    //       const scene = new THREE.Scene();
+    //       const camera = new THREE.Camera();
+    //       const renderer = new THREE.WebGLRenderer({
+    //         canvas: map.getCanvas(),
+    //         context: mbxContext
+    //       });
+
+    //       renderer.autoClear = false;
+
+    //       const light = new THREE.AmbientLight(0xffffff);
+    //       scene.add(light);
+
+    //       const loader = new GLTFLoader();
+    //       loader.load(
+    //         './glb/griddingUav.glb',
+    //         function (gltf) {
+    //           scene.add(gltf.scene);
+    //         }
+    //       );
+
+    //       this.map = map;
+    //       this.scene = scene;
+    //       this.camera = camera;
+    //       this.renderer = renderer;
+    //       this.modelTransform = modelTransform;
+    //     },
+    //     'render': function (gl, matrix) {
+    //       const rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), this.modelTransform.rotateX);
+    //       const rotationY = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 1, 0), this.modelTransform.rotateY);
+    //       const rotationZ = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0, 0, 1), this.modelTransform.rotateZ);
+
+    //       const m = new THREE.Matrix4().fromArray(matrix);
+    //       const l = new THREE.Matrix4().makeTranslation(
+    //         this.modelTransform.translateX,
+    //         this.modelTransform.translateY,
+    //         this.modelTransform.translateZ
+    //       ).scale(new THREE.Vector3(this.modelTransform.scale, -this.modelTransform.scale, this.modelTransform.scale))
+    //         .multiply(rotationX)
+    //         .multiply(rotationY)
+    //         .multiply(rotationZ);
+
+    //       this.camera.projectionMatrix = m.multiply(l);
+    //       this.renderer.resetState();
+    //       this.renderer.render(this.scene, this.camera);
+    //       this.map.triggerRepaint();
+    //     }
+    //   });
+    // });
+  </script>
+</body>
+
+</html>

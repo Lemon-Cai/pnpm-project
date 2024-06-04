@@ -1,0 +1,400 @@
+<!--
+ * @Author: CP
+ * @Date: 2024-06-03 15:22:33
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mapbox GL JS Mousemove Event with Popup</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet" />
+
+  <script src="https://unpkg.com/vue@3.4.27"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    // 设置Mapbox访问令牌
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2FpcCIsImEiOiJjazJ2NWs4MjAwMWduM2xwOGM3MjBsbGw0In0.ddkf0hABZBhgBxbLg0-gpw';
+
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [118.65, 32.44],
+      zoom: 12
+    });
+
+
+    // 判断点是否在多边形内的函数
+    function isPointInPolygon(point, polygon) {
+      var x = point.lng, y = point.lat;
+      var inside = false;
+      for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        var xi = polygon[i][0], yi = polygon[i][1];
+        var xj = polygon[j][0], yj = polygon[j][1];
+
+        var intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+    }
+
+    const PopupContent = {
+        template: `<div><h3>{{ title }}</h3><p>{{ description }}</p></div>`,
+        data() {
+            return {
+                title: 'Location Information',
+                description: ''
+            };
+        }
+    };
+
+    const bindEvent = () => {
+      // 绑定mousemove事件
+      map.on('mousemove', function (e) {
+        var features = map.queryRenderedFeatures(e.point, {
+          layers: ['places'] // 要检查的图层id
+        });
+
+        if (features.length) {
+          // 获取要素的信息
+          var feature = features[0];
+          var description = feature.properties.description || 'No description available';
+
+          // 创建一个Vue实例
+          const popupContent = document.createElement('div');
+          const app = createApp(PopupContent, { data: '这个是data' });
+          app.component('popup-content', PopupContent);
+          const vm = app.mount(popupContent);
+
+          // 设置popup的内容和位置
+          vm.description = description;
+          popup
+            .setLngLat(e.lngLat)
+            .setDOMContent(popupContent)
+            .addTo(map);
+        } else {
+          // 隐藏popup
+          popup.remove();
+        }
+      });
+    }
+    map.on('load', function () {
+
+      bindEvent()
+
+      // 加载图标
+      map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', function (error, image) {
+        if (error) throw error;
+        map.addImage('custom-marker', image);
+
+        // 添加数据源
+        map.addSource('image-places', {
+          'type': 'geojson',
+          'data': {
+            'type': 'FeatureCollection',
+            'features': [
+              {
+                'type': 'Feature',
+                'properties': { 'description': 'A place in the world， 这是一个 popup' },
+                'geometry': {
+                  'type': 'Point',
+                  'coordinates': [118.75, 32.44],
+                }
+              }
+            ]
+          }
+        });
+
+        // 添加图层
+        map.addLayer({
+          'id': 'image-layer',
+          'type': 'symbol',
+          'source': 'image-places',
+          'layout': {
+            'icon-image': 'custom-marker',
+            'icon-size': 0.5,
+            // 'icon-image': '{icon}',
+            // icon-size 表达式
+            // 'icon-size': [
+            //   'interpolate',
+            //   ['linear'],
+            //   ['zoom'],
+            //   0, 0.5,  // Zoom level 0, icon size 0.5
+            //   12, 1,   // Zoom level 12, icon size 1
+            //   22, 2    // Zoom level 22, icon size 2
+            // ],
+            'icon-allow-overlap': true
+          }
+        });
+
+        /**
+         * 
+         * 
+         * 
+         * var rootPath = 'http://127.0.0.1:3000/mapbox/lib/';
+// var filter = ['match', ['get', 'name'],
+//   ['昌平区', '海淀区'], false, true
+// ];
+// var filter = ['!in', 'name', '昌平区', '海淀区'];
+
+// var filter = [
+//   'all',
+//   ['>=', 'count', 10],
+//   ['==', 'type', 1]
+// ];
+
+var filter = ['>=', 'count', 0];
+// var fillColor = 'rgba(255, 0, 0, 0.5)';
+
+// 唯一值图
+// var fillColor = [
+//   'match',
+//   ['get', 'type'],
+//   1, '#FFD273',
+//   2, '#E86D68',
+//   '#A880FF'
+// ];
+
+// 分级色彩图
+// var fillColor = [
+//   'case',
+//   ['<', ['get', 'count'], 10], '#FFD273',
+//   ['<', ['get', 'count'], 20], '#E86D68',
+//   ['<', ['get', 'count'], 30], '#A880FF',
+//   ['<', ['get', 'count'], 40], '#68E0E8',
+//   ['<=', ['get', 'count'], 50], '#9BFF69',
+//   '#000' // 默认值
+// ];
+
+// 比例符号图
+var fillColor = [
+  'interpolate',
+  ['linear'],
+  ['get', 'count'],
+  15, '#FFD273',
+  30, '#E86D68',
+  50, '#9BFF69'
+];
+
+// 步长图
+// var fillColor = [
+//   'step',
+//   ['get', 'count'],
+//   '#0098A3',
+//   10, '#00CA8D',
+//   20, '#37C508',
+//   30, '#98F300',
+//   40, '#EFFF85'
+// ]
+var mapStyle = {
+  "version": 8,
+  "name": "Dark",
+  "sources": {
+    "geojson": {
+      type: 'geojson',
+      data: '../data/beijing.geojson'
+    }
+  },
+  "glyphs": rootPath + "fonts/mapbox/{fontstack}/{range}.pbf",
+  "layers": [{
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#999"
+      }
+    },
+    {
+      'id': 'geojson',
+      'source': 'geojson',
+      'type': 'fill',
+      'paint': {
+        'fill-color': fillColor,
+        'fill-opacity': .8
+      },
+      filter: filter
+    },
+    {
+      'id': 'geojson-border',
+      'source': 'geojson',
+      'type': 'line',
+      'paint': {
+        'line-color': '#FFF',
+        'line-width': 1.5
+      },
+      filter: filter
+    },
+    {
+      'id': 'points',
+      'type': 'symbol',
+      'source': 'geojson',
+      'layout': {
+        'text-field': ['get', 'name'],
+        "text-size": 22
+      },
+      paint: {
+        'text-color': '#000000'
+      },
+      filter: filter
+    }
+  ]
+};
+map = new mapboxgl.Map({
+  container: 'map',
+  maxZoom: 18,
+  minZoom: 6,
+  zoom: 8,
+  center: {
+    lng: 116.6552,
+    lat: 40.2482
+  },
+  style: mapStyle,
+  attributionControl: false,
+  localIdeographFontFamily: "'全新硬笔行书简'"
+}); 
+         * */
+
+        // 创建popup实例
+        var popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+        });
+
+        // 绑定mousemove事件
+        map.on('mousemove', 'image-layer', function (e) {
+          console.log('e', e, 'features = ', e.features)
+          if (e.features.length > 0) {
+            // 获取要素的信息
+            var description = e.features[0].properties.description || 'No description available';
+
+            // 设置popup的内容和位置
+            popup
+              .setLngLat(e.lngLat)
+              .setHTML(description)
+              .addTo(map);
+          }
+        });
+
+        // 绑定mouseleave事件
+        map.on('mouseleave', 'image-layer ', function () {
+          // 隐藏popup
+          popup.remove();
+        });
+      });
+
+
+      // // Add image source
+      // map.addSource('overlay', {
+      //   'type': 'image',
+      //   'url': 'https://www.mapbox.com/mapbox-gl-js/assets/radar.gif',
+      //   'coordinates': [
+      //     [114.425, 36.437],
+      //     [119.516, 36.437],
+      //     [119.516, 31.936],
+      //     [114.425, 31.936]
+      //   ]
+      // });
+
+      // // Add image layer
+      // map.addLayer({
+      //   'id': 'overlay',
+      //   'type': 'raster',
+      //   'source': 'overlay',
+      //   'paint': {
+      //     'raster-opacity': 0.85
+      //   }
+      // });
+
+      // // 鼠标移动事件监听
+      // map.on('mousemove', function (e) {
+      //   // 获取图像的四个角点坐标
+      //   var coordinates = map.getSource('overlay').coordinates;
+
+      //   // 检查鼠标是否在图像范围内
+      //   var inBounds = isPointInPolygon(e.lngLat, coordinates);
+
+      //   if (inBounds) {
+      //     console.log('Mouse is over the image layer.');
+      //   } else {
+      //     console.log('Mouse is not over the image layer.');
+      //   }
+      // });
+
+
+      // 添加数据源
+
+      // map.addSource('places', {
+      //   'type': 'geojson',
+      //   'data': {
+      //     'type': 'FeatureCollection',
+      //     'features': [
+      //       {
+      //         'type': 'Feature',
+      //         'properties': { 'description': 'A place in the world' },
+      //         'geometry': {
+      //           'type': 'Point',
+      //           'coordinates': [118.65, 32.44]
+      //         }
+      //       }
+      //     ]
+      //   }
+      // });
+
+      // // 添加图层
+      // map.addLayer({
+      //   'id': 'places',
+      //   'type': 'circle',
+      //   'source': 'places',
+      //   'paint': {
+      //     'circle-radius': 10,
+      //     'circle-color': '#007cbf'
+      //   }
+      // });
+
+      // // 创建popup实例
+      // var popup = new mapboxgl.Popup({
+      //   closeButton: false,
+      //   closeOnClick: false
+      // });
+
+      // // 绑定mousemove事件
+      // map.on('mousemove', 'places', function (e) {
+      //   // 获取要素的信息
+      //   var description = e.features[0].properties.description;
+
+      //   // 设置popup的内容和位置
+      //   popup
+      //     .setLngLat(e.lngLat)
+      //     .setHTML(description)
+      //     .addTo(map);
+      // });
+
+      // // 绑定mouseleave事件
+      // map.on('mouseleave', 'places', function () {
+      //   // 隐藏popup
+      //   popup.remove();
+      // });
+    });
+  </script>
+</body>
+
+</html>

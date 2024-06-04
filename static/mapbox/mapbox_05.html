@@ -1,0 +1,92 @@
+<!--
+ * @Author: CP
+ * @Date: 2024-06-04 09:46:44
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mapbox Draw Circle Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    // 设置Mapbox访问令牌
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2FpcCIsImEiOiJjazJ2NWs4MjAwMWduM2xwOGM3MjBsbGw0In0.ddkf0hABZBhgBxbLg0-gpw';
+
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [118.65, 32.44],
+      zoom: 12
+    });
+
+
+
+    map.on('load', function () {
+      map.addSource('circle-source', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [{
+            type: 'Feature',
+            properties: {
+              radius: 500
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [118.65, 32.44]
+            }
+          }]
+        }
+      });
+
+      map.addLayer({
+        id: 'circle-layer',
+        type: 'circle',
+        source: 'circle-source',
+        paint: {
+          'circle-radius': {
+            type: 'exponential',
+            stops: [
+              [0, 0],
+              [20, ['get', 'radius']]
+            ],
+            base: 2
+          },
+          'circle-color': '#FF0000',
+          'circle-opacity': 0.5
+        }
+      });
+
+      function setCircleColor(color) {
+        map.setPaintProperty('circle-layer', 'circle-color', color);
+      }
+
+      // Example of setting a new color
+      setCircleColor('#00FF00');
+    });
+  </script>
+</body>
+
+</html>

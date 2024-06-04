@@ -1,0 +1,102 @@
+// 侧边栏 菜单
+@mixin aside_menu {
+  .aside_menu_wrapper {
+    position: relative;
+    padding-top: 50px;
+    transition: width .2s;
+
+    box-shadow: 2px 0px 5px 0px rgba(95, 89, 89, 0.2);
+
+    // 折叠按钮
+    .collapse_box {
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      text-align: right;
+      font-size: 22px;
+      cursor: pointer;
+      color: rgba(0, 150, 136, 1);
+      ;
+    }
+
+    .el-scrollbar__view {
+      height: 100%;
+
+      .el-menu {
+        height: 100%;
+        border-right: none;
+
+        .iconfont, .anticon {
+          font-size: var(--el-font-size-large);
+          margin-right: 5px;
+        }
+      }
+
+      .el-sub-menu {
+
+        // .el-sub-menu__title {
+        //   .iconfont {
+        //     margin-right: 5px;
+        //   }
+        // }
+        &.is-active {
+          .el-sub-menu__title {
+            color: #ffffff;
+            box-shadow: 2px 0px 5px 0px rgba(95, 89, 89, 0.2);
+            // background: rgba(1, 131, 107, 0.60);
+            background: #60B5A4;
+            // &:hover {
+            //   color: var(--el-menu-hover-text-color) !important;
+            //   background-color: transparent !important;
+            // }
+          }
+        }
+      }
+
+
+      .el-menu--collapse {
+        .is-active {
+          .el-sub-menu__title {
+            color: #ffffff !important;
+            background-color: var(--el-color-primary) !important;
+          }
+        }
+      }
+
+      .el-menu-item {
+
+        // background: #BFE6E4;
+        // color: #009688;
+        // &:hover {
+        //   color: var(--el-menu-hover-text-color);
+        // }
+        &:not(.hasIcon) {
+          &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: calc(var(--el-menu-level) * var(--el-menu-level-padding) + 5px);
+            bottom: 0;
+            width: 6px;
+            height: 6px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            background-color: #666666;
+          }
+        }
+
+
+        &.is-active {
+          background: #BFE6E4;
+          color: #009688;
+
+          &:not(.hasIcon) {
+            &::before {
+              background-color: var(--el-color-primary);
+            }
+          }
+        }
+      }
+    }
+  }
+}
