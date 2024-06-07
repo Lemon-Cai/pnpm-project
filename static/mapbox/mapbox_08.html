@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Circle with Text Labels</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2FpcCIsImEiOiJjazJ2NWs4MjAwMWduM2xwOGM3MjBsbGw0In0.ddkf0hABZBhgBxbLg0-gpw';
+
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [118.65, 32.44],
+  zoom: 12
+});
+
+
+    map.on('load', () => {
+        // 添加圆形数据源
+        map.addSource('circleSource', {
+            type: 'geojson',
+            data: createCircleGeoJSON([118.65, 32.44], 5000) // 5000 米半径的圆形
+        });
+
+        // 添加圆形图层
+        map.addLayer({
+            id: 'circleLayer',
+            type: 'fill',
+            source: 'circleSource',
+            paint: {
+                'fill-color': '#088',
+                'fill-opacity': 0.5
+            }
+        });
+
+        // 添加标签数据源
+        map.addSource('labelSource', {
+            type: 'geojson',
+            data: createLabelGeoJSON([118.65, 32.44], 5000) // 标签位置
+        });
+
+        // 添加标签图层
+        map.addLayer({
+            id: 'labelLayer',
+            type: 'symbol',
+            source: 'labelSource',
+            layout: {
+                'text-field': ['get', 'label'],
+                'text-size': 12,
+                'text-anchor': 'center',
+                'symbol-placement': 'point', // 设置符号放置方式
+            },
+            paint: {
+                'text-color': '#000'
+            }
+        });
+    });
+
+    // 创建圆形的 GeoJSON 数据
+    function createCircleGeoJSON(center, radiusInMeters) {
+        const points = 64;
+        const coords = {
+            latitude: center[1],
+            longitude: center[0]
+        };
+        const km = radiusInMeters / 1000;
+        const ret = [];
+        const distanceX = km / (111.32 * Math.cos(coords.latitude * Math.PI / 180));
+        const distanceY = km / 110.574;
+
+        for (let i = 0; i < points; i++) {
+            const theta = (i / points) * (2 * Math.PI);
+            const x = distanceX * Math.cos(theta);
+            const y = distanceY * Math.sin(theta);
+
+            ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+
+        return {
+            type: 'FeatureCollection',
+            features: [{
+                type: 'Feature',
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [ret]
+                }
+            }]
+        };
+    }
+
+    // 创建标签的 GeoJSON 数据
+    function createLabelGeoJSON(center, radiusInMeters) {
+        const points = 8; // 标签数量
+        const coords = {
+            latitude: center[1],
+            longitude: center[0]
+        };
+        const km = radiusInMeters / 1000;
+        const labels = [];
+        const distanceX = km / (111.32 * Math.cos(coords.latitude * Math.PI / 180));
+        const distanceY = km / 110.574;
+
+        for (let i = 0; i < points; i++) {
+            const theta = (i / points) * (2 * Math.PI);
+            const x = distanceX * Math.cos(theta);
+            const y = distanceY * Math.sin(theta);
+
+            labels.push({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [coords.longitude + x, coords.latitude + y]
+                },
+                properties: {
+                    label: `Label ${i + 1}`
+                }
+            });
+        }
+
+        return {
+            type: 'FeatureCollection',
+            features: labels
+        };
+    }
+</script>
+</body>
+</html>

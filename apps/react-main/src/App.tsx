@@ -6,13 +6,13 @@
 import { lazy, Suspense } from 'react'
 import {
   createHashRouter,
-  RouterProvider,
-  redirect
-  // Routes,
-  // Route,
-  // HashRouter,
+  // RouterProvider,
+  redirect,
+  Routes,
+  Route,
+  HashRouter,
 } from 'react-router-dom'
-import { Spin } from 'antd'
+// import { Spin } from 'antd'
 import { initializeApp } from '@/store/reducer/login'
 import { getToken } from '@/utils/store'
 
@@ -55,37 +55,37 @@ export const routes = createHashRouter([
 export default function App() {
   initializeApp()
   // way1:
-  // return (
-  //   <HashRouter>
-  //     <Routes>
-  //       <Route
-  //         path='/'
-  //         element={
-  //           <Suspense>
-  //             <Home />
-  //           </Suspense>
-  //         }
-  //       >
-  //         <Route
-  //           path='*'
-  //           element={
-  //             <Suspense>
-  //               <ErrorPage />
-  //             </Suspense>
-  //           }
-  //         />
-  //       </Route>
-  //       <Route
-  //         path='/login'
-  //         element={
-  //           <Suspense>
-  //             <Login />
-  //           </Suspense>
-  //         }
-  //       />
-  //     </Routes>
-  //   </HashRouter>
-  // )
-  // way2：
-  return <RouterProvider router={routes} fallbackElement={<Spin />}/>
+  return (
+    <HashRouter>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <Suspense>
+              <Home />
+            </Suspense>
+          }
+        >
+          <Route
+            path='*'
+            element={
+              <Suspense>
+                <ErrorPage />
+              </Suspense>
+            }
+          />
+        </Route>
+        <Route
+          path='/login'
+          element={
+            <Suspense>
+              <Login />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </HashRouter>
+  )
+  // way2：还是有些问题
+  // return <RouterProvider router={routes} fallbackElement={<Spin />}/>
 }
