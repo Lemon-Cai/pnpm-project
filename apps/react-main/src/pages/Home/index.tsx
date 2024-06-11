@@ -79,7 +79,7 @@ const Home: React.FC = (props) => {
         {/* 面包屑 */}
 
         {/* 内容 */}
-        <Layout.Content className='main-container'>
+        <Layout.Content className='main-container' id='main'>
           <Suspense>
             <AppRoutes />
           </Suspense>

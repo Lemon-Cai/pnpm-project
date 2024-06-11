@@ -6,6 +6,11 @@
 import { http, HttpResponse, delay } from 'msw'
 import { TEST_ACCOUNT } from '@/config/constants'
 import { generateIdsAndParentIds, generateToken, /* verifyToken */ } from '../util'
+// import * as fs from 'fs'
+// import path from 'path'
+
+// const fs = require('fs')
+// const path = require('path')
 
 const handlers = [
   http.post('/mock/login', async ({ request, params }) => {
@@ -59,11 +64,27 @@ const handlers = [
 
       console.log(params, request)
 
+
       const menus = require('../data/menu.json')
+      
       console.log('allMenus', menus)
 
       // 动态生成 id, 请求之后复制到 menu.json中, 已存在的不会在生成
-      generateIdsAndParentIds(menus)
+      let flag = generateIdsAndParentIds(menus)
+
+      // 此时的menus有重新生成的id
+      if (flag) {
+        // 更新menus.json 
+        // const filePath = path.resolve(__dirname, 'src', 'mock', 'data', 'menu.json')
+        // try {
+        //   // const fileContent = fs.readFileSync(filePath, 'utf8') // 读取文件内容
+        //   // let data = JSON.parse(fileContent)
+        //   // data.hash = nanoid() // 生成唯一的哈希值
+        //   fs.writeFileSync(filePath, JSON.stringify(menus, null, 2))
+        // } catch (err) {
+        //   console.error('读取文件出错:', err)
+        // }
+      }
 
       return HttpResponse.json(
         {

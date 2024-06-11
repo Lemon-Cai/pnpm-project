@@ -1,7 +1,7 @@
 /*
  * @Author: CP
  * @Date: 2023-11-03 09:47:33
- * @Description: 
+ * @Description:
  */
 import { lazy, Suspense } from 'react'
 import {
@@ -10,17 +10,15 @@ import {
   redirect,
   Routes,
   Route,
-  HashRouter,
+  HashRouter
 } from 'react-router-dom'
 // import { Spin } from 'antd'
 import { initializeApp } from '@/store/reducer/login'
 import { getToken } from '@/utils/store'
 
-
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
-
 
 export const routes = createHashRouter([
   {
@@ -34,7 +32,7 @@ export const routes = createHashRouter([
       }
       return null
     },
-    errorElement: <ErrorPage />, // 如果出错展示哪个 Component
+    errorElement: <ErrorPage /> // 如果出错展示哪个 Component
   },
   {
     path: '/login',
@@ -42,7 +40,7 @@ export const routes = createHashRouter([
       <Suspense>
         <Login />
       </Suspense>
-    ),
+    )
   },
   {
     path: '*',
@@ -59,7 +57,7 @@ export default function App() {
     <HashRouter>
       <Routes>
         <Route
-          path='/'
+          path="/"
           element={
             <Suspense>
               <Home />
@@ -67,7 +65,7 @@ export default function App() {
           }
         >
           <Route
-            path='*'
+            path="*"
             element={
               <Suspense>
                 <ErrorPage />
@@ -76,7 +74,7 @@ export default function App() {
           />
         </Route>
         <Route
-          path='/login'
+          path="/login"
           element={
             <Suspense>
               <Login />

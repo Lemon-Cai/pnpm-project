@@ -37,19 +37,32 @@ console.log(customNanoid())
  * @param parentId 
  */
 export function generateIdsAndParentIds(items: MenuObject[], parentId: string = '-1') {
-  items.forEach((item, index) => {
-    // 如果id 不存在 生成唯一的 id
-    !item.id && (item.id = nanoid())
+  let hasNewId = false // 判断是否有重新生成id
 
-    // item.id = customNanoid()
-    // 设置 parentId
-    item.parentId = parentId || '-1'
+  function loop (list: MenuObject[], parentId: string = '-1') {
+    list.forEach((item, index) => {
+      // 如果id 不存在 生成唯一的 id
+      if (!item.id) {
+        item.id = nanoid()
+        hasNewId = true
+      }
+  
+      // item.id = customNanoid()
+      // 设置 parentId
+      item.parentId = parentId || '-1'
+  
+      // 如果有子项，递归调用生成子项的 id 和 parentId
+      if (item.children && item.children.length > 0) {
+        loop(item.children, item.id)
+      }
+    })
+  }
 
-    // 如果有子项，递归调用生成子项的 id 和 parentId
-    if (item.children && item.children.length > 0) {
-      generateIdsAndParentIds(item.children, item.id)
-    }
-  })
+  loop(items, parentId)
+  
+  // 因为是直接改items，items是引用数据类型，可不用返回
+  // 返回判断是否有重新生成id，是否更新menus.json文件
+  return hasNewId
 }
 
 /**

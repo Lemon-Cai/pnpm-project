@@ -74,6 +74,17 @@
         "icon": "icon-threejs-logo",
         "type": "page",
         "children": []
+      },
+      {
+        "id": "l80oZxVVngK641doHb3Hc",
+        "parentId": "05sqgBpC0Y1seW2VIIBH5",
+        "name": "threeJs",
+        "level": "",
+        "filePath": "/pages/ThreeJs/Case_03",
+        "path": "/threeJs/case_03",
+        "icon": "icon-threejs-logo",
+        "type": "page",
+        "children": []
       }
     ]
   },
@@ -156,7 +167,7 @@
     ]
   },
   {
-    "id": "",
+    "id": "-dAlINF3uyhY2yBwZoGnR",
     "parentId": "-1",
     "name": "Fabric.js",
     "level": "",

@@ -19,6 +19,7 @@ const Advance = lazy(() => import('../pages/Cesium/Advance'))
 const FirstCase = lazy(() => import('../pages/ThreeJs/FirstCase'))
 const SecondCase = lazy(() => import('../pages/ThreeJs/SecondCase'))
 const ThreeEarth = lazy(() => import('../pages/ThreeJs/Earth'))
+const ThreeRain = lazy(() => import('../pages/ThreeJs/Case_03'))
 // 低代码平台
 const LowCode = lazy(() => import('../pages/LowCode'))
 
@@ -93,6 +94,13 @@ export const menuItems: MyMenuItem[] = [
         label: '地球',
         // type: "group",
         element: LazyLoad(<ThreeEarth />),
+      },
+      {
+        key: '/threeJs/rain',
+        path: 'rain',
+        label: '下雨特效',
+        // type: "group",
+        element: LazyLoad(<ThreeRain />),
       },
     ],
   },
