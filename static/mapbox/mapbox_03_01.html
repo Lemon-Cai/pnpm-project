@@ -77,9 +77,10 @@
     let trajectoryIndex = 0;
     // 更新轨迹数据源
     function updateTrajectory(newPoint) {
-      trajectory.push(newPoint);
-      trajectoryGeoJSON.features[0].geometry.coordinates = trajectory;
-      map.getSource('route').setData(trajectoryGeoJSON);
+      trajectory = newPoint
+      // trajectory.push(newPoint);
+      // trajectoryGeoJSON.features[0].geometry.coordinates = trajectory;
+      // map.getSource('route').setData(trajectoryGeoJSON);
     }
     // 计算模型位置函数
     function getModelPosition(progress, segment) {
@@ -90,50 +91,33 @@
       // const lng = start[0] + (end[0] - start[0]) * segmentProgress;
       // const lat = start[1] + (end[1] - start[1]) * segmentProgress;
       // return [lng, lat];
-      if (segment < 0) {
-        return trajectory[0]
-      }
-      if (segment > trajectory.length - 1){
-        return trajectory[trajectory.length - 1]
-      } else {
-        return trajectory[segment]
-      }
+      // if (segment < 0) {
+      //   return trajectory[0]
+      // }
+      // if (segment > trajectory.length - 1){
+      //   return trajectory[trajectory.length - 1]
+      // } else {
+      //   return trajectory[segment]
+      // }
+      return trajectory[0]
     }
 
+    let customLayer = {}
 
-    map.on('load', () => {
-
-      map.addSource('route', {
-        'type': 'geojson',
-        'data': trajectoryGeoJSON
-      })
-
-      map.addLayer({
-        'id': 'trajectory-layer',
-        'type': 'line',
-        'source': 'route',
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-          'line-color': '#888',
-          'line-width': 4
-        }
-
-      })
-
-
+    function addModel (position) {
+      
       const modelRotate = [Math.PI / 2, 0, 0];
       let mixer, clock, model;
-      let segment = 0; // 当前轨迹段索引
-      let lastUpdate = Date.now();
-      let progress = 0; // 初始化进度
-
-      map.addLayer({
+      // let segment = 0; // 当前轨迹段索引
+      // let lastUpdate = Date.now();
+      // let progress = 0; // 初始化进度
+      customLayer = {
         'id': 'custom-model-layer',
         'type': 'custom',
         'renderingMode': '3d',
+        updatePosition (newPosition) {
+          this.position = newPosition
+        },
         'onAdd': function (map, mbxContext) {
           const scene = new THREE.Scene();
           const camera = new THREE.Camera();
@@ -172,6 +156,10 @@
           this.camera = camera;
           this.renderer = renderer;
           this.modelRotate = modelRotate;
+          this.position = position
+          // this.updatePosition = (newPosition) => {
+          //   this.position = newPosition
+          // }
         },
         'render': function (gl, matrix) {
           const rotationX = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1, 0, 0), this.modelRotate[0]);
@@ -181,12 +169,13 @@
           const m = new THREE.Matrix4().fromArray(matrix);
           const scale = mapboxgl.MercatorCoordinate.fromLngLat([0, 0]).meterInMercatorCoordinateUnits();
 
-          const now = Date.now();
-          const elapsed = (now - lastUpdate) / 1000; // 10秒完成一个段
-          progress += elapsed; // 增加进度
+          // const now = Date.now();
+          // const elapsed = (now - lastUpdate) / 1000; // 10秒完成一个段
+          // progress += elapsed; // 增加进度
 
           // 动态更新模型位置
-          const [lng, lat] = getModelPosition(progress, segment);
+          // const [lng, lat] = getModelPosition(progress, segment);
+          const [lng, lat] = this.position;
           const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat([lng, lat]);
 
           const modelTransform = {
@@ -217,27 +206,63 @@
           this.renderer.render(this.scene, this.camera);
           this.map.triggerRepaint();
 
-          // 更新到下一个段
-          if (progress >= 1) {
-            progress = 0; // 重置进度
-            lastUpdate = now;
-            segment++;
-            // if (segment < trajectory.length - 2) {
-            //   segment++;
-            // }
-          } else {
-            lastUpdate = now;
-          }
+          // // 更新到下一个段
+          // if (progress >= 1) {
+          //   progress = 0; // 重置进度
+          //   lastUpdate = now;
+          //   segment++;
+          //   // if (segment < trajectory.length - 2) {
+          //   //   segment++;
+          //   // }
+          // } else {
+          //   lastUpdate = now;
+          // }
         }
-      });
+      }
+      map.addLayer(customLayer);
+
+    }
+
+
+    map.on('load', () => {
+
+      map.addSource('route', {
+        'type': 'geojson',
+        'data': trajectoryGeoJSON
+      })
+
+      map.addLayer({
+        'id': 'trajectory-layer',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        'paint': {
+          'line-color': '#888',
+          'line-width': 4
+        }
+
+      })
+
+      addModel(trajectory[0])
 
       let count = 0
       // 动态更新轨迹示例
       let timer = setInterval(() => {
-        const lastPoint = trajectory[trajectory.length - 1];
-        const newPoint = [lastPoint[0] + Math.ceil(Math.random() * 100) / 10000, lastPoint[1] + Math.ceil(Math.random() * 100) / 10000];
-        updateTrajectory(newPoint);
-        lastUpdate = Date.now(); // 重置更新时间
+
+        if (typeof customLayer.updatePosition === 'function') {
+          const lastPoint = customLayer.position
+          const newPoint = [lastPoint[0] + 4 * Math.ceil(Math.random() * 100) / 100000, lastPoint[1] +  Math.ceil(Math.random() * 100) / 100000];
+          customLayer.updatePosition(newPoint)
+        }
+
+
+        // const lastPoint = trajectory[trajectory.length - 1];
+        // const newPoint = [lastPoint[0] + Math.ceil(Math.random() * 100) / 10000, lastPoint[1] + Math.ceil(Math.random() * 100) / 10000];
+        // updateTrajectory([newPoint]);
+        // lastUpdate = Date.now(); // 重置更新时间
         count++
         if (count > 10) {
           clearInterval(timer)

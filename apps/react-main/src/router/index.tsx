@@ -13,6 +13,9 @@ const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Induction = lazy(() => import('../pages/Cesium/Induction'))
 // cesium 进阶
 const Advance = lazy(() => import('../pages/Cesium/Advance'))
+const CesiumCase03 = lazy(() => import('../pages/Cesium/Case_03'))
+const CesiumCase04 = lazy(() => import('../pages/Cesium/Case_04'))
+
 // ThreeJs的使用
 // const ThreeJs = lazy(() => import('../pages/ThreeJs'))
 
@@ -61,11 +64,33 @@ export const menuItems: MyMenuItem[] = [
     element: LazyLoad(<Induction />),
   },
   {
-    key: '/cesium/advance',
-    path: '/cesium/advance',
-    label: '三维地图进阶',
+    key: '/cesium',
+    path: '/cesium',
+    label: '三维地图',
     icon: <HomeOutlined />,
-    element: LazyLoad(<Advance />),
+    children: [
+      {
+        key: '/cesium/advance',
+        path: 'advance',
+        label: '第一个案例',
+        // type: "group",
+        element: LazyLoad(<Advance />),
+      },
+      {
+        key: '/cesium/case_03',
+        path: 'case_03',
+        label: '第二个案例',
+        // type: "group",
+        element: LazyLoad(<CesiumCase03 />),
+      },
+      {
+        key: '/cesium/case_04',
+        path: 'case_04',
+        label: '第三个案例',
+        // type: "group",
+        element: LazyLoad(<CesiumCase04 />),
+      }
+    ]
   },
   {
     key: '/threeJs',
