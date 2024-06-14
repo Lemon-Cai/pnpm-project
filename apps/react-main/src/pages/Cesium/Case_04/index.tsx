@@ -4,14 +4,7 @@
  * @Description:
  */
 import useMounted from '@/hooks/useMounted'
-import {
-  Cartesian3,
-  ConstantProperty,
-  CzmlDataSource,
-  JulianDate,
-  Terrain,
-  Viewer
-} from 'cesium'
+import { Cartesian3, ConstantProperty, CzmlDataSource, JulianDate, Terrain, Viewer } from 'cesium'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -53,7 +46,22 @@ const Case = () => {
   const init = () => {
     // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
     const viewer = new Viewer('cesiumContainer', {
-      terrain: Terrain.fromWorldTerrain()
+      terrain: Terrain.fromWorldTerrain(),
+      //地形图层TerrainProvider
+      
+      // terrainProvider: createWorldTerrainAsync({
+      //   requestWaterMask: true //水面特效
+      // }), //viewer是所有api的入口
+
+      //图层控件显隐控制
+      timeline: false, //隐藏时间轴
+      animation: false, //隐藏动画控制器
+      geocoder: false, //隐藏地名查找控制器
+      homeButton: false, //隐藏Home按钮
+      sceneModePicker: false, //隐藏投影方式控制器
+      baseLayerPicker: false, //隐藏图层选择控制器
+      navigationHelpButton: false, //隐藏帮助按钮
+      fullscreenButton: false //隐藏全屏按钮
     })
 
     setViewer(viewer)
@@ -100,6 +108,8 @@ const Case = () => {
         let entityCollection = res.entities
         // / 计算实体集合的可用性时间间隔
         let availability = entityCollection.computeAvailability()
+
+        console.log('availability', availability);
         // 创建标签实体
         let labelEntity = viewer?.entities.add({
           position: Cartesian3.fromDegrees(119, 32, 1000),
