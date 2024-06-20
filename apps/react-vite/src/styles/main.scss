@@ -1,0 +1,20 @@
+
+@use './normal.scss';
+
+
+@layer reset , antd;
+
+
+@import url('./antd.scss') layer(reset);
+
+
+@import url('antd/dist/reset.css');
+
+
+
+
+
+#root {
+  width: 100%;
+  height: 100%;
+}

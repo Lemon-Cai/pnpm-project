@@ -1,0 +1,30 @@
+/*
+ * @Author: CP
+ * @Date: 2024-06-17 16:02:13
+ * @Description: 
+ */
+import { Button, Result } from "antd";
+import { useNavigate } from "react-router-dom";
+import { HOME_URL } from "@/config/constants";
+import "./index.scss";
+
+const NotFound = () => {
+	const navigate = useNavigate();
+	const goHome = () => {
+		navigate(HOME_URL);
+	};
+	return (
+		<Result
+			status="404"
+			title="404"
+			subTitle="Sorry, the page you visited does not exist."
+			extra={
+				<Button type="primary" onClick={goHome}>
+					Back Home
+				</Button>
+			}
+		/>
+	);
+};
+
+export default NotFound;

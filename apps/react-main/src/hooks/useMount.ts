@@ -8,17 +8,17 @@ import { useEffect, useRef } from "react"
 import useEffectOnce from './useEffectOnce'
 
 const useMount = (fn: () => void) => {
-  const firstMount = useRef<boolean>(true)
+  const isMounted = useRef<boolean>(false)
   useEffect(() => {
-    firstMount.current = false
+    isMounted.current = true
     return () => {
-      // firstMount.current = true
+      // isMounted.current = true
     }
   }, [])
   
   // useEffect(() => {
   //   let deMounted = () => {}
-  //   if (!firstMount.current) {
+  //   if (!isMounted.current) {
   //     deMounted = fn?.() as any
   //     if (typeof deMounted === 'function') return deMounted
   //   }
