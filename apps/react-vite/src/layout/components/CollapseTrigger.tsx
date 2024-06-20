@@ -12,8 +12,9 @@ interface CollapseTriggerImpl {
 }
 
 const StyledCollapse = styled.div`
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
+  color: var(--classic-head-color);
   transition: color 0.3s;
 `
 

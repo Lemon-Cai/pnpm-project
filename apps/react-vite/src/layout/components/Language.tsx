@@ -1,7 +1,13 @@
+/*
+ * @Author: CP
+ * @Date: 2024-06-19 16:00:04
+ * @Description: 
+ */
 import { Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import Icon from '@/components/Icon'
 import { useGlobalStore } from '@/store'
+import {TOOLBAR_ICON_SIZE} from '@/layout/constants'
 
 const languageList: MenuProps['items'] = [
   { label: '简体中文', key: 'zh' },
@@ -19,13 +25,15 @@ const Language = () => {
   }
 
   return (
-    <Dropdown
-      menu={{ selectable: true, items: languageList, onClick: handleSelectLanguage }}
-      placement="bottomLeft"
-      arrow={{ pointAtCenter: true }}
-    >
-      <Icon type="language" size={24}></Icon>
-    </Dropdown>
+    <div className='language'>
+      <Dropdown
+        menu={{ selectable: true, items: languageList, onClick: handleSelectLanguage }}
+        placement="bottom"
+        arrow={{ pointAtCenter: true }}
+      >
+        <Icon type="icon-language" style={{ fontSize: `${TOOLBAR_ICON_SIZE}px` }} ></Icon>
+      </Dropdown>
+    </div>
   )
 }
 

@@ -12,7 +12,7 @@ import { TITLE } from '../constants'
 
 interface StyledBlockProps {
   width: number
-  isCollapse: boolean
+  $isCollapse: boolean; // 使用$前缀来标记为 transient prop 。 避免 React 试图将 isCollapse 作为属性传递给原生的 div 元素
 }
 
 interface AppLogoImpl {
@@ -25,7 +25,7 @@ const StyledBlock = styled.div<StyledBlockProps>`
   width: ${(props) => props.width}px;
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.isCollapse ? 'center' : 'flex-start')};
+  justify-content: ${(props) => (props.$isCollapse ? 'center' : 'flex-start')};
   gap: 12px;
   transition: all 0.2s;
 `
@@ -41,7 +41,7 @@ const StyledH2 = styled.h2`
 
 const AppLogo: React.FC<AppLogoImpl> = (props) => {
   return (
-    <StyledBlock width={props.width} isCollapse={props.isCollapse}>
+    <StyledBlock width={props.width} $isCollapse={props.isCollapse}>
       <StyledLogoImage src={LogoSvg} alt="logo" />
       {!props.isCollapse ? <StyledH2>{TITLE}</StyledH2> : null}
     </StyledBlock>

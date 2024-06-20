@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2024-06-19 16:00:04
+ * @Description: 
+ */
 import { Layout as AntLayout } from 'antd'
 import Page from '@/components/Page'
 import { Outlet, useLocation } from 'react-router-dom';
@@ -12,7 +17,7 @@ const StyledContent = styled(Page.Content)`
 const { Sider } = AntLayout;
 
 
-const Classic = () => {
+const Vertical = () => {
 
   const { state } = useLocation()
   const { key = 'key' } = state || {}
@@ -34,4 +39,4 @@ const Classic = () => {
   )
 }
 
-export default Classic 
+export default Vertical 

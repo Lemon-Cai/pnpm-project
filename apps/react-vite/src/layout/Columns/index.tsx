@@ -17,7 +17,7 @@ const StyledContent = styled(Page.Content)`
 const { Sider } = AntLayout;
 
 
-const Classic = () => {
+const Columns = () => {
 
   const { state } = useLocation()
   const { key = 'key' } = state || {}
@@ -25,7 +25,7 @@ const Classic = () => {
   return (
     <Page>
       {/* 侧边栏 */}
-      <Sider width={280}>
+      <Sider width={80}>
 
       </Sider>
       <Page.Header></Page.Header>
@@ -44,4 +44,4 @@ const Classic = () => {
   )
 }
 
-export default Classic 
+export default Columns 
