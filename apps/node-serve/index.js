@@ -3,96 +3,22 @@
  * @Date: 2024-01-08 09:21:31
  * @Description:
  */
-const Koa = require('koa')
+const Koa = require('koa');
+const bodyparser = require('koa-bodyparser');
+const responseMiddleware = require('./middleware/commonResponse');
+const loginRouter = require('./controller/login');
 
-// const Router = require('koa-router')
-const body = require('koa-body')
-const responseMiddleware = require('./middleware/commonResponse')
+const app = new Koa();
 
-// 路由
-const loginRouter = require('./controller/login')
+// 注册中间件
+app.use(bodyparser());
+app.use(responseMiddleware());
 
-const app = new Koa()
-// app.use(
-//   body({
-//     multipart: true
-//   })
-// )
+// 注册路由
+app.use(loginRouter.routes());
+app.use(loginRouter.allowedMethods());
 
-// app.use(responseMiddleware)
+app.listen(3010, () => {
+  console.log('open server localhost:3010');
+});
 
-// 拦截器
-// app.use(async (ctx) => {
-//   console.log('ctx = ', ctx);
-//   const { cookies } = ctx
-
-//   const access_token = cookies.get('access_token')
-
-//   const { Cookie, token, Authorization } = ctx.request.headers;
-
-//   // 校验token是否过期
-//   if (!token) {
-
-//   }
-//   ctx.response.body = 'Hello, koa2!';
-// })
-
-// // 测试
-// router.get('/:category/:title', (ctx, next) => {
-//   console.log(ctx.params);
-//   // => { category: 'programming', title: 'how-to-node' }
-
-//   ctx.response.body = ctx.params
-// });
-
-// router.get("/", (ctx, next) => {
-//   ctx.body = "hello hei";
-
-//   // 文件流
-//   // ctx.set('Content-Type', 'text/csv; charset=utf-8')
-//   // // 中文必须用 encodeURIComponent 包裹，否则会报 Invalid character in header content ["Content-Disposition"]
-//   // ctx.set(
-//   //   'Content-Disposition',
-//   //   `attachment; filename=${encodeURIComponent('详细数据')}.csv`
-//   // )
-
-//   next()
-// });
-
-// const router = new Router();
-
-// router.post('/login', (ctx, next) => {})
-
-// app.use(router.routes())
-
-
-// const router = new Router({
-//   // prefix: '/api' // 所以请求前缀
-// })
-
-// router.get('/test', (ctx, next) => {
-//   ctx.body = '你好， koa'
-//   next()
-// })
-// app.use(router.routes())
-
-// app.use(async ctx => {
-//   ctx.body = 'Hello World';
-// });
-
-app.use(loginRouter.routes()).use(loginRouter.allowedMethods())
-
-
-app.use(
-  body({
-    multipart: true
-  })
-)
-
-app.use(responseMiddleware)
-
-
-app.listen(3010, (ctx) => {
-  console.log('open server localhost:3010')
-  console.log(ctx)
-})

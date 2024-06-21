@@ -29,20 +29,23 @@ type Actions = {
   updateState: (params?: any) => void
 }
 
-const useGlobalStore = create<Store & Actions>((set) => ({
-  layout: 'classic',
-  headBackground: true,
-  isCollapse: false,
-  language: 'zh',
-  showTabs: true,
-  showFooter: false,
-  showTopMenuIcon: false,
-  
-  isDark: false,
-  weakOrGray: undefined,
-  updateState: (values = {}) => {
-    set((state) => ({ ...state, ...values }))
+const useGlobalStore = create<Store & Actions>((set) => {
+
+  return {
+    layout: 'classic',
+    headBackground: true,
+    isCollapse: false,
+    language: 'zh',
+    showTabs: true,
+    showFooter: false,
+    showTopMenuIcon: false,
+    
+    isDark: false,
+    weakOrGray: undefined,
+    updateState: (values = {}) => {
+      set((state) => ({ ...state, ...values }))
+    },
   }
-}))
+})
 
 export default useGlobalStore

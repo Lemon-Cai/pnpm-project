@@ -10,6 +10,9 @@ export const AUTHORITY = 'Auth'
 export const TOKEN = 'Bearer'
 
 // * 首页地址（默认）
+export const LOGIN_URL = "/login";
+
+// * 首页地址（默认）
 export const HOME_URL = "/home";
 
 // 账户

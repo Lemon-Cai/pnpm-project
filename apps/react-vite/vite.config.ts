@@ -1,3 +1,8 @@
+/*
+ * @Author: CP
+ * @Date: 2024-06-20 17:21:55
+ * @Description: 
+ */
 import { defineConfig } from 'vite'
 import path from 'node:path'
 
@@ -16,5 +21,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       'mock': path.resolve(__dirname, 'mock'),
     },
+  },
+  server: {
+    cors: true,
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:3010",
+        ws: true,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, "")
+      }
+    }
   }
 })

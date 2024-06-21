@@ -7,6 +7,8 @@
 import { createStyles } from 'antd-style'
 
 import Page from '@/components/Page'
+import { useUserStore } from '@/store'
+import useMounted from '@/hooks/useMounted'
 
 const useStyles = createStyles(({ token, css, prefixCls }) => ({
   default: css`
@@ -24,6 +26,12 @@ const useStyles = createStyles(({ token, css, prefixCls }) => ({
 
 const Home = () => {
   const { styles } = useStyles()
+
+  const userInfo = useUserStore(state => state.userInfo)
+
+  useMounted(() => {
+    console.log('useMounted , userInfo = ', userInfo)
+  })
 
   return (
   //   <App>

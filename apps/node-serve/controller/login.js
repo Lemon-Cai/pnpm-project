@@ -4,20 +4,17 @@
  * @Description: 
  */
 
-const Router = require("koa-router");
-const jwt = require('jsonwebtoken')
-
-const { TEST_ACCOUNT, SECRET } = require('../constants')
-const { requestInterceptor } = require('../interceptor/index')
-
+const jwt = require('jsonwebtoken');
+const Router = require('koa-router');
+const { TEST_ACCOUNT, SECRET } = require('../constants');
+const { requestInterceptor } = require('../interceptor/index');
 
 const router = new Router({
-  // prefix: '/api' // 所以请求前缀
+  // prefix: '/api' // 所有请求前缀
 });
 
-router.post('/login', (ctx, next) => {
-
-  const { username, password } = ctx.request.body
+router.post('/login', (ctx) => {
+  const { username, password } = ctx.request.body;
 
   console.log(username, password);
 
@@ -25,18 +22,15 @@ router.post('/login', (ctx, next) => {
   const user = TEST_ACCOUNT.find((u) => u.username === username && u.password === password);
 
   if (!user) {
-    ctx.status = 403
-    ctx.fail('登录失败，用户不存在', 400)
-    return next()
+    ctx.status = 403;
+    ctx.fail('登录失败，用户不存在', 400);
+    return;
   }
 
-  // 生成 token，并设置过期时间为 1 天/小时
+  // 生成 token，并设置过期时间为 1 天
   const token = jwt.sign({ userId: user.id, username: user.username }, SECRET, { expiresIn: '1d' });
 
-  // 在实际应用中，可以返回更多信息，如用户信息等
-  res.json({ token });
-
-  // ctx.body = '登录接口'
+  // 设置响应体
   ctx.success({
     accessToken: token,
     username: username,
@@ -45,25 +39,17 @@ router.post('/login', (ctx, next) => {
     roleId: '',
     position: '',
     positionId: ''
-  }, '登录成功')
+  }, '登录成功');
+});
 
-  return next()
-})
-
-
-router.get('/getUserInfo', requestInterceptor, (ctx, next) => {
+router.get('/getUserInfo', requestInterceptor, (ctx) => {
   ctx.body = { msg: ctx.body.error, user: ctx.state.user };
-  return next()
-})
+});
 
-/**
- * 获取所有菜单
- */
-router.get('/getAllMenus', requestInterceptor, (ctx, next) => {
-  let menus = require('../data/menus.json')
+router.get('/getAllMenus', requestInterceptor, (ctx) => {
+  const menus = require('../data/menus.json');
   ctx.body = { msg: ctx.body.error, data: menus };
   // ctx.success(menus, '获取成功')
-  return next()
-})
+});
 
-module.exports = router
+module.exports = router;

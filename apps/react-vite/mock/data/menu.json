@@ -1,117 +1,188 @@
 [
   {
-    "id": "mgW4Y-9iexAaV1l6M3aID",
-    "parentId": "-1",
-    "name": "Dashboard",
-    "level": "",
-    "filePath": "/pages/Dashboard",
-    "path": "/dashboard",
-    "icon": "icon-dashboard",
-    "type": "page",
-    "children": []
-  },
-  {
-    "id": "9y0_8csHQwGY2yIhnA1bf",
-    "parentId": "-1",
-    "name": "三维地图入门",
-    "level": "",
-    "filePath": "/pages/Cesium/Induction",
-    "path": "/cesium/induction",
-    "icon": "icon-three-dimensional",
-    "type": "page",
-    "children": []
-  },
-  {
-    "id": "zfgsIYRS9D78slna_ertj",
-    "parentId": "-1",
-    "name": "三维地图进阶",
-    "level": "",
-    "filePath": "/pages/Cesium/Advance",
-    "path": "/cesium/advance",
-    "icon": "icon-three-dimensional",
-    "type": "page",
-    "children": []
-  },
-  {
-    "id": "05sqgBpC0Y1seW2VIIBH5",
-    "parentId": "-1",
-    "name": "threeJs",
-    "level": "",
+    "id": "",
+    "name": "基础管理",
     "filePath": "",
-    "path": "",
-    "icon": "icon-threejs-logo",
-    "type": "page",
+    "path": "/basicManager",
+    "icon": "",
+    "parentId": "-1",
+    "type": "",
     "children": [
       {
-        "id": "SMF-qczOicihktvP-yYi6",
-        "parentId": "05sqgBpC0Y1seW2VIIBH5",
-        "name": "threeJs",
+        "id": "",
+        "parentId": "",
+        "name": "Dashboard",
         "level": "",
-        "filePath": "/pages/ThreeJs/FirstCase",
-        "path": "/threeJs/firstCase",
-        "icon": "icon-threejs-logo",
+        "filePath": "/pages/Dashboard",
+        "path": "/basicManager/dashboard",
+        "icon": "icon-dashboard",
         "type": "page",
         "children": []
       },
       {
-        "id": "e4KdSlg8hz9Pb_NNIc1cP",
-        "parentId": "05sqgBpC0Y1seW2VIIBH5",
-        "name": "threeJs",
-        "level": "",
-        "filePath": "/pages/ThreeJs/SecondCase",
-        "path": "/threeJs/secondCase/:geometryType?",
-        "icon": "icon-threejs-logo",
-        "type": "page",
-        "children": []
-      },
-      {
-        "id": "UEUu5_RNJ7Ljpf6_ZoDSb",
-        "parentId": "05sqgBpC0Y1seW2VIIBH5",
-        "name": "threeJs",
-        "level": "",
-        "filePath": "/pages/ThreeJs/Earth",
-        "path": "/threeJs/earth",
-        "icon": "icon-threejs-logo",
-        "type": "page",
-        "children": []
-      },
-      {
-        "id": "l80oZxVVngK641doHb3Hc",
-        "parentId": "05sqgBpC0Y1seW2VIIBH5",
-        "name": "threeJs",
-        "level": "",
-        "filePath": "/pages/ThreeJs/Case_03",
-        "path": "/threeJs/case_03",
-        "icon": "icon-threejs-logo",
-        "type": "page",
-        "children": []
+        "id": "",
+        "name": "基础组件",
+        "filePath": "",
+        "path": "/basicManager/components",
+        "icon": "",
+        "children": [],
+        "parentId": "PeNfFghTPsE4VbkP9Rse7"
       }
     ]
   },
   {
-    "id": "R4BOTo29Du_Kj35MaSUs9",
-    "parentId": "-1",
-    "name": "低代码",
-    "level": "",
-    "filePath": "/pages/LowCode",
-    "path": "/lowCode",
-    "icon": "icon-three-dimensional",
-    "type": "page",
-    "children": []
-  },
-  {
-    "id": "fc_h7SJrH5bjU8Aw51BXO",
-    "parentId": "-1",
-    "name": "富文本编辑器",
-    "level": "",
+    "id": "",
+    "name": "三维管理",
     "filePath": "",
-    "path": "",
-    "icon": "icon-rich-text",
-    "type": "page",
+    "path": "/threeManager",
+    "icon": "",
     "children": [
       {
-        "id": "EeVXyHsrF91_UXLQVmyAS",
-        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "id": "",
+        "name": "ThreeJs",
+        "filePath": "",
+        "path": "/threeManager/threeJs",
+        "icon": "",
+        "children": [
+          {
+            "id": "",
+            "parentId": "",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/FirstCase",
+            "path": "/threeManager/threeJs/firstCase",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "",
+            "parentId": "",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/SecondCase",
+            "path": "/threeManager/threeJs/secondCase/:geometryType?",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "",
+            "parentId": "",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/Earth",
+            "path": "/threeManager/threeJs/earth",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "",
+            "parentId": "",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/Case_03",
+            "path": "/threeManager/threeJs/threeRain",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          }
+        ],
+        "parentId": ""
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "",
+    "name": "GIS管理",
+    "filePath": "",
+    "path": "/gisManager",
+    "icon": "",
+    "children": [
+      {
+        "id": "",
+        "name": "Cesium",
+        "filePath": "",
+        "path": "/gisManager/cesium",
+        "icon": "",
+        "children": [
+          {
+            "id": "",
+            "parentId": "",
+            "name": "三维地图入门",
+            "level": "",
+            "filePath": "/pages/Cesium/Induction",
+            "path": "/gisManager/cesium/induction",
+            "icon": "icon-three-dimensional",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "",
+            "parentId": "",
+            "name": "三维地图进阶",
+            "level": "",
+            "filePath": "/pages/Cesium/Advance",
+            "path": "/gisManager/cesium/advance",
+            "icon": "icon-three-dimensional",
+            "type": "page",
+            "children": []
+          }
+        ],
+        "parentId": ""
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "",
+    "name": "ERP系统",
+    "filePath": "",
+    "path": "/erp",
+    "icon": "",
+    "children": [
+      {
+        "id": "",
+        "name": "采购管理",
+        "filePath": "",
+        "path": "/erp/purchaseManage",
+        "icon": "",
+        "children": [],
+        "parentId": ""
+      },
+      {
+        "id": "",
+        "name": "库存管理",
+        "filePath": "",
+        "path": "/erp/storeManage",
+        "icon": "",
+        "children": [],
+        "parentId": ""
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "",
+    "name": "富文本编辑",
+    "filePath": "",
+    "path": "/richtext",
+    "icon": "",
+    "children": [
+      {
+        "id": "",
+        "name": "WangEditor",
+        "filePath": "",
+        "path": "/richtext/wangEditor",
+        "icon": "",
+        "children": [],
+        "parentId": ""
+      },
+      {
+        "id": "",
+        "parentId": "",
         "name": "Draft",
         "level": "",
         "filePath": "/pages/Richtext/Draft",
@@ -121,8 +192,8 @@
         "children": []
       },
       {
-        "id": "cUfVBmS86i4LEg7h6UyAU",
-        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "id": "",
+        "parentId": "",
         "name": "Quill",
         "level": "",
         "filePath": "/pages/Richtext/Quill",
@@ -132,8 +203,8 @@
         "children": []
       },
       {
-        "id": "x1OJxwGxNWWsCKIPPW2nW",
-        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "id": "",
+        "parentId": "",
         "name": "Slate",
         "level": "",
         "filePath": "/pages/Richtext/Slate",
@@ -143,8 +214,8 @@
         "children": []
       },
       {
-        "id": "wSK6L1lVLZYFOr4JmTkKP",
-        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
+        "id": "",
+        "parentId": "",
         "name": "TinyMCE",
         "level": "",
         "filePath": "/pages/Richtext/TinyMCE",
@@ -152,29 +223,27 @@
         "icon": "icon-rich-text",
         "type": "page",
         "children": []
-      },
-      {
-        "id": "_UtUd9p1aPLJ8hYXS4QG2",
-        "parentId": "fc_h7SJrH5bjU8Aw51BXO",
-        "name": "WangEditor",
-        "level": "",
-        "filePath": "/pages/Richtext/WangEditor",
-        "path": "/richtext/wangEditor",
-        "icon": "icon-rich-text",
-        "type": "page",
-        "children": []
       }
-    ]
+    ],
+    "parentId": "-1"
   },
   {
-    "id": "9v0iSaosLW3Wxqb51pxSH",
-    "parentId": "-1",
-    "name": "Fabric.js",
-    "level": "",
+    "id": "",
+    "name": "LowCode平台",
     "filePath": "",
-    "path": "http://fabricjs.com/",
-    "icon": "icon-fabric",
-    "type": "iframe",
-    "children": []
+    "path": "/lowCodePlatform",
+    "icon": "",
+    "children": [
+      {
+        "id": "",
+        "name": "低代码",
+        "filePath": "",
+        "path": "/lowCodePlatform/index",
+        "icon": "",
+        "children": [],
+        "parentId": ""
+      }
+    ],
+    "parentId": "-1"
   }
 ]

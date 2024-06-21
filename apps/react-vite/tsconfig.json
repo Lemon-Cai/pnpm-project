@@ -31,6 +31,6 @@
     },
 
   },
-  "include": ["src", "src/**/*", "scripts", "typings/**/*.d.ts", "typings/**/*.ts"],
+  "include": ["src", "src/**/*", "scripts", "typings/**/*.d.ts", "typings/**/*.ts", "mock/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }
