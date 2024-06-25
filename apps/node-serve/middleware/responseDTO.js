@@ -1,7 +1,7 @@
 /*
  * @Author: CP
  * @Date: 2024-01-08 20:35:06
- * @Description: 
+ * @Description: 统一接口返回格式
  */
 function routerResponse(option = {}) {
   return async function (ctx, next) {
@@ -11,7 +11,8 @@ function routerResponse(option = {}) {
       ctx.body = {
         code: option.successCode || 200,
         msg: msg || 'success',
-        data: data
+        data: data,
+        success: true
       };
     };
 
@@ -20,7 +21,8 @@ function routerResponse(option = {}) {
       ctx.type = option.type || 'json';
       ctx.body = {
         code: code || option.failCode || 99,
-        msg: msg || option.failMsg || 'fail'
+        msg: msg || option.failMsg || 'fail',
+        success: false
       };
     };
 

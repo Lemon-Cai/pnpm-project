@@ -1,6 +1,9 @@
 // 密钥
 const SECRET = 'dc1f6a86a5b60e8d27896fa069dd908c37d016e454e6f010da36a14ee57630dd';
 
+// 缓存前缀
+const TOKEN_PREFIX = 'cp_tech_'
+
 // 账户
 const TEST_ACCOUNT = [
   {
@@ -17,5 +20,6 @@ const TEST_ACCOUNT = [
 
 module.exports = {
   SECRET,
+  TOKEN_PREFIX,
   TEST_ACCOUNT
 }

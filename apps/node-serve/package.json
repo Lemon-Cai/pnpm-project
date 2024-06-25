@@ -4,11 +4,13 @@
   "description": "",
   "private": true,
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf hei && node index.js",
     "start": "node --inspect index.js",
-    "debug": "nodemon --inspect index.js"
+    "debug": "nodemon --inspect index.js",
+    "package": "pkg . --out-dir dist -t node16-linux-x64"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +21,10 @@
     "koa-body": "^4.1.3",
     "koa-bodyparser": "^4.4.1",
     "koa-router": "^10.0.0"
+  },
+  "pkg": {
+    "scripts": "index.js",
+    "assets": ["**/*"],
+    "outputPath": "dist"
   }
 }

@@ -3,9 +3,9 @@
  * @Date: 2024-06-19 16:00:04
  * @Description: 
  */
-// import http from '@/api'
-import { getAllStore } from '@/utils/store'
 import { create } from 'zustand'
+import { getAllStore } from '@/utils/store'
+import http from '@/api'
 
 type State = {
   isLoading: boolean
@@ -30,9 +30,9 @@ const useMenuStore = create<State & Actions>((set) => {
   const init = async () => {
     try {
 
-      // let menus = await http.get('/mock/getAllMenu')
+      let menus = await http.get('/api/getAllMenus')
 
-      // console.log('menus', menus);
+      console.log('menus', menus);
 
       let storeData = await getAllStore()
 

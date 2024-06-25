@@ -17,17 +17,17 @@ export const getToken = (key = 'access_token') => {
  * 设置 Cookie
  * @param key
  */
-
-export const getCookie = (key: string) => {
+export const getCookie = (key = 'access_token') => {
   return Cookies.get(`${STORE_PREFIX}${key}`)
 }
+
 /**
  * 获取 Cookie
  * @param key
  * @param value
  * @param options
  */
-export const setCookie = (key: string, value: any, options: Cookies.CookieAttributes = {}) => {
+export const setCookie = (key = 'access_token', value: any, options: Cookies.CookieAttributes = {}) => {
   Cookies.set(`${STORE_PREFIX}${key}`, value, options)
 }
 /**

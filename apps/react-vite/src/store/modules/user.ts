@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand'
 
-import { getStore } from '@/utils/store'
+import { getStore, setCookie } from '@/utils/store'
 import http from '@/api'
 
 type State = {
@@ -50,8 +50,11 @@ const useUserStore = create<State & Actions>()((set) => {
 
     initializeUserInfo: async () => {
       try {
-        let response = await http.post('/api/login', { username: 'admin', password: '123456' })
+        let response = await http.post<any>('/api/login', { username: 'admin', password: '123456' })
         console.log('response', response);
+        if (response.success) {
+          setCookie(void 0, response?.data!.accessToken || '', {})
+        }
         const userInfo = await getStore('userInfo')
         if (userInfo) {
           set({ userInfo, isInitialized: true })

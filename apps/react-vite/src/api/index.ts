@@ -14,7 +14,7 @@ import nProgress from 'nprogress'
 import { message } from 'antd'
 
 import { getToken } from '@/utils/store'
-import { AUTHORITY, LOGIN_URL, TOKEN } from '@/config/constants'
+import { AUTHORITY, LOGIN_URL, TOKEN, SECRET } from '@/config/constants'
 import { checkStatus } from './helper/checkStatus'
 import { ResultData } from './interface'
 import { ResultEnum } from './enums'
@@ -44,7 +44,7 @@ class HttpRequest {
         // 创建进度条
         nProgress.start()
 
-        config.headers['Authorization'] = `${AUTHORITY} xxxxxxxx` // 默认带上鉴权信息
+        config.headers['Authorization'] = `${AUTHORITY} ${SECRET}` // 默认带上鉴权信息
 
         const meta = (config as any).meta || {}
         const isAuth = meta.isAuth === false

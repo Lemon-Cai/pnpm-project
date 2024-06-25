@@ -1,3 +1,249 @@
 [
-  
+  {
+    "id": "520272062722029897357",
+    "name": "基础管理",
+    "filePath": "",
+    "path": "/basicManager",
+    "icon": "",
+    "parentId": "-1",
+    "type": "",
+    "children": [
+      {
+        "id": "937431541177685265563",
+        "parentId": "520272062722029897357",
+        "name": "Dashboard",
+        "level": "",
+        "filePath": "/pages/Dashboard",
+        "path": "/basicManager/dashboard",
+        "icon": "icon-dashboard",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "370414574841098596848",
+        "name": "基础组件",
+        "filePath": "",
+        "path": "/basicManager/components",
+        "icon": "",
+        "children": [],
+        "parentId": "520272062722029897357"
+      }
+    ]
+  },
+  {
+    "id": "945435692013723871795",
+    "name": "三维管理",
+    "filePath": "",
+    "path": "/threeManager",
+    "icon": "",
+    "children": [
+      {
+        "id": "626376472544673080136",
+        "name": "ThreeJs",
+        "filePath": "",
+        "path": "/threeManager/threeJs",
+        "icon": "",
+        "children": [
+          {
+            "id": "012323925247736890181",
+            "parentId": "626376472544673080136",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/FirstCase",
+            "path": "/threeManager/threeJs/firstCase",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "237268495145892833747",
+            "parentId": "626376472544673080136",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/SecondCase",
+            "path": "/threeManager/threeJs/secondCase/:geometryType?",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "714535694266213582629",
+            "parentId": "626376472544673080136",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/Earth",
+            "path": "/threeManager/threeJs/earth",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "458555316186414955694",
+            "parentId": "626376472544673080136",
+            "name": "threeJs",
+            "level": "",
+            "filePath": "/pages/ThreeJs/Case_03",
+            "path": "/threeManager/threeJs/threeRain",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
+          }
+        ],
+        "parentId": "945435692013723871795"
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "644675050894012278356",
+    "name": "GIS管理",
+    "filePath": "",
+    "path": "/gisManager",
+    "icon": "",
+    "children": [
+      {
+        "id": "962639784097202644474",
+        "name": "Cesium",
+        "filePath": "",
+        "path": "/gisManager/cesium",
+        "icon": "",
+        "children": [
+          {
+            "id": "917636462754261748190",
+            "parentId": "962639784097202644474",
+            "name": "三维地图入门",
+            "level": "",
+            "filePath": "/pages/Cesium/Induction",
+            "path": "/gisManager/cesium/induction",
+            "icon": "icon-three-dimensional",
+            "type": "page",
+            "children": []
+          },
+          {
+            "id": "999603038677300873325",
+            "parentId": "962639784097202644474",
+            "name": "三维地图进阶",
+            "level": "",
+            "filePath": "/pages/Cesium/Advance",
+            "path": "/gisManager/cesium/advance",
+            "icon": "icon-three-dimensional",
+            "type": "page",
+            "children": []
+          }
+        ],
+        "parentId": "644675050894012278356"
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "903219090296350959552",
+    "name": "ERP系统",
+    "filePath": "",
+    "path": "/erp",
+    "icon": "",
+    "children": [
+      {
+        "id": "225846134956101658828",
+        "name": "采购管理",
+        "filePath": "",
+        "path": "/erp/purchaseManage",
+        "icon": "",
+        "children": [],
+        "parentId": "903219090296350959552"
+      },
+      {
+        "id": "890369246333778168911",
+        "name": "库存管理",
+        "filePath": "",
+        "path": "/erp/storeManage",
+        "icon": "",
+        "children": [],
+        "parentId": "903219090296350959552"
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "569441260160531271964",
+    "name": "富文本编辑",
+    "filePath": "",
+    "path": "/richtext",
+    "icon": "",
+    "children": [
+      {
+        "id": "219105866745364705387",
+        "name": "WangEditor",
+        "filePath": "",
+        "path": "/richtext/wangEditor",
+        "icon": "",
+        "children": [],
+        "parentId": "569441260160531271964"
+      },
+      {
+        "id": "394120031216038329180",
+        "parentId": "569441260160531271964",
+        "name": "Draft",
+        "level": "",
+        "filePath": "/pages/Richtext/Draft",
+        "path": "/richtext/draft",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "759413287847000667627",
+        "parentId": "569441260160531271964",
+        "name": "Quill",
+        "level": "",
+        "filePath": "/pages/Richtext/Quill",
+        "path": "/richtext/quill",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "848179211167534466482",
+        "parentId": "569441260160531271964",
+        "name": "Slate",
+        "level": "",
+        "filePath": "/pages/Richtext/Slate",
+        "path": "/richtext/slate",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "967948563282192511543",
+        "parentId": "569441260160531271964",
+        "name": "TinyMCE",
+        "level": "",
+        "filePath": "/pages/Richtext/TinyMCE",
+        "path": "/richtext/tinyMCE",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      }
+    ],
+    "parentId": "-1"
+  },
+  {
+    "id": "315465004083473238873",
+    "name": "LowCode平台",
+    "filePath": "",
+    "path": "/lowCodePlatform",
+    "icon": "",
+    "children": [
+      {
+        "id": "776694591771645586664",
+        "name": "低代码",
+        "filePath": "",
+        "path": "/lowCodePlatform/index",
+        "icon": "",
+        "children": [],
+        "parentId": "315465004083473238873"
+      }
+    ],
+    "parentId": "-1"
+  }
 ]

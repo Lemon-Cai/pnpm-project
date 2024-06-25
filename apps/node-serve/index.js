@@ -5,14 +5,14 @@
  */
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
-const responseMiddleware = require('./middleware/commonResponse');
+const responseDTO = require('./middleware/responseDTO');
 const loginRouter = require('./controller/login');
 
 const app = new Koa();
 
 // 注册中间件
 app.use(bodyparser());
-app.use(responseMiddleware());
+app.use(responseDTO());
 
 // 注册路由
 app.use(loginRouter.routes());

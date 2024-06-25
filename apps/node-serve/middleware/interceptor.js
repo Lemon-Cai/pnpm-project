@@ -1,18 +1,18 @@
 /*
  * @Author: CP
  * @Date: 2024-01-08 11:04:09
- * @Description:
+ * @Description: 所有请求的拦截器，除了白名单的接口，其余接口都必须走token验证
  */
 
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('../constants')
+const { SECRET, TOKEN_PREFIX } = require('../utils/constants')
 
 // 验证token
 
 const requestInterceptor = (ctx, next) => {
   const { cookies } = ctx
 
-  const token = cookies.get('token')
+  const token = cookies.get(`${TOKEN_PREFIX}access_token`)
 
   if (!token) {
     // 如果token不存在，则返回错误信息
@@ -29,6 +29,7 @@ const requestInterceptor = (ctx, next) => {
       ctx.status = 403
       ctx.body = { error: 'Token has expired' }
     } else {
+      ctx.status = 200
       ctx.state.user = decoded
     }
     
