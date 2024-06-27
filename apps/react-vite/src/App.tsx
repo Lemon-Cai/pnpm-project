@@ -4,17 +4,22 @@
  * @Description:
  */
 
+import { Suspense } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
-import { ConfigProvider, App as AntdApp} from 'antd'
-// import { StyleProvider } from '@ant-design/cssinjs'
+import { ConfigProvider, App as AntdApp } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
+// import { StyleProvider } from '@ant-design/cssinjs'
+import styled from 'styled-components'
 
 import router from '@/router'
 
-function App() {
-  // const [count, setCount] = useState(0)
+const StyledAntdApp = styled(AntdApp)`
+  width: 100%;
+  height: 100%;
+`
 
+function App() {
   // const { primaryColor } = useGlobalStore()
 
   return (
@@ -27,10 +32,13 @@ function App() {
         }
       }}
     >
-      <AntdApp>
-
-      <RouterProvider router={router} />
-      </AntdApp>
+      <StyledAntdApp>
+        {/* <AuthRouter>
+          </AuthRouter> */}
+        <Suspense>
+          <RouterProvider router={router} />
+        </Suspense>
+      </StyledAntdApp>
     </ConfigProvider>
     // {/* </StyleProvider> */}
   )

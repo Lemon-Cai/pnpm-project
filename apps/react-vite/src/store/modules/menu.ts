@@ -6,9 +6,10 @@
 import { create } from 'zustand'
 import { getAllStore } from '@/utils/store'
 import http from '@/api'
+import { redirect } from 'react-router-dom'
 
 type State = {
-  isLoading: boolean
+  isInitialized: boolean
   // 一级菜单
   topMenuList: any[]
   // 当前一级菜单下的所有子菜单
@@ -22,17 +23,13 @@ type State = {
 }
 
 type Actions = {
-  getMenus: (params?: any) => Promise<any>,
+  getAllMenus: (params?: any) => Promise<any>,
   init: () => void
 }
 
 const useMenuStore = create<State & Actions>((set) => {
   const init = async () => {
     try {
-
-      let menus = await http.get('/api/getAllMenus')
-
-      console.log('menus', menus);
 
       let storeData = await getAllStore()
 
@@ -43,22 +40,40 @@ const useMenuStore = create<State & Actions>((set) => {
       })
     } catch (error) {
       console.log(error);
+      redirect('/500')
     }
   }
 
   init()
 
   return {
-    isLoading: true,
+    isInitialized: false,
     topMenuList: [],
     currentMenuList: [],
     flattenMenuList: [],
     activeTopMenu: {},
     activeMenu: {},
-    getMenus: async () => {
-      // 这里请求数据
-  
-      // set((state) => ({ count: state.count + 1 }))
+    getAllMenus: async () => {
+      try {
+        // 这里请求数据
+        let response = await http.get<any>('/api/getAllMenus')
+        console.log('menus', response);
+
+        if (response.success) {
+          let { data = [] } = response
+
+          set({
+            isInitialized: true,
+            activeTopMenu: {},
+            activeMenu: {},
+            topMenuList: [...data],
+          })
+        } else {
+          // 提示请求失败信息
+        }
+      } catch (error) {
+        console.log('/api/getAllMenus error', error);
+      }
     },
     init
   }

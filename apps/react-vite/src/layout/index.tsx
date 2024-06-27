@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom'
 
 import { useGlobalStore } from '@/store'
+import AuthRouter from '@/components/AuthRouter'
 
 import Classic from './Classic'
 import Columns from './Columns'
@@ -11,11 +12,23 @@ const Layout = () => {
   const layout = useGlobalStore((state) => state.layout)
 
   if (layout === 'vertical') {
-    return <Vertical />
+    return (
+      <AuthRouter>
+        <Vertical />
+      </AuthRouter>
+    )
   } else if (layout === 'columns') {
-    return <Columns />
+    return (
+      <AuthRouter>
+        <Columns />
+      </AuthRouter>
+    )
   } else if (layout === 'classic') {
-    return <Classic />
+    return (
+      <AuthRouter>
+        <Classic />
+      </AuthRouter>
+    )
   }
 
   return <Navigate to="/404" />

@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand'
 
-import { getStore, setCookie } from '@/utils/store'
+import { getStore, setCookie, setStore } from '@/utils/store'
 import http from '@/api'
 
 type State = {
@@ -17,7 +17,7 @@ type State = {
 type Actions = {
   logout?: (action: Action) => void
   // getData?: (query: string) => void
-  requestLogin: (query: any) => void
+  requestLogin: (query: any) => Promise<any>
   initializeUserInfo: () => void
   loginByUserInfo: () => void
 }
@@ -37,12 +37,18 @@ const useUserStore = create<State & Actions>()((set) => {
     accessToken: '',
     isInitialized: false,
     // dispatch: (action: Action) => set((state) => LoginReducer(state, action)),
-    logout: () => set({ userInfo: null, accessToken: '' }),
+    logout: () => {
+      set({ userInfo: null, accessToken: '' })
+    },
 
     // 登录请求接口
-    requestLogin: async (params) => {
-      let response = await http.post('/mock/login', params)
+    requestLogin: async (params: { username: string; password: string }) => {
+      let response = await http.post<any>('/api/login', params)
       console.log(response)
+      if (response.success) {
+        setCookie(void 0, response?.data!.accessToken || '', {})
+        setStore('userInfo', response?.data)
+      }
     },
     loginByUserInfo: () => {
       // 根据用户信息登录
@@ -50,18 +56,17 @@ const useUserStore = create<State & Actions>()((set) => {
 
     initializeUserInfo: async () => {
       try {
-        let response = await http.post<any>('/api/login', { username: 'admin', password: '123456' })
-        console.log('response', response);
-        if (response.success) {
-          setCookie(void 0, response?.data!.accessToken || '', {})
-        }
+        // let response = await http.post<any>('/api/login', { username: 'admin', password: '123456' })
+        // console.log('response', response);
+        // if (response.success) {
+        //   setCookie(void 0, response?.data!.accessToken || '', {})
+        // }
         const userInfo = await getStore('userInfo')
         if (userInfo) {
           set({ userInfo, isInitialized: true })
         } else {
           set({ isInitialized: true, userInfo: { name: 'admin' } })
         }
-
       } catch (error) {
         console.error('Failed to load user info from localForage:', error)
         set({ isInitialized: true })

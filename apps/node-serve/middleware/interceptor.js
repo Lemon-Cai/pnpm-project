@@ -17,7 +17,7 @@ const requestInterceptor = (ctx, next) => {
   if (!token) {
     // 如果token不存在，则返回错误信息
     ctx.status = 401
-    ctx.body = { error: 'Unauthorized' }
+    ctx.body = { msg: 'Unauthorized' }
     return next()
   }
 
@@ -27,7 +27,7 @@ const requestInterceptor = (ctx, next) => {
     // 检查 token 是否过期
     if (decoded.exp < Date.now() / 1000) {
       ctx.status = 403
-      ctx.body = { error: 'Token has expired' }
+      ctx.body = { msg: 'Token has expired' }
     } else {
       ctx.status = 200
       ctx.state.user = decoded
@@ -36,7 +36,7 @@ const requestInterceptor = (ctx, next) => {
     return next()
   } catch (error) {
     ctx.status = 403
-    ctx.body = { error: 'Invalid token' }
+    ctx.body = { msg: 'Invalid token' }
   }
 }
 

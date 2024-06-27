@@ -3,14 +3,19 @@
  * @Date: 2024-06-24 09:08:57
  * @Description: 
  */
+
+const { customAlphabet } = require('./nanoid')
+
+const customNanoid = customAlphabet('1234567890', 21);
+
 /**
  *
  * @param items
  * @param parentId
  */
 async function generateIdsAndParentIds(items, parentId = '-1') {
-  const { customAlphabet } = await import('nanoid')
-  const customNanoid = customAlphabet('1234567890', 21)
+  // const { customAlphabet } = await import('nanoid')
+  // const customNanoid = customAlphabet('1234567890', 21)
 
   let hasNewId = false // 判断是否有重新生成id
 

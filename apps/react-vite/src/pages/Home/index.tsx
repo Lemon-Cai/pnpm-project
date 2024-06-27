@@ -9,6 +9,7 @@ import { createStyles } from 'antd-style'
 import Page from '@/components/Page'
 import { useUserStore } from '@/store'
 import useMounted from '@/hooks/useMounted'
+import Loading from '@/components/Loading'
 
 const useStyles = createStyles(({ token, css, prefixCls }) => ({
   default: css`
@@ -30,7 +31,13 @@ const Home = () => {
   const userInfo = useUserStore(state => state.userInfo)
 
   useMounted(() => {
+    let loading = Loading.service({
+      fullscreen: true,
+    })
+    
     console.log('useMounted , userInfo = ', userInfo)
+
+    setTimeout(() => loading.hide(), 5000)
   })
 
   return (

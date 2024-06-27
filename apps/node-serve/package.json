@@ -6,11 +6,11 @@
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf hei && node index.js",
     "start": "node --inspect index.js",
     "debug": "nodemon --inspect index.js",
-    "package": "pkg . --out-dir dist -t node16-linux-x64"
+    "dev": "pm2 start index.js --name node-serve --watch",
+    "package": "rm -rf dist && pkg . --out-dir dist -t node16-linux-x64"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,9 @@
   },
   "pkg": {
     "scripts": "index.js",
-    "assets": ["**/*"],
+    "assets": [
+      "**/*"
+    ],
     "outputPath": "dist"
   }
 }

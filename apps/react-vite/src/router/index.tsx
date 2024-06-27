@@ -4,12 +4,14 @@
  * @Description:
  */
 import { lazy, /* useEffect */ } from 'react'
-import { Navigate, /* useRoutes, RouterProvider, */ createHashRouter } from 'react-router-dom'
+import { Navigate, /* useRoutes, RouterProvider, */ createHashRouter, redirect } from 'react-router-dom'
 
 // import { HomeOutlined } from '@ant-design/icons'
 // import * as Sentry from '@sentry/react'
 
 import { RouteObject, ExceptionEnum } from './types'
+import { getToken } from '@/utils/store'
+import { HOME_URL, LOGIN_URL } from '@/config/constants'
 // import { initDynamicRouter } from './utils'
 
 const LayoutGuard = lazy(() => import('@/layout'))
@@ -17,6 +19,7 @@ const LayoutGuard = lazy(() => import('@/layout'))
 const Home = lazy(() => import('@/pages/Home'))
 const Login = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/ErrorPage/404'))
+const Exception = lazy(() => import('@/pages/ErrorPage/500'))
 
 // const metaRoutes = import.meta.glob('./routes/*.tsx', { eager: true }) as Recordable
 
@@ -33,14 +36,26 @@ export const routeList: RouteObject[] = [
   {
     path: '/',
     name: 'Root',
-    element: <Navigate to="/home" />,
-    loader: () => {
-      console.log('看看是否走这里');
-      return 1
-    }
+    element: <Navigate to={HOME_URL} />,
   },
   {
-    path: '/home',
+    path: LOGIN_URL,
+    name: 'Login',
+    meta: {
+      title: '登录页',
+      key: 'login'
+    },
+    loader: () => {
+      if (getToken()) {
+        // 存在token 跳转到首页
+        return redirect('/')
+      }
+      return null
+    },
+    element: <Login />
+  },
+  {
+    path: HOME_URL,
     name: 'Home',
     element: <LayoutGuard />,
     meta: {
@@ -66,21 +81,7 @@ export const routeList: RouteObject[] = [
       }
     ]
   },
-  {
-    path: '/login',
-    name: 'Login',
-    meta: {
-      title: '登录页',
-      key: 'login'
-    },
-    // loader: () => {
-    //   if (getAuthCache<string>(TOKEN_KEY)) {
-    //     return redirect('/')
-    //   }
-    //   return null
-    // },
-    element: <Login />
-  },
+
   {
     path: '*',
     name: 'RedirectTo',
@@ -97,8 +98,15 @@ export const routeList: RouteObject[] = [
     name: 'PageNotFound',
     loader: () => ({ status: ExceptionEnum.PAGE_NOT_FOUND, withCard: false }),
     element: <NotFound />
-  }
+  },
+  {
+    path: '/500',
+    name: 'PageException',
+    loader: () => ({ status: ExceptionEnum.SERVER_ERROR, withCard: false }),
+    element: <Exception />
+  },
 ]
+
 
 export default createHashRouter(routeList)
 
