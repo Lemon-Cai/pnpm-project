@@ -7,13 +7,12 @@ import styled from 'styled-components'
 type ServiceProps = Partial<{ container: string | HTMLElement } & LoadingImpl>
 
 interface LoadingImpl extends SpinProps {
-  fullscreen?: boolean,
-  service?: (options?: ServiceProps) => LoadingManager;
+  fullscreen?: boolean
+  service?: (options?: ServiceProps) => LoadingManager
 }
 
-
 interface LoadingComponent extends React.FC<LoadingImpl> {
-  service: (options?: ServiceProps) => LoadingManager;
+  service: (options?: ServiceProps) => LoadingManager
 }
 
 const StyledRoot = styled.div`
@@ -74,7 +73,7 @@ export class LoadingManager {
     } else {
       loadingNumber = `${Number.parseInt(loadingNumber) + 1}`
     }
-    // 
+    //
     defaultZIndex += Number(loadingNumber)
 
     this.loadingContainer.setAttribute('loading-number', loadingNumber)
@@ -120,7 +119,7 @@ export class LoadingManager {
     // }
 
     this.root = ReactDOM.createRoot(this.loadingContainer as HTMLElement)
-    this.root!.render(<Loading {...restProps} />)
+    this.root!.render(<Loading {...restProps} fullscreen={fullscreen} />)
 
     // const id = nanoid(12)
 

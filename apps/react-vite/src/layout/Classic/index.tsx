@@ -42,17 +42,20 @@ const StyledHeader = styled(Page.Header)`
     flex: 1;
     display: flex;
     align-items: center;
-    .menu_wrapper {
-      flex: 1;
-      background: url(${() => HeadMenuBG});
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      .menu{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        padding: 0 32px;
+  }
+  .menu_wrapper {
+    flex: 1;
+    background: url(${() => HeadMenuBG});
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    .menu {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 32px;
+      &-item {
+        cursor: pointer;
       }
     }
   }
