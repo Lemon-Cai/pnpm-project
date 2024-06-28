@@ -4,16 +4,17 @@
  * @Description:
  */
 import { create } from 'zustand'
-import http from '@/api'
 import { redirect } from 'react-router-dom'
+import http from '@/api'
 import { flatTree } from '@/utils'
 import { getAllStore } from '@/utils/store'
-import { MenuObject } from '@/types/menu'
+import type { MenuObject } from '@/types/menu'
+import type { MenuItem } from '@/store/types'
 
 type State = {
   isInitialized: boolean
   // 一级菜单
-  topMenuList: any[]
+  topMenuList: MenuItem[]
   // 当前一级菜单下的所有子菜单
   currentMenuList: any[]
   // 把所有菜单平铺
@@ -27,29 +28,6 @@ type State = {
 type Actions = {
   getAllMenus: (params?: any) => Promise<any>
   init: () => void
-}
-
-type MenuItem = {
-  id: string
-  /**
-   * @description 菜单名称
-   */
-  name: string
-  /**
-   * @description 菜单url
-   */
-  path: string
-
-  /**
-   * @description 菜单文件路径
-   */
-  filePath: string
-  /**
-   * @description 子菜单
-   */
-  children: MenuItem[]
-  meta: { [key: string]: any }
-  component: string
 }
 
 // eslint-disable-next-line
@@ -66,9 +44,9 @@ function format(list: MenuObject[] = [], parentPath, level = 0): MenuItem[] {
 
       meta: {
         // ...(item.meta || {}),
-        menuId: item.id, // 菜单id
-        showIcon: item.icon && menuLevel === 2,
+        key: item.id, // 菜单id
         title: item.name, // 页面标题
+        showIcon: !!item.icon && menuLevel > 1,
         icon: item.icon ? item.icon.split('iconfont ')[1] : '' // TODO: 菜单icon
         // keepAlive: KeepAlivePath.includes(path),
         // isFull: item.isOpen == 2 // 全屏

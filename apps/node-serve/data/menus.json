@@ -34,23 +34,25 @@
     "id": "945435692013723871795",
     "name": "三维管理",
     "filePath": "",
-    "path": "/threeManager",
+    "path": "/threeDimensionManager",
     "icon": "",
+    "level": "",
     "children": [
       {
         "id": "626376472544673080136",
         "name": "ThreeJs",
         "filePath": "",
-        "path": "/threeManager/threeJs",
+        "path": "/threeDimensionManager/threeJs",
         "icon": "",
+        "level": "",
         "children": [
           {
             "id": "012323925247736890181",
             "parentId": "626376472544673080136",
             "name": "threeJs",
             "level": "",
-            "filePath": "/pages/ThreeJs/FirstCase",
-            "path": "/threeManager/threeJs/firstCase",
+            "filePath": "/pages/ThreeJs/FirstCase/index",
+            "path": "/threeDimensionManager/threeJs/firstCase",
             "icon": "icon-threejs-logo",
             "type": "page",
             "children": []
@@ -60,8 +62,8 @@
             "parentId": "626376472544673080136",
             "name": "threeJs",
             "level": "",
-            "filePath": "/pages/ThreeJs/SecondCase",
-            "path": "/threeManager/threeJs/secondCase/:geometryType?",
+            "filePath": "/pages/ThreeJs/SecondCase/index",
+            "path": "/threeDimensionManager/threeJs/secondCase/:geometryType?",
             "icon": "icon-threejs-logo",
             "type": "page",
             "children": []
@@ -71,8 +73,8 @@
             "parentId": "626376472544673080136",
             "name": "threeJs",
             "level": "",
-            "filePath": "/pages/ThreeJs/Earth",
-            "path": "/threeManager/threeJs/earth",
+            "filePath": "/pages/ThreeJs/Earth/index",
+            "path": "/threeDimensionManager/threeJs/earth",
             "icon": "icon-threejs-logo",
             "type": "page",
             "children": []
@@ -82,8 +84,8 @@
             "parentId": "626376472544673080136",
             "name": "threeJs",
             "level": "",
-            "filePath": "/pages/ThreeJs/Case_03",
-            "path": "/threeManager/threeJs/threeRain",
+            "filePath": "/pages/ThreeJs/ThreeRain/index",
+            "path": "/threeDimensionManager/threeJs/threeRain",
             "icon": "icon-threejs-logo",
             "type": "page",
             "children": []
@@ -100,6 +102,7 @@
     "filePath": "",
     "path": "/gisManager",
     "icon": "",
+    "level": "",
     "children": [
       {
         "id": "962639784097202644474",
@@ -107,6 +110,7 @@
         "filePath": "",
         "path": "/gisManager/cesium",
         "icon": "",
+        "level": "",
         "children": [
           {
             "id": "917636462754261748190",
@@ -132,6 +136,16 @@
           }
         ],
         "parentId": "644675050894012278356"
+      },
+      {
+        "id": "",
+        "name": "mapboxgl",
+        "filePath": "",
+        "path": "/gisManager/mapboxgl",
+        "icon": "",
+        "level": "",
+        "children": [],
+        "parentId": ""
       }
     ],
     "parentId": "-1"
@@ -149,7 +163,16 @@
         "filePath": "",
         "path": "/erp/purchaseManage",
         "icon": "",
-        "children": [],
+        "children": [
+          {
+            "id": "",
+            "name": "采购列表",
+            "filePath": "/pages/Erp/PurchaseManage/List/index",
+            "path": "/erp/purchaseManage/list",
+            "icon": "",
+            "parentId": ""
+          }
+        ],
         "parentId": "903219090296350959552"
       },
       {
@@ -158,7 +181,16 @@
         "filePath": "",
         "path": "/erp/storeManage",
         "icon": "",
-        "children": [],
+        "children": [
+          {
+            "id": "",
+            "name": "库存列表",
+            "filePath": "/pages/Erp/StoreManage/List/index",
+            "path": "/erp/storeManage/list",
+            "icon": "",
+            "parentId": ""
+          }
+        ],
         "parentId": "903219090296350959552"
       }
     ],
@@ -174,7 +206,7 @@
       {
         "id": "219105866745364705387",
         "name": "WangEditor",
-        "filePath": "",
+        "filePath": "/pages/Richtext/WangEditor/index",
         "path": "/richtext/wangEditor",
         "icon": "",
         "children": [],
@@ -185,7 +217,7 @@
         "parentId": "569441260160531271964",
         "name": "Draft",
         "level": "",
-        "filePath": "/pages/Richtext/Draft",
+        "filePath": "/pages/Richtext/Draft/index",
         "path": "/richtext/draft",
         "icon": "icon-rich-text",
         "type": "page",
@@ -196,7 +228,7 @@
         "parentId": "569441260160531271964",
         "name": "Quill",
         "level": "",
-        "filePath": "/pages/Richtext/Quill",
+        "filePath": "/pages/Richtext/Quill/index",
         "path": "/richtext/quill",
         "icon": "icon-rich-text",
         "type": "page",
@@ -207,7 +239,7 @@
         "parentId": "569441260160531271964",
         "name": "Slate",
         "level": "",
-        "filePath": "/pages/Richtext/Slate",
+        "filePath": "/pages/Richtext/Slate/index",
         "path": "/richtext/slate",
         "icon": "icon-rich-text",
         "type": "page",
@@ -218,8 +250,19 @@
         "parentId": "569441260160531271964",
         "name": "TinyMCE",
         "level": "",
-        "filePath": "/pages/Richtext/TinyMCE",
+        "filePath": "/pages/Richtext/TinyMCE/index",
         "path": "/richtext/tinyMCE",
+        "icon": "icon-rich-text",
+        "type": "page",
+        "children": []
+      },
+      {
+        "id": "",
+        "parentId": "",
+        "name": "Lexical",
+        "level": "",
+        "filePath": "/pages/Richtext/Lexical/index",
+        "path": "/richtext/lexical",
         "icon": "icon-rich-text",
         "type": "page",
         "children": []
@@ -237,7 +280,7 @@
       {
         "id": "776694591771645586664",
         "name": "低代码",
-        "filePath": "",
+        "filePath": "/pages/LowCodePlatform/index",
         "path": "/lowCodePlatform/index",
         "icon": "",
         "children": [],

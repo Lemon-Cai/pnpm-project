@@ -9,7 +9,7 @@ const Menu = () => {
   return (
     <Page>
       <Page.Header>
-
+        Menu
       </Page.Header>
       <Page.Content>
         

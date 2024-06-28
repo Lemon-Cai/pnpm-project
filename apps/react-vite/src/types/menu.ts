@@ -4,15 +4,11 @@ export type MenuItem = Required<MenuProps>['items'][number]
 
 export type MyMenuItem = MenuItem & {
   element?: React.ReactNode | null
-  errorElement?: React.ReactNode | null
   children?: MyMenuItem[] | null
   path?: string | null
   index?: boolean
 }
 
-export type RouteObject = { 
-  name: string
-}
 
 // url类型 iframe | page
 export enum UrlType {
