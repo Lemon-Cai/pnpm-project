@@ -7,13 +7,14 @@
     "icon": "",
     "parentId": "-1",
     "type": "",
+    "level": "",
     "children": [
       {
         "id": "937431541177685265563",
         "parentId": "520272062722029897357",
         "name": "Dashboard",
         "level": "",
-        "filePath": "/pages/Dashboard",
+        "filePath": "/pages/BasicManager/Dashboard/index",
         "path": "/basicManager/dashboard",
         "icon": "icon-dashboard",
         "type": "page",
@@ -25,7 +26,27 @@
         "filePath": "",
         "path": "/basicManager/components",
         "icon": "",
-        "children": [],
+        "level": "",
+        "children": [
+          {
+            "id": "",
+            "name": "Loading",
+            "filePath": "/BasicManager/Components/Loading/index",
+            "path": "/basicManager/components/loading",
+            "icon": "",
+            "level": "",
+            "parentId": ""
+          },
+          {
+            "id": "",
+            "name": "Table",
+            "filePath": "/BasicManager/Components/Table/index",
+            "path": "/basicManager/components/table",
+            "icon": "",
+            "level": "",
+            "parentId": ""
+          }
+        ],
         "parentId": "520272062722029897357"
       }
     ]
@@ -92,6 +113,18 @@
           }
         ],
         "parentId": "945435692013723871795"
+      },
+      {
+        "id": "",
+        "name": "WebGL",
+        "filePath": "",
+        "path": "/threeDimensionManager/webGL",
+        "icon": "",
+        "level": "",
+        "children": [
+
+        ],
+        "parentId": "945435692013723871795"
       }
     ],
     "parentId": "-1"
@@ -117,7 +150,7 @@
             "parentId": "962639784097202644474",
             "name": "三维地图入门",
             "level": "",
-            "filePath": "/pages/Cesium/Induction",
+            "filePath": "/pages/GisManager/Cesium/Induction/index",
             "path": "/gisManager/cesium/induction",
             "icon": "icon-three-dimensional",
             "type": "page",
@@ -128,7 +161,7 @@
             "parentId": "962639784097202644474",
             "name": "三维地图进阶",
             "level": "",
-            "filePath": "/pages/Cesium/Advance",
+            "filePath": "/pages/GisManager/Cesium/Advance/index",
             "path": "/gisManager/cesium/advance",
             "icon": "icon-three-dimensional",
             "type": "page",
