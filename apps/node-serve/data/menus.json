@@ -29,22 +29,22 @@
         "level": "",
         "children": [
           {
-            "id": "",
+            "id": "119768183116717727509",
             "name": "Loading",
             "filePath": "/BasicManager/Components/Loading/index",
             "path": "/basicManager/components/loading",
             "icon": "",
             "level": "",
-            "parentId": ""
+            "parentId": "370414574841098596848"
           },
           {
-            "id": "",
+            "id": "216021171898736517700",
             "name": "Table",
             "filePath": "/BasicManager/Components/Table/index",
             "path": "/basicManager/components/table",
             "icon": "",
             "level": "",
-            "parentId": ""
+            "parentId": "370414574841098596848"
           }
         ],
         "parentId": "520272062722029897357"
@@ -115,15 +115,13 @@
         "parentId": "945435692013723871795"
       },
       {
-        "id": "",
+        "id": "235428926387248001527",
         "name": "WebGL",
         "filePath": "",
         "path": "/threeDimensionManager/webGL",
         "icon": "",
         "level": "",
-        "children": [
-
-        ],
+        "children": [],
         "parentId": "945435692013723871795"
       }
     ],
@@ -171,14 +169,14 @@
         "parentId": "644675050894012278356"
       },
       {
-        "id": "",
+        "id": "235591467052117583245",
         "name": "mapboxgl",
         "filePath": "",
         "path": "/gisManager/mapboxgl",
         "icon": "",
         "level": "",
         "children": [],
-        "parentId": ""
+        "parentId": "644675050894012278356"
       }
     ],
     "parentId": "-1"
@@ -198,12 +196,12 @@
         "icon": "",
         "children": [
           {
-            "id": "",
+            "id": "748697232843471456361",
             "name": "采购列表",
             "filePath": "/pages/Erp/PurchaseManage/List/index",
             "path": "/erp/purchaseManage/list",
             "icon": "",
-            "parentId": ""
+            "parentId": "225846134956101658828"
           }
         ],
         "parentId": "903219090296350959552"
@@ -216,12 +214,12 @@
         "icon": "",
         "children": [
           {
-            "id": "",
+            "id": "219506999002078161618",
             "name": "库存列表",
             "filePath": "/pages/Erp/StoreManage/List/index",
             "path": "/erp/storeManage/list",
             "icon": "",
-            "parentId": ""
+            "parentId": "890369246333778168911"
           }
         ],
         "parentId": "903219090296350959552"
@@ -237,7 +235,7 @@
     "icon": "",
     "children": [
       {
-        "id": "219105866745364705387",
+        "id": "761467425304961600313",
         "name": "WangEditor",
         "filePath": "/pages/Richtext/WangEditor/index",
         "path": "/richtext/wangEditor",
@@ -290,8 +288,8 @@
         "children": []
       },
       {
-        "id": "",
-        "parentId": "",
+        "id": "232577318190559061300",
+        "parentId": "569441260160531271964",
         "name": "Lexical",
         "level": "",
         "filePath": "/pages/Richtext/Lexical/index",

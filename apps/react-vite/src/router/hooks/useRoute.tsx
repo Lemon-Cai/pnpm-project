@@ -40,26 +40,29 @@ export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject
         // 是否全屏展示   TODO: 暂时不放开
         routerItem.element = ''
       } else {
-        routerItem.Component = LayoutGuard
+        routerItem.element = <LayoutGuard />
       }
-      // routerItem.children = [
-      //   {
-      //     name: id || nanoid(),
-      //     path: path,
-      //     // Component: metaRoutes[`.${component}.vue`]
-      //   }
-      // ]
+      let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+      routerItem.children = [
+        {
+          name: id || nanoid(),
+          path: path,
+          element: <Component />
+        }
+      ]
       res.push(routerItem)
       continue
     }
     if (component && component !== 'Layout') {
-      // routerItem.component = metaRoutes[`.${component}.vue`]
+      // 
+      let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+      routerItem.element = <Component />
     } else {
-      // routerItem.component = () => import('../page/index/index.vue');
       if (item.meta?.isFull) {
-        // routerItem.component = metaRoutes[`.${component}.vue`]
+        let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+        routerItem.element = <Component />
       } else {
-        // routerItem.component = LayoutGuard
+        routerItem.element = <LayoutGuard />
       }
     }
 
@@ -75,22 +78,27 @@ export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject
 
 
 const useRoutes = () => {
-  const [routes, setRoutes] = useState(() => {
-    return [...routeList]
+  const [state, setState] = useState(() => {
+    return {routes: [...routeList], loaded: false, list: []}
   })
   const topMenuList = useMenuStore(state => state.topMenuList)
 
   useEffect(() => {
     // 
-    if (topMenuList.length > 0) {
+    if (topMenuList.length > 0 && !state.loaded) {
       // debugger
-      setRoutes(prevState => ([...prevState, ...transformRoutes(getAppsMenu(topMenuList))]))
+      console.log('topMenuList = ', topMenuList, metaRoutes);
+      setState(prevState => ({
+        ...prevState,
+        routes: [...prevState.routes, ...transformRoutes(getAppsMenu(topMenuList))],
+        loaded: true
+      }))
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topMenuList])
 
-  console.log('topMenuList = ', topMenuList, metaRoutes);
 
-  return routes
+  return state.routes
 }
 
 export default useRoutes

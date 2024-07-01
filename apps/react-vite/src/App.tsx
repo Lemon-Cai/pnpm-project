@@ -24,6 +24,7 @@ function App() {
   // const { primaryColor } = useGlobalStore()
 
   const router = useRouter()
+  console.log('router = ', router);
 
   return (
     // <StyleProvider hashPriority="high" layer> // 不能加这个, 否则 使用 styled-component 无法覆盖样式
@@ -39,7 +40,7 @@ function App() {
         {/* <AuthRouter>
           </AuthRouter> */}
         <Suspense>
-          <RouterProvider router={router} />
+          {router && <RouterProvider router={router} />}
         </Suspense>
       </StyledAntdApp>
     </ConfigProvider>

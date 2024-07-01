@@ -1,6 +1,6 @@
 import { Cartesian3, Color } from 'cesium'
-import { Viewer, Entity } from '@/components/Cesium'
-// import { Viewer, Entity } from 'resium'
+// import { Viewer, Entity } from '@/components/Cesium'
+import { Viewer, Entity } from 'resium'
 
 const Induction = () => {
   return (

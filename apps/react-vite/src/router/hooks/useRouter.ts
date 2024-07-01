@@ -9,6 +9,10 @@ import useRoutes from './useRoute'
 const useRouter = () => {
   const routes = useRoutes()
 
+  if (routes?.length <= 0) {
+    return null
+  }
+
   return createHashRouter(routes)
 }
 

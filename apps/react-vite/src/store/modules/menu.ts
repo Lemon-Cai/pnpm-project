@@ -7,7 +7,7 @@ import { create } from 'zustand'
 import { redirect } from 'react-router-dom'
 import http from '@/api'
 import { flatTree } from '@/utils'
-import { getAllStore } from '@/utils/store'
+import { getAllStore, setStore } from '@/utils/store'
 import type { MenuObject } from '@/types/menu'
 import type { MenuItem } from '@/store/types'
 
@@ -20,7 +20,7 @@ type State = {
   // 把所有菜单平铺
   flattenMenuList: any[]
   // 当前选中的一级菜单
-  activeTopMenu: { [key: string]: any } // default active top menu
+  activeTopMenu: MenuItem | void // default active top menu
   // 当前菜单
   activeMenu: { [key: string]: any } // default active menu
 }
@@ -28,6 +28,7 @@ type State = {
 type Actions = {
   getAllMenus: (params?: any) => Promise<any>
   init: () => void
+  updateTopMenu: (topMenu: MenuItem) => void
 }
 
 // eslint-disable-next-line
@@ -47,7 +48,7 @@ function format(list: MenuObject[] = [], parentPath, level = 0): MenuItem[] {
         key: item.id, // 菜单id
         title: item.name, // 页面标题
         showIcon: !!item.icon && menuLevel > 1,
-        icon: item.icon ? item.icon.split('iconfont ')[1] : '' // TODO: 菜单icon
+        icon: item.icon ? item.icon.split('iconfont ')[1] || '' : '' // TODO: 菜单icon, 不一定以 iconfont 开头
         // keepAlive: KeepAlivePath.includes(path),
         // isFull: item.isOpen == 2 // 全屏
       },
@@ -65,7 +66,7 @@ const useMenuStore = create<State & Actions>((set) => {
       let storeData = await getAllStore()
 
       set({
-        activeTopMenu: storeData?.activeTopMenu || {},
+        activeTopMenu: storeData?.activeTopMenu,
         activeMenu: storeData?.activeMenu || {},
         topMenuList: storeData?.topMenuList || []
       })
@@ -82,8 +83,18 @@ const useMenuStore = create<State & Actions>((set) => {
     topMenuList: [],
     currentMenuList: [],
     flattenMenuList: [],
-    activeTopMenu: {},
+    activeTopMenu: undefined,
     activeMenu: {},
+    updateTopMenu: (topMenu) => {
+      // 缓存
+      setStore('activeTopMenu', topMenu)
+      // 刷新
+      set(state => ({
+        ...state,
+        activeTopMenu: topMenu,
+        currentMenuList: topMenu.children
+      }))
+    },
     getAllMenus: async () => {
       try {
         // 这里请求数据
@@ -92,16 +103,29 @@ const useMenuStore = create<State & Actions>((set) => {
 
         if (response.success) {
           let { data = [] } = response
-          let menus = format(data, '', 0)
+          if (data.length > 0) {
+            let menus = format(data, '', 0)
 
-          set({
-            isInitialized: true,
-            activeTopMenu: {},
-            activeMenu: {},
-            currentMenuList: [],
-            topMenuList: menus,
-            flattenMenuList: flatTree(menus, 'children')
-          })
+            set((state) => {
+              let activeTopMenu: MenuItem | void  = menus[0]  // 选中第一个
+              if (state.activeTopMenu) {
+                // 判断缓存中是否存在选中的一级菜单
+                activeTopMenu = menus.find((menu) => menu.id === state.activeTopMenu?.id) 
+              }
+              let currentMenuList: MenuItem[]  = activeTopMenu!.children || []  // 选中第一个
+
+              return {
+                ...state,
+                isInitialized: true,
+                activeTopMenu: activeTopMenu,
+                // activeMenu: {},
+                currentMenuList: currentMenuList,
+                topMenuList: menus,
+                flattenMenuList: flatTree(menus, 'children')
+              }
+            })
+          }
+          
         } else {
           // 提示请求失败信息
         }

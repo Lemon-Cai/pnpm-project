@@ -3,11 +3,13 @@
  * @Date: 2024-06-18 17:12:38
  * @Description:
  */
-import { Layout as AntLayout } from 'antd'
-import Page from '@/components/Page'
+import { useMemo /* useState */ } from 'react'
+import { Layout as AntLayout, Menu as AntMenu, MenuProps } from 'antd'
 import { Outlet, useLocation } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
-import { useGlobalStore } from '@/store'
+
+import { useGlobalStore, useMenuStore } from '@/store'
+import Page from '@/components/Page'
 
 import HeadMenuBG from '@/assets/images/layout/header_menu_bg.png'
 
@@ -18,6 +20,7 @@ import Menu from './components/Menu'
 
 import { CLASSIC_SIDER_WIDTH, CLASSIC_COLLAPSE_WIDTH, CLASSIC_TOOLBAR_WIDTH } from '../constants'
 import './index.scss'
+import { MenuItem } from '@/store/types'
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -35,7 +38,8 @@ const StyledHeader = styled(Page.Header)`
   padding: 0 12px;
   display: flex;
   align-items: center;
-  background: linear-gradient(45deg, #20e0c0ed, #92eddeba, #5be0cae0), linear-gradient(to bottom, #6ccac4, #3c917e);
+  background: linear-gradient(45deg, #20e0c0ed, #92eddeba, #5be0cae0),
+    linear-gradient(to bottom, #6ccac4, #3c917e);
 
   .header-right {
     width: 100%;
@@ -59,17 +63,40 @@ const StyledHeader = styled(Page.Header)`
       }
     }
   }
-  
 `
 const { Sider } = AntLayout
 
+const transform = (list: MenuItem[]): MenuProps['items'] => {
+  return list.map((item) => {
+    let children = item.children?.length > 0 ? transform(item.children) : null
+    return {
+      key: item.id,
+      label: item.name,
+      // icon: <SettingOutlined />,
+      children: children
+    }
+  })
+}
+
 const Classic = () => {
-  const { state } = useLocation()
+  const { state /* , pathname */ } = useLocation()
   const { key = 'key' } = state || {}
 
   const isCollapse = useGlobalStore((state) => state.isCollapse)
 
   // const updateState = useGlobalStore(state => state.updateState)
+  const menuList = useMenuStore((state) => state.currentMenuList)
+
+  // const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname]);
+  // const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const menuItems = useMemo(() => {
+    return transform(menuList)
+  }, [menuList])
+
+  console.log(menuItems)
+
+  const handleMenuClick: MenuProps['onClick'] = () => {}
 
   return (
     <Page>
@@ -77,8 +104,11 @@ const Classic = () => {
       <GlobalStyle />
       <StyledHeader>
         {/* logo */}
-        <AppLogo isCollapse={isCollapse} width={!isCollapse ? CLASSIC_SIDER_WIDTH : CLASSIC_COLLAPSE_WIDTH} />
-        <div className='header-right'>
+        <AppLogo
+          isCollapse={isCollapse}
+          width={!isCollapse ? CLASSIC_SIDER_WIDTH : CLASSIC_COLLAPSE_WIDTH}
+        />
+        <div className="header-right">
           {/* trigger， 触发 菜单栏收起 */}
           <CollapseTrigger isCollapse={isCollapse} />
           {/* 一级菜单 */}
@@ -98,7 +128,14 @@ const Classic = () => {
           collapsed={isCollapse}
         >
           {/* 其余菜单 */}
-
+          <AntMenu
+            onClick={handleMenuClick}
+            style={{ width: 256 }}
+            // openKeys={openKeys}
+            // selectedKeys={selectedKeys}
+            mode="inline"
+            items={menuItems}
+          />
         </Sider>
         {/* 主体内容 */}
         <StyledContent>

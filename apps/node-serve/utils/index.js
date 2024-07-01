@@ -1,26 +1,26 @@
 /*
  * @Author: CP
  * @Date: 2024-06-24 09:08:57
- * @Description: 
+ * @Description:
  */
 
 const { customAlphabet } = require('./nanoid')
 
-const customNanoid = customAlphabet('1234567890', 21);
+const customNanoid = customAlphabet('1234567890', 21)
 
 /**
  *
  * @param items
  * @param parentId
  */
-async function generateIdsAndParentIds(items, parentId = '-1') {
+function generateIdsAndParentIds(items, parentId = '-1') {
   // const { customAlphabet } = await import('nanoid')
   // const customNanoid = customAlphabet('1234567890', 21)
 
   let hasNewId = false // 判断是否有重新生成id
 
-  function loop(list, parentId = '-1') {
-    list.forEach((item) => {
+  async function loop(list, parentId = '-1') {
+    for (item of list) {
       // 如果id 不存在 生成唯一的 id
       if (!item.id) {
         item.id = customNanoid()
@@ -35,7 +35,10 @@ async function generateIdsAndParentIds(items, parentId = '-1') {
       if (item.children && item.children.length > 0) {
         loop(item.children, item.id)
       }
-    })
+    }
+    // list.forEach(async (item) => {
+
+    // })
   }
 
   loop(items, parentId)
