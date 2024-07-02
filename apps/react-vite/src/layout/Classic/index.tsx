@@ -3,9 +3,9 @@
  * @Date: 2024-06-18 17:12:38
  * @Description:
  */
-import { useMemo /* useState */ } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Layout as AntLayout, Menu as AntMenu, MenuProps } from 'antd'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import { useGlobalStore, useMenuStore } from '@/store'
@@ -21,6 +21,7 @@ import Menu from './components/Menu'
 import { CLASSIC_SIDER_WIDTH, CLASSIC_COLLAPSE_WIDTH, CLASSIC_TOOLBAR_WIDTH } from '../constants'
 import './index.scss'
 import { MenuItem } from '@/store/types'
+import { findTreeNode, getOpenKeys } from '@/utils'
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -79,24 +80,39 @@ const transform = (list: MenuItem[]): MenuProps['items'] => {
 }
 
 const Classic = () => {
-  const { state /* , pathname */ } = useLocation()
+  const { state, pathname } = useLocation()
   const { key = 'key' } = state || {}
+
+  const navigate = useNavigate();
 
   const isCollapse = useGlobalStore((state) => state.isCollapse)
 
   // const updateState = useGlobalStore(state => state.updateState)
   const menuList = useMenuStore((state) => state.currentMenuList)
 
-  // const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname]);
-  // const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname])
+  const [openKeys, setOpenKeys] = useState<string[]>([])
+
+  // 刷新页面菜单保持高亮
+  useEffect(() => {
+    setSelectedKeys([pathname])
+    isCollapse ? null : setOpenKeys(getOpenKeys(pathname))
+  }, [pathname, isCollapse])
 
   const menuItems = useMemo(() => {
     return transform(menuList)
   }, [menuList])
 
-  console.log(menuItems)
 
-  const handleMenuClick: MenuProps['onClick'] = () => {}
+  const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+    let route = findTreeNode(menuList, key)
+    if (route) {
+      // updateState({ pathname: route.path })
+      setSelectedKeys([route.path])
+    }
+    console.log('===========', route);
+    navigate(route.path)
+  }
 
   return (
     <Page>
@@ -131,8 +147,8 @@ const Classic = () => {
           <AntMenu
             onClick={handleMenuClick}
             style={{ width: 256 }}
-            // openKeys={openKeys}
-            // selectedKeys={selectedKeys}
+            openKeys={openKeys}
+            selectedKeys={selectedKeys}
             mode="inline"
             items={menuItems}
           />

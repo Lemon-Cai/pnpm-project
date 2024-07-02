@@ -37,7 +37,7 @@ const Home = () => {
     
     console.log('useMounted , userInfo = ', userInfo)
 
-    setTimeout(() => loading.hide(), 5000)
+    setTimeout(() => loading.hide(), 2000)
   })
 
   return (
