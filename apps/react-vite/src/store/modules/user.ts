@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand'
 
-import { getStore, setCookie, setStore } from '@/utils/store'
+import { getStore, setCookie, setStore, removeAllStore, removeCookie } from '@/utils/store'
 import http from '@/api'
 
 type State = {
@@ -15,17 +15,17 @@ type State = {
 }
 
 type Actions = {
-  logout?: (action: Action) => void
+  logout: () => void
   // getData?: (query: string) => void
   requestLogin: (query: any) => Promise<any>
   initializeUserInfo: () => void
   loginByUserInfo: () => void
 }
 
-type Action = {
-  type: keyof Actions
-  // query?: string
-}
+// type Action = {
+//   type: keyof Actions
+//   // query?: string
+// }
 
 const useUserStore = create<State & Actions>()((set) => {
   // const userInfo = (async function () {
@@ -38,7 +38,10 @@ const useUserStore = create<State & Actions>()((set) => {
     isInitialized: false,
     // dispatch: (action: Action) => set((state) => LoginReducer(state, action)),
     logout: () => {
-      set({ userInfo: null, accessToken: '' })
+      removeCookie()
+      removeAllStore()
+
+      set({ userInfo: null, accessToken: '', isInitialized: false })
     },
 
     // 登录请求接口

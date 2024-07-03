@@ -130,6 +130,9 @@ const useMenuStore = create<State & Actions>((set) => {
           // 提示请求失败信息
         }
       } catch (error) {
+        set((state) => {
+          return {...state, isInitialized: true,}
+        })
         console.log('/api/getAllMenus error', error)
       }
     },

@@ -34,7 +34,7 @@ export const setCookie = (key = 'access_token', value: any, options: Cookies.Coo
  * 删除 Cookie
  * @param key
  */
-export const removeCookie = (key: string) => {
+export const removeCookie = (key = 'access_token') => {
   Cookies.remove(`${STORE_PREFIX}${key}`)
 }
 
