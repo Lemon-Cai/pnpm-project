@@ -38,10 +38,12 @@ const useUserStore = create<State & Actions>()((set) => {
     isInitialized: false,
     // dispatch: (action: Action) => set((state) => LoginReducer(state, action)),
     logout: () => {
+      // 删除cookie
       removeCookie()
+      // 清空所有缓存
       removeAllStore()
-
-      set({ userInfo: null, accessToken: '', isInitialized: false })
+      // 设置store值为初始值
+      set(state => ({...state, userInfo: null, accessToken: '', isInitialized: false }))
     },
 
     // 登录请求接口

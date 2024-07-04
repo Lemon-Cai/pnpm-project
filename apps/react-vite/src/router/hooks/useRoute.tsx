@@ -17,6 +17,9 @@ const LayoutGuard = lazy(() => import('@/layout'))
 
 const metaRoutes = import.meta.glob('@/pages/**/*.tsx', { eager: true }) as Recordable
 
+const resolveAlias = (path: string) => {
+  return path.replace('@', '/src');  // 将路径别名替换为实际路径
+};
 
 // 把菜单转成路由
 export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject[] => {
@@ -42,7 +45,7 @@ export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject
       } else {
         routerItem.element = <LayoutGuard />
       }
-      let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+      let Component = metaRoutes[resolveAlias(`@${item.filePath}.tsx`)]?.default
       routerItem.children = [
         {
           name: id || nanoid(),
@@ -55,11 +58,12 @@ export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject
     }
     if (component && component !== 'Layout') {
       // 
-      let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+      let Component = metaRoutes[resolveAlias(`@${item.filePath}.tsx`)]?.default
       routerItem.element = <Component />
     } else {
       if (item.meta?.isFull) {
-        let Component = lazy(metaRoutes[`@${item.filePath}.tsx`])
+        // let Component = lazy(metaRoutes[resolveAlias(`@${item.filePath}.tsx`)])
+        let Component = metaRoutes[resolveAlias(`@${item.filePath}.tsx`)]?.default
         routerItem.element = <Component />
       } else {
         routerItem.element = <LayoutGuard />

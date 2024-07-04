@@ -11,7 +11,7 @@ import { HOME_URL, LOGIN_URL } from '@/config/constants'
 
 import avatar from '@/assets/images/layout/avatar.png'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore } from '@/store'
+import { useMenuStore, useUserStore } from '@/store'
 
 const StyledRoot = styled.div`
   display: flex;
@@ -25,10 +25,11 @@ const Avatar = () => {
   const navigate = useNavigate()
 
   const userStore = useUserStore()
+  const menuStore = useMenuStore()
 
   const handleLogout = useCallback(() => {
     // 清空菜单
-
+    menuStore.initStore()
     // 推出登录
     userStore.logout()
     // 跳转到登录页

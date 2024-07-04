@@ -28,7 +28,12 @@ type State = {
 type Actions = {
   getAllMenus: (params?: any) => Promise<any>
   init: () => void
-  updateTopMenu: (topMenu: MenuItem) => void
+  updateTopMenu: (topMenu: MenuItem) => void,
+  /**
+   * @description 初始化store
+   * @returns 
+   */
+  initStore: () => void
 }
 
 // eslint-disable-next-line
@@ -65,11 +70,12 @@ const useMenuStore = create<State & Actions>((set) => {
     try {
       let storeData = await getAllStore()
 
-      set({
+      set(state => ({
+        ...state,
         activeTopMenu: storeData?.activeTopMenu,
         activeMenu: storeData?.activeMenu || {},
         topMenuList: storeData?.topMenuList || []
-      })
+      }))
     } catch (error) {
       console.log(error)
       redirect('/500')
@@ -85,6 +91,17 @@ const useMenuStore = create<State & Actions>((set) => {
     flattenMenuList: [],
     activeTopMenu: undefined,
     activeMenu: {},
+    initStore: () => {
+      set(state => ({
+        ...state,
+        isInitialized: false,
+        topMenuList: [],
+        currentMenuList: [],
+        flattenMenuList: [],
+        activeTopMenu: undefined,
+        activeMenu: {},
+      }))
+    },
     updateTopMenu: (topMenu) => {
       // 缓存
       setStore('activeTopMenu', topMenu)

@@ -31,7 +31,7 @@
           {
             "id": "119768183116717727509",
             "name": "Loading",
-            "filePath": "/BasicManager/Components/Loading/index",
+            "filePath": "/pages/BasicManager/Components/Loading/index",
             "path": "/basicManager/components/loading",
             "icon": "",
             "level": "",

@@ -5,15 +5,17 @@
  */
 import { createHashRouter } from 'react-router-dom'
 import useRoutes from './useRoute'
+import { useMemo } from 'react'
 
 const useRouter = () => {
   const routes = useRoutes()
 
-  if (routes?.length <= 0) {
-    return null
-  }
-
-  return createHashRouter(routes)
+  return useMemo(() => {
+    if (routes?.length <= 0) {
+      return null
+    }
+    return createHashRouter(routes)
+  }, [routes])
 }
 
 export default useRouter
