@@ -71,7 +71,7 @@ const transform = (list: MenuItem[]): MenuProps['items'] => {
   return list.map((item) => {
     let children = item.children?.length > 0 ? transform(item.children) : null
     return {
-      key: item.id,
+      key: item.path,
       label: item.name,
       // icon: <SettingOutlined />,
       children: children
@@ -105,7 +105,7 @@ const Classic = () => {
 
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
-    let route = findTreeNode(menuList, key)
+    let route = findTreeNode(menuList, key, 'path')
     if (route) {
       // updateState({ pathname: route.path })
       setSelectedKeys([route.path])

@@ -9,7 +9,7 @@
  * @Description:
  */
 import { lazy, /* useEffect */ } from 'react'
-import { Navigate, /* useRoutes, RouterProvider,  createHashRouter, */ redirect } from 'react-router-dom'
+import { Navigate, /* useRoutes, RouterProvider,, */  createHashRouter, redirect } from 'react-router-dom'
 
 // import { HomeOutlined } from '@ant-design/icons'
 // import * as Sentry from '@sentry/react'
@@ -17,7 +17,7 @@ import { Navigate, /* useRoutes, RouterProvider,  createHashRouter, */ redirect 
 import { RouteObject, ExceptionEnum } from './types'
 import { getToken } from '@/utils/store'
 import { HOME_URL, LOGIN_URL } from '@/config/constants'
-// import { initDynamicRouter } from './utils'
+import { genFullPath } from './utils'
 
 const LayoutGuard = lazy(() => import('@/layout'))
 // 报错显示的页面
@@ -29,16 +29,16 @@ const Login = lazy(() => import('@/pages/Login'))
 const NotFound = lazy(() => import('@/pages/ErrorPage/404'))
 const Exception = lazy(() => import('@/pages/ErrorPage/500'))
 
-// const metaRoutes = import.meta.glob('./routes/*.tsx', { eager: true }) as Recordable
+const metaRoutes = import.meta.glob('./modules/*.tsx', { eager: true }) as Recordable
 
-// const routes: RouteObject[] = []
+export const routes: RouteObject[] = []
 
-// Object.keys(metaRoutes).forEach(key => {
-//   const module = metaRoutes[key].default || {}
-//   const moduleList = Array.isArray(module) ? [...module] : [module]
-//   genFullPath(moduleList)
-//   routeList.push(...moduleList)
-// })
+Object.keys(metaRoutes).forEach(key => {
+  const module = metaRoutes[key].default || {}
+  const moduleList = Array.isArray(module) ? [...module] : [module]
+  genFullPath(moduleList)
+  routes.push(...moduleList)
+})
 
 export const routeList: RouteObject[] = [
   {
@@ -83,33 +83,8 @@ export const routeList: RouteObject[] = [
     },
     element: <Login />
   },
-  // {
-  //   path: HOME_URL,
-  //   name: 'Home',
-  //   element: <LayoutGuard />,
-  //   meta: {
-  //     title: '首页',
-  //     key: 'home_000',
-  //     icon: 'home',
-  //     isAffix: true
-  //     // orderNo: 1,
-  //     // hideChildrenInMenu: true
-  //   },
-  //   children: [
-  //     {
-  //       path: '',
-  //       name: 'HomePage',
-  //       element: <Home />,
-  //       meta: {
-  //         title: '首页',
-  //         key: 'home_000',
-  //         icon: 'home'
-  //         // orderNo: 1,
-  //         // hideMenu: true
-  //       }
-  //     }
-  //   ]
-  // },
+
+  ...routes,
 
   {
     path: '*',
@@ -136,12 +111,8 @@ export const routeList: RouteObject[] = [
   },
 ]
 
-// const Router = () => {
 
-//   return createHashRouter(routeList)
-// }
-
-// export default Router
+export default createHashRouter(routeList)
 
 // Sentry.wrapCreateBrowserRouter
 // const sentryUseRouter = Sentry.wrapUseRoutes(useRoutes)

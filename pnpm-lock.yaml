@@ -354,9 +354,15 @@ importers:
       '@lexical/react':
         specifier: ^0.16.0
         version: 0.16.0(react-dom@18.2.0)(react@18.2.0)(yjs@13.6.16)
+      '@loadable/component':
+        specifier: ^5.16.4
+        version: 5.16.4(react@18.2.0)
       '@types/dat.gui':
         specifier: ^0.7.10
         version: 0.7.10
+      '@types/loadable__component':
+        specifier: ^5.13.9
+        version: 5.13.9
       '@types/three':
         specifier: ^0.155.0
         version: 0.155.0
@@ -3523,6 +3529,18 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
+  /@loadable/component@5.16.4(react@18.2.0):
+    resolution: {integrity: sha512-fJWxx9b5WHX90QKmizo9B+es2so8DnBthI1mbflwCoOyvzEwxiZ/SVDCTtXEnHG72/kGBdzr297SSIekYtzSOQ==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.24.7
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+      react-is: 16.13.1
+    dev: false
+
   /@mapbox/jsonlint-lines-primitives@2.0.2:
     resolution: {integrity: sha512-rY0o9A5ECsTQRVhv7tL/OyDpGAoUB4tTvLiW1DSzQGq4bvTPhNw1VpSNjDJc5GFZ2XuyOtSWSVN05qOtcD71qQ==}
     engines: {node: '>= 0.6'}
@@ -4657,6 +4675,12 @@ packages:
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
     dependencies:
       '@types/node': 20.12.11
+    dev: false
+
+  /@types/loadable__component@5.13.9:
+    resolution: {integrity: sha512-QWOtIkwZqHNdQj3nixQ8oyihQiTMKZLk/DNuvNxMSbTfxf47w+kqcbnxlUeBgAxdOtW0Dh48dTAIp83iJKtnrQ==}
+    dependencies:
+      '@types/react': 18.2.17
     dev: false
 
   /@types/lodash-es@4.17.9:

@@ -175,7 +175,26 @@
         "path": "/gisManager/mapboxgl",
         "icon": "",
         "level": "",
-        "children": [],
+        "children": [
+          {
+            "id": "058870716784641404320",
+            "name": "mapboxgl",
+            "filePath": "/pages/GisManager/Mapboxgl/Case_01/index",
+            "path": "/gisManager/mapboxgl/case_01",
+            "icon": "",
+            "level": "",
+            "parentId": "235591467052117583245"
+          },
+          {
+            "id": "893640681282948321491",
+            "name": "mapboxgl",
+            "filePath": "/pages/GisManager/Mapboxgl/Case_02/index",
+            "path": "/gisManager/mapboxgl/case_02",
+            "icon": "",
+            "level": "",
+            "parentId": "235591467052117583245"
+          }
+        ],
         "parentId": "644675050894012278356"
       }
     ],
@@ -218,6 +237,14 @@
             "name": "库存列表",
             "filePath": "/pages/Erp/StoreManage/List/index",
             "path": "/erp/storeManage/list",
+            "icon": "",
+            "parentId": "890369246333778168911"
+          },
+          {
+            "id": "637190716023660930921",
+            "name": "库存详情",
+            "filePath": "/pages/Erp/StoreManage/Detail/index",
+            "path": "/erp/storeManage/detail",
             "icon": "",
             "parentId": "890369246333778168911"
           }

@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { useMenuStore } from "@/store"
 import { MenuItem } from "@/store/types"
 
@@ -14,6 +15,12 @@ const Menu = () => {
   const handleClickMenu = (topMenu: MenuItem) => {
     updateTopMenu(topMenu)
   }
+
+  // console.log('topMenuList = ', topMenuList)
+  // if (topMenuList.length <= 0) {
+  //   debugger
+  // }
+
   return (
     <div className='menu_wrapper'>
       <div className='menu'>
@@ -33,4 +40,4 @@ const Menu = () => {
   )
 }
 
-export default Menu
+export default memo(Menu)

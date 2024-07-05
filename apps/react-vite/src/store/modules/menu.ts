@@ -69,9 +69,9 @@ const useMenuStore = create<State & Actions>((set) => {
   const init = async () => {
     try {
       let storeData = await getAllStore()
-
       set(state => ({
         ...state,
+        isInitialized: true,
         activeTopMenu: storeData?.activeTopMenu,
         activeMenu: storeData?.activeMenu || {},
         topMenuList: storeData?.topMenuList || []
@@ -133,7 +133,7 @@ const useMenuStore = create<State & Actions>((set) => {
 
               return {
                 ...state,
-                isInitialized: true,
+                // isInitialized: true,
                 activeTopMenu: activeTopMenu,
                 // activeMenu: {},
                 currentMenuList: currentMenuList,
@@ -147,9 +147,9 @@ const useMenuStore = create<State & Actions>((set) => {
           // 提示请求失败信息
         }
       } catch (error) {
-        set((state) => {
-          return {...state, isInitialized: true,}
-        })
+        // set((state) => {
+        //   return {...state, isInitialized: true,}
+        // })
         console.log('/api/getAllMenus error', error)
       }
     },

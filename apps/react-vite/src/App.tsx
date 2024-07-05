@@ -12,8 +12,8 @@ import zhCN from 'antd/locale/zh_CN'
 // import { StyleProvider } from '@ant-design/cssinjs'
 import styled from 'styled-components'
 
-// import router from '@/router'
-import useRouter from '@/router/hooks/useRouter'
+import router from '@/router'
+// import useRouter from '@/router/hooks/useRouter'
 
 const StyledAntdApp = styled(AntdApp)`
   width: 100%;
@@ -23,8 +23,8 @@ const StyledAntdApp = styled(AntdApp)`
 function App() {
   // const { primaryColor } = useGlobalStore()
 
-  const router = useRouter()
-  console.log('router = ', router);
+  // const router = useRouter()
+  // console.log('router = ', router);
 
   return (
     // <StyleProvider hashPriority="high" layer> // 不能加这个, 否则 使用 styled-component 无法覆盖样式
