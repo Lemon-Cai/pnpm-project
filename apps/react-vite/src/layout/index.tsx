@@ -1,3 +1,9 @@
+/*
+ * @Author: CP
+ * @Date: 2024-06-27 15:49:23
+ * @Description: 
+ */
+import { memo } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { useGlobalStore } from '@/store'
@@ -17,21 +23,24 @@ const Layout = () => {
         <Vertical />
       </AuthRouter>
     )
+    // return <Vertical />
   } else if (layout === 'columns') {
     return (
       <AuthRouter>
         <Columns />
       </AuthRouter>
     )
+    // return <Columns />
   } else if (layout === 'classic') {
     return (
       <AuthRouter>
         <Classic />
       </AuthRouter>
     )
+    // return <Classic />
   }
 
   return <Navigate to="/404" />
 }
 
-export default Layout
+export default memo(Layout)

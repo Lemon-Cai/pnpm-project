@@ -2,9 +2,10 @@
 import { lazy } from '@loadable/component'
 
 import { LazyLoad } from '@/components/LazyLoad'
+import LayoutGuard from '@/layout'
 import { RouteObject } from '../types'
 
-const LayoutGuard = lazy(() => import('@/layout'))
+// const LayoutGuard = lazy(() => import('@/layout'))
 
 const Dashboard = LazyLoad(lazy(() => import('@/pages/BasicManager/Dashboard')))
 

@@ -9,7 +9,7 @@
  * @Description:
  */
 import { lazy, /* useEffect */ } from 'react'
-import { Navigate, /* useRoutes, RouterProvider,, */  createHashRouter, redirect } from 'react-router-dom'
+import { Navigate, /* useRoutes as useReactRoutes,  RouterProvider,, */  createHashRouter, redirect } from 'react-router-dom'
 
 // import { HomeOutlined } from '@ant-design/icons'
 // import * as Sentry from '@sentry/react'
@@ -113,6 +113,10 @@ export const routeList: RouteObject[] = [
 
 
 export default createHashRouter(routeList)
+
+// export default () => {
+//   return useReactRoutes(routeList)
+// }
 
 // Sentry.wrapCreateBrowserRouter
 // const sentryUseRouter = Sentry.wrapUseRoutes(useRoutes)

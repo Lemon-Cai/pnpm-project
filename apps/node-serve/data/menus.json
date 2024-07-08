@@ -70,7 +70,7 @@
           {
             "id": "012323925247736890181",
             "parentId": "626376472544673080136",
-            "name": "threeJs",
+            "name": "案例一",
             "level": "",
             "filePath": "/pages/ThreeJs/FirstCase/index",
             "path": "/threeDimensionManager/threeJs/firstCase",
@@ -81,7 +81,7 @@
           {
             "id": "237268495145892833747",
             "parentId": "626376472544673080136",
-            "name": "threeJs",
+            "name": "案例二",
             "level": "",
             "filePath": "/pages/ThreeJs/SecondCase/index",
             "path": "/threeDimensionManager/threeJs/secondCase/:geometryType?",
@@ -92,7 +92,7 @@
           {
             "id": "714535694266213582629",
             "parentId": "626376472544673080136",
-            "name": "threeJs",
+            "name": "地球",
             "level": "",
             "filePath": "/pages/ThreeJs/Earth/index",
             "path": "/threeDimensionManager/threeJs/earth",
@@ -103,7 +103,7 @@
           {
             "id": "458555316186414955694",
             "parentId": "626376472544673080136",
-            "name": "threeJs",
+            "name": "下雨",
             "level": "",
             "filePath": "/pages/ThreeJs/ThreeRain/index",
             "path": "/threeDimensionManager/threeJs/threeRain",

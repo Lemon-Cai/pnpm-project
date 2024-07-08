@@ -3,23 +3,28 @@
  * @Date: 2024-06-28 17:28:42
  * @Description: 
  */
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import { Layout } from 'antd'
+import Page from '@/components/Page'
 
-// import './index.css'
+import './index.scss'
 
 // 创建第一个threejs 案例
 const Earth = () => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const rendered = useRef(false)
   // const [containerRef, setContainerRef] = useState(null)
-  const [state] = useState({
-    rendered: false
-  })
+  // const [state, setState] = useState({
+  //   rendered: false
+  // })
   useEffect(() => {
     console.log(222);
-    if (!state.rendered && containerRef.current) {
-      state.rendered = true
+    if (!rendered.current && containerRef.current) {
+      rendered.current = true
+      // setState(prevState => ({
+      //   ...prevState,
+      //   rendered: true
+      // }))
       initScene()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,11 +85,11 @@ const Earth = () => {
   }
 
   return (
-    <Layout className='container'>
-      <Layout.Content>
+    <Page className='container'>
+      <Page.Content>
         <div ref={containerRef} className='three-content'></div>
-      </Layout.Content>
-    </Layout>
+      </Page.Content>
+    </Page>
   )
 }
 

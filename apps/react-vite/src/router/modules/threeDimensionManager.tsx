@@ -8,9 +8,11 @@ import { lazy } from '@loadable/component'
 
 import { LazyLoad } from '@/components/LazyLoad'
 
+import LayoutGuard from '@/layout'
 import { RouteObject } from '../types'
 
-const LayoutGuard = lazy(() => import('@/layout'))
+// 懒加载会出现闪屏现象
+// const LayoutGuard = lazy(() => import('@/layout'))
 
 //
 const FirstCase = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/ThreeJs/FirstCase')))

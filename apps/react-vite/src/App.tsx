@@ -12,7 +12,9 @@ import zhCN from 'antd/locale/zh_CN'
 // import { StyleProvider } from '@ant-design/cssinjs'
 import styled from 'styled-components'
 
-import router from '@/router'
+// import AuthRouter from '@/components/AuthRouter'
+
+import Router from '@/router'
 // import useRouter from '@/router/hooks/useRouter'
 
 const StyledAntdApp = styled(AntdApp)`
@@ -27,24 +29,25 @@ function App() {
   // console.log('router = ', router);
 
   return (
-    // <StyleProvider hashPriority="high" layer> // 不能加这个, 否则 使用 styled-component 无法覆盖样式
-    <ConfigProvider
-      locale={zhCN}
-      theme={{
-        token: {
-          // colorPrimary: primaryColor
-        }
-      }}
-    >
-      <StyledAntdApp>
-        {/* <AuthRouter>
-          </AuthRouter> */}
-        <Suspense>
-          {router && <RouterProvider router={router} />}
-        </Suspense>
-      </StyledAntdApp>
-    </ConfigProvider>
-    // {/* </StyleProvider> */}
+      // {/* // <StyleProvider hashPriority="high" layer> // 不能加这个, 否则 使用 styled-component 无法覆盖样式 */}
+      <ConfigProvider
+        locale={zhCN}
+        theme={{
+          token: {
+            // colorPrimary: primaryColor
+          }
+        }}
+      >
+        <StyledAntdApp>
+          {/* <AuthRouter>
+              </AuthRouter> */}
+          <Suspense>
+            <RouterProvider router={Router} />
+            {/* <Router /> */}
+          </Suspense>
+        </StyledAntdApp>
+      </ConfigProvider>
+      // {/* // </StyleProvider> */}
   )
 }
 

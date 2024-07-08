@@ -100,6 +100,7 @@ const Classic = () => {
   }, [pathname, isCollapse])
 
   const menuItems = useMemo(() => {
+    console.log('这是刷新次数');
     return transform(menuList)
   }, [menuList])
 
@@ -113,6 +114,14 @@ const Classic = () => {
     console.log('===========', route);
     navigate(route.path)
   }
+
+  const handleOpenChange: MenuProps['onOpenChange'] = (keys: string[]) => {
+    if (keys.length === 0 || keys.length === 1) return setOpenKeys(keys)
+    const latestKey = keys[keys.length - 1]
+    if (latestKey.includes(keys[0])) return setOpenKeys(keys)
+    setOpenKeys([latestKey])
+  }
+
 
   return (
     <Page>
@@ -145,12 +154,14 @@ const Classic = () => {
         >
           {/* 其余菜单 */}
           <AntMenu
-            onClick={handleMenuClick}
-            style={{ width: 256 }}
+            triggerSubMenuAction='click'
+            style={{ width: '100%' }}
             openKeys={openKeys}
             selectedKeys={selectedKeys}
             mode="inline"
             items={menuItems}
+            onClick={handleMenuClick}
+            onOpenChange={handleOpenChange}
           />
         </Sider>
         {/* 主体内容 */}
