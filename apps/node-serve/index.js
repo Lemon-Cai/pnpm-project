@@ -7,6 +7,7 @@ const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const responseDTO = require('./middleware/responseDTO');
 const loginRouter = require('./controller/login');
+const uploadRouter = require('./controller/upload');
 
 const app = new Koa();
 
@@ -17,6 +18,9 @@ app.use(responseDTO());
 // 注册路由
 app.use(loginRouter.routes());
 app.use(loginRouter.allowedMethods());
+
+app.use(uploadRouter.routes());
+app.use(uploadRouter.allowedMethods());
 
 app.listen(3010, () => {
   console.log('open server localhost:3010');

@@ -11,6 +11,14 @@ import { useRef, useEffect } from 'react'
 import type { CesiumComponentRef } from 'resium'
 import { CameraFlyTo, Viewer as CesiumViewer , Entity } from 'resium'
 
+import styled from 'styled-components'
+
+const StyledRoot = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`
+
 const Advance = () => {
   // const [state, setState] = useState<{ obj: any }>({
   //   obj: null
@@ -40,7 +48,7 @@ const Advance = () => {
   }, [])
 
   return (
-    <div>
+    <StyledRoot>
       {/* Advance */}
       {/* 测试sentry */}
       {/* { state?.obj.a } */}
@@ -53,7 +61,7 @@ const Advance = () => {
           point={{ pixelSize: 15, color: Color.YELLOW }}
         ></Entity>
       </CesiumViewer>
-    </div>
+    </StyledRoot>
   )
 }
 

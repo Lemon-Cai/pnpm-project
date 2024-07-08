@@ -48,7 +48,9 @@ const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return <Loading fullscreen />
   }
 
-  return children
+  return <>
+    {children}
+  </>
 }
 
 export default memo(Auth)

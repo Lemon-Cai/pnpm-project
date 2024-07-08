@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import useMounted from '@/hooks/useMounted'
-import MarkerPng from '@/assets/cesium/marker.png'
+import MarkerPng from '@/assets/images/cesium/marker.png'
 
 // 扩展 Entity 类型以包含 objFlag 属性
 interface ExtendedEntity extends Entity {

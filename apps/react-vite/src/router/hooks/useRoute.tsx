@@ -52,7 +52,7 @@ export const transformRoutes = (menus: MenuItem[], parentPath = ''): RouteObject
           path: path,
           element: <Component />
         }
-      ]
+      ] as RouteObject[]
       res.push(routerItem)
       continue
     }

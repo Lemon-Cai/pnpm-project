@@ -6,6 +6,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
+import { Ion } from 'cesium'
+
 import '@/styles/main.scss'
 
 // import workers from 'mock/index.ts'
@@ -19,6 +21,10 @@ if (process.env.NODE_ENV === 'development') {
   //   onUnhandledRequest: 'bypass',
   // });
 }
+
+// 设置 cesium 的 token
+Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZjJhNTE5MS0zYWE1LTQ3ZmYtOGJlMi1kZGYxNjgxYzkzNDgiLCJpZCI6MTUxNCwiaWF0IjoxNTI4ODAyNDgzfQ.zztxOqEyecGP01FA0yY2dRu8IMXGhjh0KQ5AcqblT68'
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

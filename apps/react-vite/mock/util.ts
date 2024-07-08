@@ -70,6 +70,7 @@ export function generateIdsAndParentIds(items: MenuObject[], parentId: string = 
  * @param user 
  */
 export const generateToken = (user: { id: number; username: string }) => {
+  console.log(user);
   // return jwt.sign({ userId: user.id, username: user.username }, SECRET, { expiresIn: '12h' })
 }
 
@@ -118,6 +119,6 @@ export const verifyToken = (resolver: (arg0: any) => any) => {
 //     //   return new HttpResponse(null, { status: 401 })
 //     // }
 
-//     return resolver(input)
+    return resolver(input)
   }
 }
