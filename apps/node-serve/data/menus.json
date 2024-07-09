@@ -178,7 +178,7 @@
         "children": [
           {
             "id": "058870716784641404320",
-            "name": "mapboxgl",
+            "name": "mapboxgl案例一",
             "filePath": "/pages/GisManager/Mapboxgl/Case_01/index",
             "path": "/gisManager/mapboxgl/case_01",
             "icon": "",
@@ -187,7 +187,7 @@
           },
           {
             "id": "893640681282948321491",
-            "name": "mapboxgl",
+            "name": "mapboxgl案例二",
             "filePath": "/pages/GisManager/Mapboxgl/Case_02/index",
             "path": "/gisManager/mapboxgl/case_02",
             "icon": "",

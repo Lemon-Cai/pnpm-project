@@ -7,9 +7,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { Layout as AntLayout, Menu as AntMenu, MenuProps } from 'antd'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
+import { createStyles } from 'antd-style'
 
 import { useGlobalStore, useMenuStore } from '@/store'
+import { MenuItem } from '@/store/types'
 import Page from '@/components/Page'
+import { findTreeNode, getOpenKeys } from '@/utils'
 
 import HeadMenuBG from '@/assets/images/layout/header_menu_bg.png'
 
@@ -17,29 +20,48 @@ import AppLogo from '../components/AppLogo'
 import CollapseTrigger from '../components/CollapseTrigger'
 import Toolbar from '../components/Toolbar'
 import Menu from './components/Menu'
+import Tabs from './components/Tabs'
 
 import { CLASSIC_SIDER_WIDTH, CLASSIC_COLLAPSE_WIDTH, CLASSIC_TOOLBAR_WIDTH } from '../constants'
 import './index.scss'
-import { MenuItem } from '@/store/types'
-import { findTreeNode, getOpenKeys } from '@/utils'
 
 const GlobalStyle = createGlobalStyle`
   :root {
     --classic-head-color: #fff;
   }
 `
+const useStyles = createStyles(({ css, prefixCls }) => ({
+  layout: css`
+    // ↓
+    &.${prefixCls}-layout {
+      background: #f5f5f5;
+      #main {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #fff;
+        /* padding: 12px 0 12px 12px; */
+      }
+    }
+  `,
+  content: css`
+    &.${prefixCls}-layout-content {
+      padding: 12px 0 12px 12px;
+    }
+  `
+}))
 
-const StyledContent = styled(Page.Content)`
-  padding: 12px 0 12px 12px;
-  height: 100%;
-  overflow: hidden;
-`
+// const StyledPage = styled(Page)`
+//   padding: 12px 0 12px 12px;
+// `
 
 const StyledHeader = styled(Page.Header)`
   padding: 0 12px;
   display: flex;
   align-items: center;
-  background: linear-gradient(45deg, #20e0c0ed, #92eddeba, #5be0cae0),
+  /* background: linear-gradient(45deg, #20e0c0ed, #92eddeba, #5be0cae0),
+    linear-gradient(to bottom, #6ccac4, #3c917e); */
+  background: linear-gradient(45deg, #306363, #376d64, #032d26),
     linear-gradient(to bottom, #6ccac4, #3c917e);
 
   .header-right {
@@ -80,10 +102,11 @@ const transform = (list: MenuItem[]): MenuProps['items'] => {
 }
 
 const Classic = () => {
+  const { styles, cx } = useStyles()
   const { state, pathname } = useLocation()
   const { key = 'key' } = state || {}
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const isCollapse = useGlobalStore((state) => state.isCollapse)
 
@@ -100,18 +123,22 @@ const Classic = () => {
   }, [pathname, isCollapse])
 
   const menuItems = useMemo(() => {
-    console.log('这是刷新次数');
+    console.log('这是刷新次数')
     return transform(menuList)
-  }, [menuList])
-
+    // eslint-disable-next-line
+  }, [JSON.stringify(menuList)])
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     let route = findTreeNode(menuList, key, 'path')
+    if (route?.meta?.isLink) {
+      
+      return
+    }
     if (route) {
       // updateState({ pathname: route.path })
       setSelectedKeys([route.path])
     }
-    console.log('===========', route);
+    console.log('===========', route)
     navigate(route.path)
   }
 
@@ -121,7 +148,6 @@ const Classic = () => {
     if (latestKey.includes(keys[0])) return setOpenKeys(keys)
     setOpenKeys([latestKey])
   }
-
 
   return (
     <Page>
@@ -154,7 +180,7 @@ const Classic = () => {
         >
           {/* 其余菜单 */}
           <AntMenu
-            triggerSubMenuAction='click'
+            triggerSubMenuAction="click"
             style={{ width: '100%' }}
             openKeys={openKeys}
             selectedKeys={selectedKeys}
@@ -164,10 +190,15 @@ const Classic = () => {
             onOpenChange={handleOpenChange}
           />
         </Sider>
-        {/* 主体内容 */}
-        <StyledContent>
-          <Outlet key={key} />
-        </StyledContent>
+        <Page className={cx(styles.layout)}>
+          <Tabs />
+          {/* 主体内容 */}
+          <Page.Content className={cx(styles.content)}>
+            <div id="main">
+              <Outlet key={key} />
+            </div>
+          </Page.Content>
+        </Page>
       </Page>
     </Page>
   )

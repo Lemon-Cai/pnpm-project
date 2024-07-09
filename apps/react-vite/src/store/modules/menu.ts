@@ -53,9 +53,10 @@ function format(list: MenuObject[] = [], parentPath, level = 0): MenuItem[] {
         key: item.id, // 菜单id
         title: item.name, // 页面标题
         showIcon: !!item.icon && menuLevel > 1,
-        icon: item.icon ? item.icon.split('iconfont ')[1] || '' : '' // TODO: 菜单icon, 不一定以 iconfont 开头
+        icon: item.icon ? item.icon.split('iconfont ')[1] || '' : '', // TODO: 菜单icon, 不一定以 iconfont 开头
         // keepAlive: KeepAlivePath.includes(path),
         // isFull: item.isOpen == 2 // 全屏
+        isLink: item.type === 'iframe'
       },
       path: path,
       component: hasChild ? 'Layout' : item.filePath,
@@ -92,15 +93,15 @@ const useMenuStore = create<State & Actions>((set) => {
     activeTopMenu: undefined,
     activeMenu: {},
     initStore: () => {
-      set(state => ({
-        ...state,
+      set(() => ({
+        // ...state,
         isInitialized: false,
         topMenuList: [],
         currentMenuList: [],
         flattenMenuList: [],
         activeTopMenu: undefined,
         activeMenu: {},
-      }))
+      }), true)
     },
     updateTopMenu: (topMenu) => {
       // 缓存

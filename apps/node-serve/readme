@@ -24,3 +24,54 @@ pm2 web                # 运行健壮的 computer API endpoint (http://localhost
 pm2 delete 0           # 杀死指定的进程
 pm2 delete all         # 杀死全部进程
 ```
+
+
+; 分流下载
+```javascript
+
+const btn = document.querySelector('.btn')
+btn.addEventListener('click', async function () {
+  const reader = (await fetch('http://localhost:8080/download')).body.getReader()
+
+  // 数据收集
+  let resultUint8Array = []
+  let bufferLen = 0
+
+  while (true) {
+    const readChunk = await reader.read()
+    if (readChunk.done) {
+      download(
+        new Blob([mergeUint8Array(resultUint8Array, bufferLen)], {
+          type: 'text/plain'
+        }),
+        'hello.txt'
+      )
+      break
+    } else {
+      bufferLen += readChunk.value.length
+      resultUint8Array.push(readChunk.value)
+    }
+  }
+})
+
+// 合并数据
+function mergeUint8Array(arr, length) {
+  let mergedArray = new Uint8Array(length)
+  let offset = 0
+  arr.forEach((item) => {
+    mergedArray.set(item, offset)
+    offset += item.length
+  })
+  return mergedArray
+}
+
+// 下载文件
+function download(blob, filename) {
+  const a = document.createElement('a')
+  a.download = filename
+  a.href = URL.createObjectURL(blob)
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+```

@@ -2,11 +2,11 @@ import { forwardRef } from 'react'
 import { Layout } from 'antd'
 import classnames from 'classnames'
 
-import { Content as AntContent } from 'antd/lib/layout/layout'
+import { BasicProps } from 'antd/lib/layout/layout'
 
-type AntContentImpl = typeof AntContent
+// type AntContentImpl = typeof AntContent & React.HTMLAttributes<HTMLDivElement>
 
-export interface ContentImpl extends AntContentImpl {
+export interface ContentImpl extends BasicProps {
   children?: React.ReactNode
   className?: string | undefined
 }

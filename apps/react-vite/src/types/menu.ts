@@ -47,9 +47,9 @@ export type MenuObject = {
    */
   filePath: string
   /**
-   * @description 菜单类型, 默认 page, 可以内嵌为 iframe
+   * @description 菜单类型, 默认 page, 可以内嵌为 iframe, 也可以外链其他页面: link (打开新浏览器页签)
    */
-  type?: "iframe" | "page"
+  type?: "iframe" | "page" | "link"
   /**
    * @description 子菜单
    */

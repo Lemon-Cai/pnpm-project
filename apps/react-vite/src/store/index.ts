@@ -7,3 +7,4 @@
 export { default as useMenuStore } from './modules/menu'
 export { default as useGlobalStore } from './modules/global'
 export { default as useUserStore } from './modules/user'
+export { default as useTabStore } from './modules/tab'

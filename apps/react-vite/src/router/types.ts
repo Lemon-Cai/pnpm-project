@@ -16,7 +16,13 @@ export interface MetaProps {
   /**
    * @description 是否全屏展示
    */
-  isFull?: boolean
+  isFull?: boolean,
+  /**
+   * @description 是否缓存
+   */
+  keepalive?: boolean
+
+  isLink?: boolean
 }
 
 export type RouteObject = {
