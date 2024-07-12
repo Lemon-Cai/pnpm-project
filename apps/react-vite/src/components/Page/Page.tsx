@@ -36,7 +36,7 @@ const useStyles = createStyles(({ token, css, prefixCls }) => ({
       width: 100%;
       height: 100%;
       position: relative;
-      overflow: auto;
+      /* overflow: auto; */
     }
   `
 }))

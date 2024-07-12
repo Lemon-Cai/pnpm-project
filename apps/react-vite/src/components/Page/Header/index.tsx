@@ -13,7 +13,11 @@ import { Header as AntHeader } from 'antd/lib/layout/layout'
 const useStyles = createStyles(({ prefixCls, css }) => ({
   header: css`
     &.${prefixCls}-layout-header {
-      background-color: #f5f5f5;
+      background-color: #fff;
+      padding: 0 12px;
+      min-height: 54px;
+      height: auto;
+      line-height: 54px;
     }
   `
 }))

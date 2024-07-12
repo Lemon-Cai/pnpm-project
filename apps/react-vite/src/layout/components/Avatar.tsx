@@ -16,7 +16,7 @@ import { useMenuStore, useUserStore } from '@/store'
 const StyledRoot = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 12px;
   flex: 1;
 `

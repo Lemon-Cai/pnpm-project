@@ -346,5 +346,24 @@
       }
     ],
     "parentId": "-1"
+  },
+  {
+    "id": "182623887863070629316",
+    "name": "系统管理",
+    "filePath": "",
+    "path": "/system",
+    "icon": "",
+    "children": [
+      {
+        "id": "037368527108059176476",
+        "name": "菜单管理",
+        "filePath": "/pages/System/Menu/index",
+        "path": "/system/menu",
+        "icon": "",
+        "children": [],
+        "parentId": "182623887863070629316"
+      }
+    ],
+    "parentId": "-1"
   }
 ]

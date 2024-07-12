@@ -11,7 +11,6 @@ import { createStyles } from 'antd-style'
 
 import { useGlobalStore, useMenuStore } from '@/store'
 import { MenuItem } from '@/store/types'
-import Page from '@/components/Page'
 import { findTreeNode, getOpenKeys } from '@/utils'
 
 import HeadMenuBG from '@/assets/images/layout/header_menu_bg.png'
@@ -28,6 +27,8 @@ import './index.scss'
 const GlobalStyle = createGlobalStyle`
   :root {
     --classic-head-color: #fff;
+    --classic-header-height: 64px;
+    --padding-size: 12px;
   }
 `
 const useStyles = createStyles(({ css, prefixCls }) => ({
@@ -41,21 +42,28 @@ const useStyles = createStyles(({ css, prefixCls }) => ({
         overflow: hidden;
         background: #fff;
         /* padding: 12px 0 12px 12px; */
+        padding: 12px;
       }
     }
   `,
   content: css`
     &.${prefixCls}-layout-content {
-      padding: 12px 0 12px 12px;
+      /* padding: 12px 0 12px 12px; */
+      padding: 12px;
     }
   `
 }))
 
-// const StyledPage = styled(Page)`
-//   padding: 12px 0 12px 12px;
-// `
+const StyledRoot = styled.section`
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100vh;
+`
 
-const StyledHeader = styled(Page.Header)`
+const StyledHeader = styled.header`
+  height: var(--classic-header-height);
+  line-height: var(--classic-header-height);
   padding: 0 12px;
   display: flex;
   align-items: center;
@@ -150,7 +158,7 @@ const Classic = () => {
   }
 
   return (
-    <Page>
+    <StyledRoot>
       {/* 全局样式， 不会渲染成dom */}
       <GlobalStyle />
       <StyledHeader>
@@ -168,7 +176,7 @@ const Classic = () => {
           <Toolbar className="toolbar" width={CLASSIC_TOOLBAR_WIDTH} />
         </div>
       </StyledHeader>
-      <Page hasSider>
+      <AntLayout hasSider>
         {/* 侧边栏 */}
         <Sider
           width={CLASSIC_SIDER_WIDTH}
@@ -190,17 +198,17 @@ const Classic = () => {
             onOpenChange={handleOpenChange}
           />
         </Sider>
-        <Page className={cx(styles.layout)}>
+        <AntLayout className={cx(styles.layout)}>
           <Tabs />
           {/* 主体内容 */}
-          <Page.Content className={cx(styles.content)}>
+          <AntLayout.Content className={cx(styles.content)}>
             <div id="main">
               <Outlet key={key} />
             </div>
-          </Page.Content>
-        </Page>
-      </Page>
-    </Page>
+          </AntLayout.Content>
+        </AntLayout>
+      </AntLayout>
+    </StyledRoot>
   )
 }
 

@@ -5,13 +5,11 @@
  */
 import { useRef, useMemo, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { createStyles, createGlobalStyle } from 'antd-style'
+import { createGlobalStyle } from 'antd-style'
 import { Dropdown, Button, Space, MenuProps } from 'antd'
 import { EllipsisOutlined, ReloadOutlined } from '@ant-design/icons'
 import { nanoid } from 'nanoid'
 import styled from 'styled-components'
-
-import Page from '@/components/Page'
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -19,44 +17,35 @@ const GlobalStyles = createGlobalStyle`
   }
 `
 
-const useStyles = createStyles(({ css, prefixCls }) => ({
-  header: css`
-    // ↓
-    &.${prefixCls}-layout-header {
-      height: var(--tab-height);
-      line-height: var(--tab-height);
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      background: #fff;
-    }
-  `
-}))
+const StyledRoot = styled.div`
+  height: var(--tab-height);
+  line-height: var(--tab-height);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+`
 
 const StyledTab = styled.div`
   flex: 1;
 
-  .tab_wrapper_content {
+  .tab_content {
     overflow: hidden;
     width: 100%;
   }
 `
 
 const Tabs = () => {
-  const { styles, cx } = useStyles()
-
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
   const tabRef = useRef(null)
   const tabContentRef = useRef(null)
 
-  useEffect(() => {
-
-  }, [pathname])
+  useEffect(() => {}, [pathname])
 
   const handleMove = (offset: number) => {
-    console.log(offset, navigate, nanoid());
+    console.log(offset, navigate, nanoid())
   }
 
   const handleScroll = (e: React.WheelEvent) => {
@@ -92,16 +81,16 @@ const Tabs = () => {
 
   const handleItemClick: MenuProps['onClick'] = ({ key }) => {
     if (key === 'all') {
-      // 
+      //
     }
   }
 
   return (
     <>
       <GlobalStyles />
-      <Page.Header className={cx(styles.header)}>
-        <StyledTab ref={tabRef} className="tab_wrapper" onWheel={handleScroll}>
-          <div ref={tabContentRef} className="tab_wrapper_content"></div>
+      <StyledRoot className="tab_wrapper">
+        <StyledTab ref={tabRef} className="tab" onWheel={handleScroll}>
+          <div ref={tabContentRef} className="tab_content"></div>
         </StyledTab>
         <Space size={12}>
           <Button size="small" icon={<ReloadOutlined />} onClick={handleReload}></Button>
@@ -109,7 +98,7 @@ const Tabs = () => {
             <Button icon={<EllipsisOutlined />} size="small"></Button>
           </Dropdown>
         </Space>
-      </Page.Header>
+      </StyledRoot>
     </>
   )
 }

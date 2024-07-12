@@ -18,14 +18,14 @@ const useStyles = createStyles(({ token, css, prefixCls }) => ({
   `,
   moreWeight: css`
     // ↓
-    &.${prefixCls}-layout-header {
+    &.override.${prefixCls}-layout-header {
       background-color: ${token.colorPrimary};
     }
   `
 }))
 
 const Home = () => {
-  const { styles } = useStyles()
+  const { styles, cx } = useStyles()
 
   const userInfo = useUserStore(state => state.userInfo)
 
@@ -42,7 +42,7 @@ const Home = () => {
   // </App>
     <Page>
       <Page.Header className={styles.default}></Page.Header>
-      <Page.Header className={styles.moreWeight}></Page.Header>
+      <Page.Header className={cx('override', styles.moreWeight)}></Page.Header>
       <Page.Content>
         <div style={{ height: '1000px' }}></div>
       </Page.Content>
