@@ -362,6 +362,15 @@
         "icon": "",
         "children": [],
         "parentId": "182623887863070629316"
+      },
+      {
+        "id": "235545274364846762376",
+        "name": "用户管理",
+        "filePath": "/pages/System/User/index",
+        "path": "/system/user",
+        "icon": "",
+        "children": [],
+        "parentId": "182623887863070629316"
       }
     ],
     "parentId": "-1"

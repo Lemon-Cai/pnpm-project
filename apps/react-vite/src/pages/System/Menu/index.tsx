@@ -4,23 +4,44 @@
  * @Description:
  */
 import { useMemo, useState, useEffect, useLayoutEffect, useId } from 'react'
-import { Space, Button, Table, /* Empty,  Pagination, */ TableColumnProps, TablePaginationConfig } from 'antd'
+import { Space, Button, Table /* Empty,  Pagination, */ } from 'antd'
+import type { TableProps, TableColumnProps, TablePaginationConfig } from 'antd'
 import { useDebounceFn } from 'ahooks'
 import styled from 'styled-components'
 
 import Page from '@/components/Page'
 
 // import useTable from '@/hooks/useTable'
+type StyledTableProps = {
+  $pagination?: TablePaginationConfig
+  $hasFooter?: boolean
+}
 
-const StyledTable = styled.div`
+const StyledTable = styled.div<StyledTableProps>`
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 
   .table-content {
-    flex: 1;
+    height: 100%;
+    /* flex: 1; */
+
+    .table-loading {
+      height: 100%;
+      .ant-spin-container {
+        height: ${(props) => (!!props.$pagination ? 'calc(100% - 64px)' : '100%')};
+      }
+    }
     .ant-table {
       height: 100%;
+      .ant-table-container {
+        height: ${(props) => (props.$hasFooter ? 'calc(100% - 60px)' : '100%')};
+        display: flex;
+        flex-direction: column;
+        .ant-table-body {
+          flex: 1;
+        }
+      }
     }
     .ant-empty {
       flex: 1;
@@ -44,41 +65,78 @@ const fetchData: ApiFn = () => {
           records: [
             {
               id: '1',
-              menuName: 'dashboard', menuIcon: "",
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
               id: '2',
-              menuName: 'dashboard', menuIcon: "",
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
               id: '3',
-              menuName: 'dashboard', menuIcon: "",
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
-              id: '4', menuName: 'dashboard', menuIcon: "",
+              id: '4',
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
-              id: '5', menuName: 'dashboard', menuIcon: "",
+              id: '5',
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
-              id: '6', menuName: 'dashboard', menuIcon: "",
+              id: '6',
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
-              id: '7', menuName: 'dashboard', menuIcon: "",
+              id: '7',
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
             {
-              id: '8', menuName: 'dashboard', menuIcon: "",
+              id: '8',
+              menuName: 'dashboard',
+              menuIcon: '',
               routeName: '/dashboard'
             },
+            {
+              id: '9',
+              menuName: 'dashboard',
+              menuIcon: '',
+              routeName: '/dashboard'
+            },
+            {
+              id: '10',
+              menuName: 'dashboard',
+              menuIcon: '',
+              routeName: '/dashboard'
+            },
+            {
+              id: '11',
+              menuName: 'dashboard',
+              menuIcon: '',
+              routeName: '/dashboard'
+            },
+            {
+              id: '12',
+              menuName: 'dashboard',
+              menuIcon: '',
+              routeName: '/dashboard'
+            }
           ],
-          size: 10,
+          size: 20,
           current: 1,
           total: 100
         }
@@ -104,12 +162,18 @@ const Menu: React.FC<any> = (props) => {
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState<any>([])
+  const [tableLayout] = useState<TableProps<any>['tableLayout']>('fixed')
+
+  // const [state, setState] = useState({
+  //   fit: true,
+  //   height: 0
+  // })
 
   const [pagination, setPagination] = useState({
     pageSizeOptions: PAGE_SIZE_OPTIONS,
-    pageSize: 10, // 每页条数
+    pageSize: 50, // 每页条数
     current: 1, // 当前页数
-    total: 0,
+    total: 0
   })
 
   useEffect(() => {
@@ -123,7 +187,7 @@ const Menu: React.FC<any> = (props) => {
   useLayoutEffect(() => {
     // dom渲染后同步执行
     // 创建页面resize监听
-    
+
     window.addEventListener('resize', handleRunResize)
 
     return () => {
@@ -131,14 +195,11 @@ const Menu: React.FC<any> = (props) => {
     }
   })
 
-  // 
-  const handleResize = () => {
-
-  }
+  //
+  const handleResize = () => {}
   const { run: handleRunResize } = useDebounceFn(handleResize, {
     wait: 200
   })
-  
 
   const columns: TableColumnProps<object>[] = useMemo(
     () => [
@@ -189,10 +250,19 @@ const Menu: React.FC<any> = (props) => {
     [pagination]
   )
 
+  const handlePaginationChange: TablePaginationConfig['onChange'] = (page, pageSize) => {
+    // console.log(page, pageSize);
+    setPagination((prevState) => ({
+      ...prevState,
+      current: page,
+      pageSize
+    }))
+  }
 
-  const handlePaginationChange = () => {}
-
-  const handlePaginationSizeChange = () => {}
+  // const handlePaginationSizeChange: TablePaginationConfig['onShowSizeChange'] = (current, size) => {
+  //   console.log(current, size);
+  //   // 最终会调用onChange
+  // }
 
   const paginationConfig: TablePaginationConfig = useMemo(() => {
     if (typeof props.pagination === 'boolean' && !props.pagination) {
@@ -201,16 +271,17 @@ const Menu: React.FC<any> = (props) => {
     return {
       size: props.paginationSize || 'default',
       onChange: handlePaginationChange,
-      onShowSizeChange: handlePaginationSizeChange,
+      // onShowSizeChange: handlePaginationSizeChange,
 
-      showTotal: (total: number, range: [number, number]) => `显示${range[0]}到${range[1]}, 共${total}条记录`,
+      defaultPageSize: 50, // (props.pagination?.pageSizeOptions || PAGE_SIZE_OPTIONS).slice(-1),
+      showTotal: (total: number, range: [number, number]) =>
+        `显示${range[0]}到${range[1]}, 共${total}条记录`,
       ...(props.pagination || {}),
       ...pagination,
-      // 
-      pageSizeOptions: props.pagination?.pageSizeOptions || PAGE_SIZE_OPTIONS,
+      //
+      pageSizeOptions: props.pagination?.pageSizeOptions || PAGE_SIZE_OPTIONS
     }
   }, [props, pagination])
-  
 
   const queryParams = useMemo(() => {
     return {}
@@ -223,20 +294,20 @@ const Menu: React.FC<any> = (props) => {
       current: pagination.current
     }
     setLoading(true)
-    fetchData(params).then(res => {
-      if (res.success) {
-        setTableData(res?.data?.records || [])
-        setPagination(prevState => ({...prevState, total: res.data.total}))
-      }
-    }).catch(e => {
-      console.error(e)
-    }).finally(() => {
-      setLoading(false)
-    })
+    fetchData(params)
+      .then((res) => {
+        if (res.success) {
+          setTableData(res?.data?.records || [])
+          setPagination((prevState) => ({ ...prevState, total: res.data.total }))
+        }
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
-
-
-
 
   return (
     <Page>
@@ -247,16 +318,21 @@ const Menu: React.FC<any> = (props) => {
         </Space>
       </Page.Header>
       <Page.Content>
-        <StyledTable id={id} className="table-wrapper">
+        <StyledTable id={id} className="table-wrapper" $pagination={paginationConfig} $hasFooter>
           <Table
             bordered
             className="table-content"
             rowKey="id"
-            loading={loading}
+            loading={{
+              spinning: loading,
+              wrapperClassName: 'table-loading'
+            }}
             columns={columns}
             dataSource={tableData}
             scroll={SCROLL}
             pagination={paginationConfig}
+            tableLayout={tableLayout}
+            footer={() => '这个 footer'}
             // locale={{
             //   emptyText: (
             //     <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

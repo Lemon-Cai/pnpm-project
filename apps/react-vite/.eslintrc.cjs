@@ -33,6 +33,7 @@ module.exports = {
 		"prefer-const": "off", // 此规则旨在标记使用 let 关键字声明但在初始分配后从未重新分配的变量，要求使用 const
 		// "no-irregular-whitespace": "off", // 禁止不规则的空白
     "no-constant-condition": "off", //
+    "no-extra-boolean-cast": "off", //
 
     'react/prop-types': 'off',  // 添加这一行
 

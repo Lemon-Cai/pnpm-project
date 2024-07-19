@@ -3,7 +3,7 @@
  * @Date: 2024-06-27 15:58:46
  * @Description:
  */
-import { memo, startTransition, useEffect, useState } from 'react'
+import { memo, startTransition, useEffect, useState, useRef } from 'react'
 
 import { useMenuStore } from '@/store'
 // import useMounted from '@/hooks/useMounted'
@@ -14,6 +14,7 @@ const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isInitialized = useMenuStore((state) => state.isInitialized)
   const getAllMenus = useMenuStore((state) => state.getAllMenus)
 
+  const mountedRef = useRef(false)
   const [loading, setLoading] = useState(true)
 
   // 4、初始化动态菜单路由 ====> 得保证所有的hooks在顶部执行
@@ -27,8 +28,10 @@ const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   //   }
   // })
 
+
+
   useEffect(() => {
-    if (isInitialized && loading) {
+    if (isInitialized && loading && mountedRef.current) {
       // 看看直接路由跳转会不会执行到这里
       console.log('12311414141441555')
       startTransition(() => {
@@ -42,7 +45,11 @@ const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       })
     }
     // eslint-disable-next-line
-  }, [isInitialized, loading])
+  }, [isInitialized])
+
+  useEffect(() => {
+    mountedRef.current = true
+  }, [])
 
   if (loading) {
     return <Loading fullscreen />

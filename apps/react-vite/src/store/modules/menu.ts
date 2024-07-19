@@ -95,7 +95,7 @@ const useMenuStore = create<State & Actions>((set) => {
     initStore: () => {
       set(() => ({
         // ...state,
-        isInitialized: false,
+        // isInitialized: false,
         topMenuList: [],
         currentMenuList: [],
         flattenMenuList: [],
