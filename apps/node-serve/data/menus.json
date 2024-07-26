@@ -110,6 +110,17 @@
             "icon": "icon-threejs-logo",
             "type": "page",
             "children": []
+          },
+          {
+            "id": "434454771066887702640",
+            "parentId": "626376472544673080136",
+            "name": "天空",
+            "level": "",
+            "filePath": "/pages/ThreeJs/Sky/index",
+            "path": "/threeDimensionManager/threeJs/sky",
+            "icon": "icon-threejs-logo",
+            "type": "page",
+            "children": []
           }
         ],
         "parentId": "945435692013723871795"

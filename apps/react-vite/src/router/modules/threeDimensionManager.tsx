@@ -19,6 +19,7 @@ const FirstCase = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/Thre
 const SecondCase = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/ThreeJs/SecondCase')))
 const Earth = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/ThreeJs/Earth')))
 const ThreeRain = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/ThreeJs/ThreeRain')))
+const Sky = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/ThreeJs/Sky')))
 
 const WebGL = LazyLoad(lazy(() => import('@/pages/ThreeDimensionManager/WebGL')))
 
@@ -75,6 +76,15 @@ const routeList: RouteObject[] = [
               key: 'threeDimensionManager_threeJs_threeRain'
             },
             element: ThreeRain
+          },
+          {
+            path: 'sky',
+            name: '天空盒子',
+            meta: {
+              title: '天空盒子',
+              key: 'threeDimensionManager_threeJs_sky'
+            },
+            element: Sky
           }
         ]
       },
