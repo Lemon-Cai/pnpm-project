@@ -382,6 +382,15 @@
         "icon": "",
         "children": [],
         "parentId": "182623887863070629316"
+      },
+      {
+        "id": "644237058235212479947",
+        "name": "角色管理",
+        "filePath": "/pages/System/Role/index",
+        "path": "/system/role",
+        "icon": "",
+        "children": [],
+        "parentId": "182623887863070629316"
       }
     ],
     "parentId": "-1"

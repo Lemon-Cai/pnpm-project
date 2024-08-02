@@ -4,6 +4,9 @@ import type { StyledTableProps } from './types'
 
 export const StyledTableContainer = styled.div`
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 `
 
 export const StyledTable = styled.div<StyledTableProps>`
@@ -41,4 +44,8 @@ export const StyledTable = styled.div<StyledTableProps>`
       }
     }
   }
+`
+
+export const StyledTh = styled.span`
+
 `

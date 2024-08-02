@@ -10,10 +10,11 @@ const useMounted = (fn: () => void) => {
 
   useEffect(() => {
     if (isMounted.current) {
-      fn?.()
+      let unMount = fn?.()
+      return unMount
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted.current])
+  }, [])
 
   useEffect(() => {
     isMounted.current = true

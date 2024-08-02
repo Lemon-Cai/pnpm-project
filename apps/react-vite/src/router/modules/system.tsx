@@ -16,6 +16,8 @@ import { RouteObject } from '../types'
 // system
 const Menu = LazyLoad(lazy(() => import('@/pages/System/Menu')))
 const User = LazyLoad(lazy(() => import('@/pages/System/User')))
+// 角色管理
+const Role = LazyLoad(lazy(() => import('@/pages/System/Role')))
 
 const routeList: RouteObject[] = [
   {
@@ -44,7 +46,17 @@ const routeList: RouteObject[] = [
           key: 'system_user'
         },
         element: User
-      }
+      },
+      {
+        path: 'role',
+        name: '角色管理',
+        meta: {
+          title: '角色管理',
+          key: 'system_role'
+        },
+        element: Role
+      },
+      
     ]
   }
 ] as RouteObject[]

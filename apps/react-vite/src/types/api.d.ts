@@ -37,4 +37,7 @@ declare namespace Api {
   interface PaginatingQueryRecord<T = any> extends PaginatingCommonParams {
     records: T[]
   }
+
+  type CommonSearchParams = Pick<PaginatingCommonParams, 'current' | 'size'>;
+
 }
