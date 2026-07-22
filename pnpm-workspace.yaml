@@ -1,4 +1,13 @@
 packages:
- - 'packages/*'
- - 'apps/*'
+  - 'packages/*'
+  - 'apps/*'
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  core-js-pure: true
+  esbuild: true
+  msw: true
+  nx: true
+  vue-demi: true
+
 #  - 'components'
